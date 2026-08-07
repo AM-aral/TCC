@@ -1,22 +1,13 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 
+export const connectDatabase = async () => {
+  try {
+    // Pega a URL do arquivo .env
+    const uri = process.env.MONGO_URI; 
 
-dotenv.config();
-
-
-async function connectDatabase() {
-   try {
-       await mongoose.connect(process.env.MONGODB_URI);
-
-
-       console.log("✅ Banco de dados conectado com sucesso!");
-   } catch (error) {
-       console.error("❌ Erro ao conectar ao banco:", error);
-       process.exit(1);
-   }
-}
-
-
-export default connectDatabase;
-
+    await mongoose.connect(uri);
+    console.log("Banco de dados conectado com sucesso!");
+  } catch (error) {
+    console.error("Erro ao conectar ao banco:", error);
+  }
+};
