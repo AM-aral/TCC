@@ -1,50 +1,355 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .home-page {
   min-height: 100vh;
-  background: #35104f;
+  background: #35114f;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+
+.home-header {
+  padding-top: 30px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
+}
+
+.home-logo {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+}
+.home-header h1 {
+  font-size: 20px;
+}
+
+/* JOGOS */
+
+.games-section {
+  padding: 40px 20px 80px;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 135px);
+  gap: 8px;
+  justify-content: center;
 }
 
 .game-card {
-  width: 200px;
-  height: 200px;
+  width: 135px;
+  height: 135px;
 
   position: relative;
   overflow: hidden;
 
-  border-radius: 8px;
+  border-radius: 7px;
+
+  background: #21102f;
+
+  cursor: pointer;
+
+  transition: 0.2s;
 }
 
-.game-card img {
+.game-card:hover {
+  transform: scale(1.05);
+}
+
+.game-background {
+  position: absolute;
+  inset: 0;
+
   width: 100%;
   height: 100%;
 
   object-fit: cover;
-
-  display: block;
 }
 
 .game-overlay {
   position: absolute;
   inset: 0;
 
+  z-index: 1;
+}
+
+/* CORES DOS JOGOS */
+
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* LOL */
+.game-overlay.lol {
   background: linear-gradient(
     to top,
-    #f85b6dc2,
-    rgba(255, 0, 13, 0.048)
+    rgba(25, 80, 180, 0.95) 0%,
+    rgba(25, 80, 180, 0.55) 35%,
+    transparent 70%
   );
 }
 
-.game-card span {
+/* VALORANT */
+.game-overlay.valorant {
+  background: linear-gradient(
+    to top,
+    rgba(220, 45, 60, 0.95) 0%,
+    rgba(220, 45, 60, 0.55) 35%,
+    transparent 70%
+  );
+}
+
+/* CS2 */
+.game-overlay.cs2 {
+  background: linear-gradient(
+    to top,
+    rgba(230, 130, 20, 0.95) 0%,
+    rgba(230, 130, 20, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* DOTA */
+.game-overlay.dota2 {
+  background: linear-gradient(
+    to top,
+    rgba(90, 150, 60, 0.95) 0%,
+    rgba(90, 150, 60, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* WILD RIFT */
+.game-overlay.lolw {
+  background: linear-gradient(
+    to top,
+    rgba(20, 150, 220, 0.95) 0%,
+    rgba(20, 150, 220, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* OVERWATCH */
+.game-overlay.ow {
+  background: linear-gradient(
+    to top,
+    rgba(230, 120, 30, 0.95) 0%,
+    rgba(230, 120, 30, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* RIVALS */
+.game-overlay.rivals {
+  background: linear-gradient(
+    to top,
+    rgba(220, 40, 50, 0.95) 0%,
+    rgba(220, 40, 50, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* DEAD BY DAYLIGHT */
+.game-overlay.dbd {
+  background: linear-gradient(
+    to top,
+    rgba(20, 20, 25, 0.98) 0%,
+    rgba(20, 20, 25, 0.6) 35%,
+    transparent 70%
+  );
+}
+
+/* FORTNITE */
+.game-overlay.fort {
+  background: linear-gradient(
+    to top,
+    rgba(30, 120, 230, 0.95) 0%,
+    rgba(30, 120, 230, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* PALADINS */
+.game-overlay.paladins {
+  background: linear-gradient(
+    to top,
+    rgba(130, 190, 30, 0.95) 0%,
+    rgba(130, 190, 30, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* ROCKET LEAGUE */
+.game-overlay.rocket {
+  background: linear-gradient(
+    to top,
+    rgba(150, 40, 200, 0.95) 0%,
+    rgba(150, 40, 200, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* SEA OF THIEVES */
+.game-overlay.sea {
+  background: linear-gradient(
+    to top,
+    rgba(0, 150, 120, 0.95) 0%,
+    rgba(0, 150, 120, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* TF2 */
+.game-overlay.tf2 {
+  background: linear-gradient(
+    to top,
+    rgba(180, 90, 50, 0.95) 0%,
+    rgba(180, 90, 50, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* BRAWLHALLA */
+.game-overlay.brawl {
+  background: linear-gradient(
+    to top,
+    rgba(60, 80, 220, 0.95) 0%,
+    rgba(60, 80, 220, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* WARZONE */
+.game-overlay.warzone {
+  background: linear-gradient(
+    to top,
+    rgba(60, 150, 50, 0.95) 0%,
+    rgba(60, 150, 50, 0.5) 35%,
+    transparent 70%
+  );
+}
+
+/* RAINBOW SIX */
+.game-overlay.r6 {
+  background: linear-gradient(
+    to top,
+    rgba(40, 40, 50, 0.98) 0%,
+    rgba(40, 40, 50, 0.6) 35%,
+    transparent 70%
+  );
+}
+
+/* LOGO DO JOGO */
+
+.game-logo {
   position: absolute;
+  left: 50%;
+  bottom: 8px;
 
-  bottom: 15px;
-  left: 15px;
+  transform: translateX(-50%);
 
-  color: white;
+  width: 100%;
+  height: 50px;
 
-  font-size: 24px;
+  object-fit: contain;
+  z-index: 2;
+}
+
+/* FUNCIONALIDADES */
+
+.features {
+  padding: 60px 10%;
+
+  display: flex;
+  justify-content: space-between;
+
+  gap: 50px;
+}
+
+.feature {
+  flex: 1;
+  text-align: center;
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 45px;
   font-weight: bold;
+
+  color: #35114f;
+
+  clip-path: polygon(
+    50% 0%,
+    65% 15%,
+    85% 15%,
+    85% 35%,
+    100% 50%,
+    85% 65%,
+    85% 85%,
+    65% 85%,
+    50% 100%,
+    35% 85%,
+    15% 85%,
+    15% 65%,
+    0% 50%,
+    15% 35%,
+    15% 15%,
+    35% 15%
+  );
+}
+
+.proposito {
+  background: linear-gradient(135deg, #3f1c80, #6c5ce7);
+}
+
+.impacto {
+  background: linear-gradient(135deg, #682121, #ff4d6d);
+}
+
+.funcionalidades {
+  background: linear-gradient(135deg, #32817b, #00a884);
+}
+
+.feature h2 {
+  margin-bottom: 15px;
+  font-size: 28px;
+  color: #b38cff;
+}
+
+.feature p {
+  max-width: 300px;
+  margin: auto;
+
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 700px) {
+  .games-grid {
+    grid-template-columns: repeat(2, 135px);
+  }
+
+  .features {
+    flex-direction: column;
+  }
 }
