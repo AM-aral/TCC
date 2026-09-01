@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./Login.css";
 
 import hero from "../assets/hero.png";
@@ -12,165 +11,112 @@ import emailIcon from "../assets/email.png";
 import userIcon from "../assets/user.png";
 import lockIcon from "../assets/lock.png";
 
-function Login({ irParaHome }) {
-    const [modo, setModo] = useState("login");
+function Login({ onLogin }) {
+  return (
+    <div className="login-page">
 
-    return (
-        <div className="login-page">
+      <div
+        className="hero-background"
+        style={{
+          backgroundImage: `url(${hero})`,
+        }}
+      />
 
-            {/* Imagem de fundo */}
-            <div
-                className="hero-background"
-                style={{
-                    backgroundImage: `url(${hero})`,
-                }}
-            />
+      <div className="background-overlay"></div>
 
-            {/* Degradê */}
-            <div className="background-overlay"></div>
+      <main className="login-container">
 
-            {/* Conteúdo */}
-            <main className="login-container">
+        <img
+          src={logo}
+          alt="LFG"
+          className="logo"
+        />
 
-                {/* Logo */}
-                <img
-                    src={logo}
-                    alt="LFG"
-                    className="logo"
-                />
+        <div className="login-tabs">
+          <button className="tab active">
+            LOGIN
+          </button>
 
-                {/* Abas */}
-                <div className="login-tabs">
+          <button className="tab">
+            CADASTRAR
+          </button>
+        </div>
 
-                    <button
-                        className={`tab ${modo === "login" ? "active" : ""}`}
-                        onClick={() => setModo("login")}
-                    >
-                        LOGIN
-                    </button>
+        <div className="social-buttons">
 
-                    <button
-                        className={`tab ${modo === "cadastro" ? "active" : ""}`}
-                        onClick={() => setModo("cadastro")}
-                    >
-                        CADASTRAR
-                    </button>
+          <button className="social-button discord">
+            <img src={discord} alt="Discord" />
+          </button>
 
-                </div>
+          <button className="social-button google">
+            <img src={google} alt="Google" />
+          </button>
 
-                {/* Botões sociais */}
-                <div className="social-buttons">
-
-                    <button className="social-button discord">
-                        <img src={discord} alt="Discord" />
-                    </button>
-
-                    <button className="social-button google">
-                        <img src={google} alt="Google" />
-                    </button>
-
-                    <button className="social-button twitch">
-                        <img src={twitch} alt="Twitch" />
-                    </button>
-
-                </div>
-
-                {/* Divisor */}
-                <div className="divider">
-                    <span></span>
-                    <p>OU USE EMAIL</p>
-                    <span></span>
-                </div>
-
-                {/* Formulário */}
-                <div className="login-form">
-
-                    {/* Email */}
-                    <div className="input-container">
-                        <img
-                            src={emailIcon}
-                            alt=""
-                            className="input-icon"
-                        />
-
-                        <input
-                            type="email"
-                            placeholder="Email"
-                        />
-                    </div>
-
-                    {/* Usuário */}
-                    <div className="input-container">
-                        <img
-                            src={userIcon}
-                            alt=""
-                            className="input-icon"
-                        />
-
-                        <input
-                            type="text"
-                            placeholder="Usuário"
-                        />
-                    </div>
-
-                    {/* Senha */}
-                    <div className="input-container">
-                        <img
-                            src={lockIcon}
-                            alt=""
-                            className="input-icon"
-                        />
-
-                        <input
-                            type="password"
-                            placeholder="Senha"
-                        />
-                    </div>
-
-                    {/* Confirmar senha - aparece só no cadastro */}
-                    {modo === "cadastro" && (
-                        <div className="input-container">
-                            <img
-                                src={lockIcon}
-                                alt=""
-                                className="input-icon"
-                            />
-
-                            <input
-                                type="password"
-                                placeholder="Confirmar senha"
-                            />
-                        </div>
-                    )}
-
-                </div>
-
-                {/* Botão principal */}
-                <button
-                    className="enter-button"
-                    onClick={irParaHome}
-                >
-                    {modo === "login" ? "ENTRAR" : "CADASTRAR"}
-                </button>
-
-                {/* Termos */}
-                <label className="terms">
-
-                    <input type="checkbox" />
-
-                    <span>
-                        Eu aceito todos os{" "}
-                        <a href="#">termos de serviço</a>
-                        {" "}e{" "}
-                        <a href="#">política de privacidade</a>
-                    </span>
-
-                </label>
-
-            </main>
+          <button className="social-button twitch">
+            <img src={twitch} alt="Twitch" />
+          </button>
 
         </div>
-    );
+
+        <div className="divider">
+          <span></span>
+          <p>OU USE EMAIL</p>
+          <span></span>
+        </div>
+
+        <div className="login-form">
+
+          <div className="input-box">
+            <img src={emailIcon} alt="" />
+            <input
+              type="email"
+              placeholder="Email"
+            />
+          </div>
+
+          <div className="input-box">
+            <img src={userIcon} alt="" />
+            <input
+              type="text"
+              placeholder="Usuário"
+            />
+          </div>
+
+          <div className="input-box">
+            <img src={lockIcon} alt="" />
+            <input
+              type="password"
+              placeholder="Senha"
+            />
+          </div>
+
+        </div>
+
+        {/* AGORA O BOTÃO MANDA PARA HOME */}
+        <button
+          className="enter-button"
+          onClick={onLogin}
+        >
+          ENTRAR
+        </button>
+
+        <label className="terms">
+
+          <input type="checkbox" />
+
+          <span>
+            Eu aceito todos os{" "}
+            <a href="#">termos de serviço</a>
+            {" "}e{" "}
+            <a href="#">política de privacidade</a>
+          </span>
+
+        </label>
+
+      </main>
+
+    </div>
+  );
 }
 
 export default Login;

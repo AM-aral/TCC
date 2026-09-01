@@ -38,43 +38,152 @@ import tf2Logo from "../assets/games-icon/TF2.png";
 import valorantLogo from "../assets/games-icon/valoranticon.png";
 import warzoneLogo from "../assets/games-icon/warzone icon.png";
 
-function Home() {
+function Home({ onSelectGame }) {
+
   const games = [
-    { name: "League of Legends", image: lolImage, logo: lolLogo, color: "lol" },
-    { name: "Valorant", image: valorantImage, logo: valorantLogo, color: "valorant" },
-    { name: "Counter Strike 2", image: cs2Image, logo: cs2Logo, color: "cs2" },
-    { name: "Dota 2", image: dota2Image, logo: dota2Logo, color: "dota2" },
 
-    { name: "League of Legends Wild Rift", image: lolwImage, logo: lolwLogo, color: "lolw" },
-    { name: "Overwatch", image: owImage, logo: owLogo, color: "ow" },
-    { name: "Marvel Rivals", image: rivalsImage, logo: rivalsLogo, color: "rivals" },
-    { name: "Dead By Daylight", image: dbdImage, logo: dbdLogo, color: "dbd" },
+    {
+      name: "League of Legends",
+      image: lolImage,
+      logo: lolLogo,
+      color: "lol"
+    },
 
-    { name: "Fortnite", image: fortImage, logo: fortLogo, color: "fort" },
-    { name: "Paladins", image: paladinsImage, logo: paladinsLogo, color: "paladins" },
-    { name: "Rocket League", image: rocketImage, logo: rocketLogo, color: "rocket" },
-    { name: "Sea of Thieves", image: seaImage, logo: seaLogo, color: "sea" },
+    {
+      name: "Valorant",
+      image: valorantImage,
+      logo: valorantLogo,
+      color: "valorant"
+    },
 
-    { name: "Team Fortress 2", image: tf2Image, logo: tf2Logo, color: "tf2" },
-    { name: "Brawlhalla", image: brawlImage, logo: brawlLogo, color: "brawl" },
-    { name: "Warzone", image: warzoneImage, logo: warzoneLogo, color: "warzone" },
-    { name: "Rainbow Six Siege", image: r6Image, logo: r6Logo, color: "r6" }
+    {
+      name: "Counter Strike 2",
+      image: cs2Image,
+      logo: cs2Logo,
+      color: "cs2"
+    },
+
+    {
+      name: "Dota 2",
+      image: dota2Image,
+      logo: dota2Logo,
+      color: "dota2"
+    },
+
+    {
+      name: "League of Legends Wild Rift",
+      image: lolwImage,
+      logo: lolwLogo,
+      color: "lolw"
+    },
+
+    {
+      name: "Overwatch",
+      image: owImage,
+      logo: owLogo,
+      color: "ow"
+    },
+
+    {
+      name: "Marvel Rivals",
+      image: rivalsImage,
+      logo: rivalsLogo,
+      color: "rivals"
+    },
+
+    {
+      name: "Dead By Daylight",
+      image: dbdImage,
+      logo: dbdLogo,
+      color: "dbd"
+    },
+
+    {
+      name: "Fortnite",
+      image: fortImage,
+      logo: fortLogo,
+      color: "fort"
+    },
+
+    {
+      name: "Paladins",
+      image: paladinsImage,
+      logo: paladinsLogo,
+      color: "paladins"
+    },
+
+    {
+      name: "Rocket League",
+      image: rocketImage,
+      logo: rocketLogo,
+      color: "rocket"
+    },
+
+    {
+      name: "Sea of Thieves",
+      image: seaImage,
+      logo: seaLogo,
+      color: "sea"
+    },
+
+    {
+      name: "Team Fortress 2",
+      image: tf2Image,
+      logo: tf2Logo,
+      color: "tf2"
+    },
+
+    {
+      name: "Brawlhalla",
+      image: brawlImage,
+      logo: brawlLogo,
+      color: "brawl"
+    },
+
+    {
+      name: "Warzone",
+      image: warzoneImage,
+      logo: warzoneLogo,
+      color: "warzone"
+    },
+
+    {
+      name: "Rainbow Six Siege",
+      image: r6Image,
+      logo: r6Logo,
+      color: "r6"
+    }
+
   ];
 
   return (
     <div className="home-page">
 
       <header className="home-header">
-        <img src={logo} alt="LFG" className="home-logo" />
 
-        <h1>Look For Group Presh</h1>
+        <img
+          src={logo}
+          alt="LFG"
+          className="home-logo"
+        />
+
+        <h1>
+          Look For Group Presh
+        </h1>
+
       </header>
 
       <section className="games-section">
+
         <div className="games-grid">
 
           {games.map((game) => (
-            <div className="game-card" key={game.name}>
+
+            <button
+              className="game-card"
+              key={game.name}
+              onClick={() => onSelectGame(game)}
+            >
 
               <img
                 src={game.image}
@@ -82,7 +191,9 @@ function Home() {
                 className="game-background"
               />
 
-              <div className={`game-overlay ${game.color}`}></div>
+              <div
+                className={`game-overlay ${game.color}`}
+              ></div>
 
               <img
                 src={game.logo}
@@ -90,42 +201,65 @@ function Home() {
                 className="game-logo"
               />
 
-            </div>
+            </button>
+
           ))}
 
         </div>
+
       </section>
 
       <section className="features">
 
         <div className="feature">
-          <div className="feature-icon proposito">P</div>
 
-          <h2>Propósito</h2>
+          <div className="feature-icon proposito">
+            P
+          </div>
+
+          <h2>
+            Propósito
+          </h2>
 
           <p>
-            Plataforma web para conectar jogadores e formar equipes por interesses em comum.
+            Plataforma web para conectar jogadores
+            e formar equipes por interesses em comum.
           </p>
+
         </div>
 
         <div className="feature">
-          <div className="feature-icon impacto">!</div>
 
-          <h2>Impacto</h2>
+          <div className="feature-icon impacto">
+            !
+          </div>
+
+          <h2>
+            Impacto
+          </h2>
 
           <p>
-            Substitui o pareamento aleatório por amizades reais e jogos mais divertidos.
+            Substitui o pareamento aleatório por
+            amizades reais e jogos mais divertidos.
           </p>
+
         </div>
 
         <div className="feature">
-          <div className="feature-icon funcionalidades">F</div>
 
-          <h2>Funcionalidades</h2>
+          <div className="feature-icon funcionalidades">
+            F
+          </div>
+
+          <h2>
+            Funcionalidades
+          </h2>
 
           <p>
-            Perfil de usuário, criação de salas, filtro por jogo e comunicação.
+            Perfil de usuário, criação de salas,
+            filtro por jogo e comunicação.
           </p>
+
         </div>
 
       </section>
