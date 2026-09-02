@@ -28,6 +28,7 @@ function App() {
       {pagina === "rooms" && (
         <Rooms
           game={jogoSelecionado}
+          onHome={() => setPagina("home")}
         />
       )}
     </>
