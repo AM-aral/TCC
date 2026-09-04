@@ -1,4 +1,3 @@
-
 * {
   box-sizing: border-box;
 }
@@ -7,6 +6,7 @@ html,
 body,
 #root {
   margin: 0;
+  padding: 0;
   min-height: 100%;
 }
 
@@ -14,16 +14,16 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
-/* =========================
+/* =====================================================
    PÁGINA
-========================= */
+===================================================== */
 
 .rooms-page {
-  min-height: 100vh;
   width: 100%;
+  min-height: 100vh;
 
   display: flex;
+  align-items: stretch;
 
   position: relative;
 
@@ -31,15 +31,16 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   color: white;
 }
 
 
-/* =========================
+/* =====================================================
    FUNDO
-========================= */
+===================================================== */
 
 .rooms-background-overlay {
   position: fixed;
@@ -50,7 +51,7 @@ body {
       180deg,
       rgba(30, 0, 65, 0.35) 0%,
       rgba(35, 0, 75, 0.62) 50%,
-      rgba(25, 0, 55, 0.9) 100%
+      rgba(25, 0, 55, 0.90) 100%
     );
 
   pointer-events: none;
@@ -59,41 +60,46 @@ body {
 }
 
 
-/* =========================
+/* =====================================================
    SIDEBAR
-========================= */
+===================================================== */
 
 .sidebar {
   width: 76px;
+  min-width: 76px;
   min-height: 100vh;
 
-  flex-shrink: 0;
+  flex: 0 0 76px;
 
   position: relative;
-  z-index: 50;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  background: rgba(36, 0, 68, 0.94);
+  background: rgba(36, 0, 68, 0.96);
 
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  z-index: 50;
 }
 
 .sidebar-logo {
   width: 42px;
   height: 42px;
 
+  margin-top: 13px;
+
   object-fit: contain;
 
-  margin-top: 13px;
+  display: block;
 }
 
 .sidebar-menu {
-  margin-top: 22px;
-
   width: 100%;
+
+  margin-top: 22px;
 
   display: flex;
   flex-direction: column;
@@ -106,6 +112,8 @@ body {
   width: 52px;
   height: 52px;
 
+  padding: 0;
+
   border: 0;
   border-radius: 8px;
 
@@ -117,11 +125,12 @@ body {
   align-items: center;
   justify-content: center;
 
-  font-size: 25px;
-
   cursor: pointer;
 
-  transition: 0.2s;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .sidebar-item:hover {
@@ -144,56 +153,75 @@ body {
 }
 
 
-/* =========================
-   CONTEÚDO
-========================= */
+/* =====================================================
+   CONTEÚDO DA DIREITA
+===================================================== */
 
 .rooms-content {
   flex: 1;
+
   min-width: 0;
+  min-height: 100vh;
 
   position: relative;
 
-  z-index: 2;
+  display: flex;
+  flex-direction: column;
 
-  overflow: visible;
+  z-index: 2;
 }
 
 
-/* =========================
-   MENU SUPERIOR
-========================= */
+/* =====================================================
+   NAVBAR
+===================================================== */
 
 .games-menu {
-  height: 44px;
-
   width: 100%;
+  height: 58px;
 
-  padding: 0 10px;
+  min-height: 58px;
 
-  background: rgba(92, 38, 133, 0.93);
+  flex: 0 0 58px;
+
+  padding: 0 18px;
+
+  background: rgba(92, 38, 133, 0.98);
 
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: space-between;
 
   position: relative;
 
-  z-index: 20;
+  z-index: 100;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  overflow: hidden;
+
+  isolation: isolate;
 }
 
+
+/* =====================================================
+   ITEM DA NAVBAR
+===================================================== */
+
 .game-menu-item {
-  min-width: 92px;
+  flex: 1;
+
+  min-width: 90px;
+  height: 58px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  gap: 0;
+  padding: 0 8px;
 
-  padding: 0 7px;
-
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.72);
 
   font-size: 12px;
 
@@ -201,7 +229,9 @@ body {
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .game-menu-item:hover {
@@ -211,45 +241,68 @@ body {
 }
 
 .game-menu-item.selected {
-  background: rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.13);
 
   color: white;
 }
 
+
+/* =====================================================
+   ÍCONES DA NAVBAR
+===================================================== */
+
 .game-menu-item img {
-  width: 41px;
-  height: 41px;
+  width: 48px;
+  height: 48px;
 
   object-fit: contain;
 
-  opacity: 0.85;
+  display: block;
+
+  opacity: 0.82;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.game-menu-item:hover img {
+  opacity: 1;
+
+  transform: scale(1.08);
 }
 
 .game-menu-item.selected img {
   opacity: 1;
+
+  transform: scale(1.08);
 }
 
 
-/* =========================
+/* =====================================================
    ÁREA PRINCIPAL
-========================= */
+===================================================== */
 
 .rooms-main {
   width: 100%;
 
-  padding: 20px 7vw 80px;
+  flex: 1;
+
+  padding: 30px 7vw 80px;
 
   position: relative;
 
-  z-index: 10;
+  z-index: 1;
 
   overflow: visible;
+
+  isolation: isolate;
 }
 
 
-/* =========================
-   BUSCA DE CIMA
-========================= */
+/* =====================================================
+   PESQUISA SUPERIOR
+===================================================== */
 
 .top-search {
   width: 46%;
@@ -260,7 +313,7 @@ body {
 
   height: 43px;
 
-  margin: 8px auto 10px;
+  margin: 0 auto 10px;
 
   border-radius: 11px;
 
@@ -271,60 +324,64 @@ body {
 
   position: relative;
 
-  z-index: 1;
+  overflow: hidden;
 }
 
 .top-search input {
   width: 100%;
   height: 100%;
 
-  border: 0;
+  padding: 0 15px;
 
+  border: 0;
   outline: 0;
 
   background: transparent;
 
   color: #333;
 
-  padding: 0 15px;
+  font-size: 14px;
+}
+
+.top-search input::placeholder {
+  color: #777;
 }
 
 
-/* =========================
+/* =====================================================
    LOGO DO JOGO
-========================= */
+===================================================== */
 
 .selected-game {
+  width: 100%;
+
   height: 150px;
 
   display: flex;
-
+  align-items: center;
   justify-content: center;
 
-  align-items: center;
-
   position: relative;
-
-  z-index: 1;
 }
 
 .selected-game-logo {
   width: 340px;
-
   height: 120px;
 
   object-fit: contain;
 
+  display: block;
+
   filter:
     drop-shadow(
-      0 6px 14px rgba(0, 0, 0, 0.4)
+      0 6px 14px rgba(0, 0, 0, 0.40)
     );
 }
 
 
-/* =========================
+/* =====================================================
    FILTROS
-========================= */
+===================================================== */
 
 .filters {
   width: 100%;
@@ -334,7 +391,7 @@ body {
   padding: 9px;
 
   border:
-    1px solid rgba(215, 171, 255, 0.9);
+    1px solid rgba(215, 171, 255, 0.90);
 
   border-radius: 9px;
 
@@ -344,26 +401,24 @@ body {
   backdrop-filter: blur(8px);
 
   display: flex;
-
   align-items: center;
 
   gap: 13px;
 
   position: relative;
 
-  z-index: 1000;
+  z-index: 20;
 
   overflow: visible;
 }
 
 
-/* =========================
-   BUSCA
-========================= */
+/* =====================================================
+   CAIXA DE BUSCA DOS FILTROS
+===================================================== */
 
 .search-box {
   width: 240px;
-
   height: 38px;
 
   flex-shrink: 0;
@@ -371,7 +426,6 @@ body {
   padding: 0 10px;
 
   display: flex;
-
   align-items: center;
 
   border:
@@ -383,14 +437,14 @@ body {
     rgba(45, 0, 84, 0.45);
 
   position: relative;
-
-  z-index: 1;
 }
 
 .search-box span {
   font-size: 22px;
 
   color: #c89cff;
+
+  line-height: 1;
 }
 
 .search-box input {
@@ -399,12 +453,13 @@ body {
   margin-left: 8px;
 
   border: 0;
-
   outline: 0;
 
   background: transparent;
 
   color: white;
+
+  font-size: 14px;
 }
 
 .search-box input::placeholder {
@@ -412,30 +467,26 @@ body {
 }
 
 
-/* =========================
+/* =====================================================
    DROPDOWN
-========================= */
+===================================================== */
 
 .filter-dropdown {
   position: relative;
 
-  z-index: 10000;
+  z-index: 30;
 
   flex-shrink: 0;
 }
 
-
-/* Quando o dropdown estiver aberto,
-   esse filtro fica acima dos outros */
-
 .filter-dropdown:has(.dropdown-menu) {
-  z-index: 999999;
+  z-index: 200;
 }
 
 
-/* =========================
+/* =====================================================
    BOTÃO DO FILTRO
-========================= */
+===================================================== */
 
 .filter-button {
   height: 38px;
@@ -455,9 +506,7 @@ body {
   color: #d7b3f7;
 
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 
   gap: 7px;
@@ -470,7 +519,8 @@ body {
 
   position: relative;
 
-  z-index: 1;
+  transition:
+    background 0.2s ease;
 }
 
 .filter-button:hover {
@@ -485,9 +535,9 @@ body {
 }
 
 
-/* =========================
-   MENU DROPDOWN
-========================= */
+/* =====================================================
+   MENU DO DROPDOWN
+===================================================== */
 
 .dropdown-menu {
   position: absolute;
@@ -510,23 +560,17 @@ body {
   border-radius: 8px;
 
   box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.5);
+    0 10px 25px rgba(0, 0, 0, 0.50);
 
-  z-index: 9999999;
+  z-index: 1000;
 
   display: flex;
-
   flex-direction: column;
 
   gap: 2px;
 
   overflow: visible;
 }
-
-
-/* =========================
-   OPÇÕES DO DROPDOWN
-========================= */
 
 .dropdown-menu button {
   width: 100%;
@@ -560,9 +604,9 @@ body {
 }
 
 
-/* =========================
-   CRIAR SALA
-========================= */
+/* =====================================================
+   BOTÃO CRIAR SALA
+===================================================== */
 
 .create-room {
   margin-left: auto;
@@ -590,7 +634,6 @@ body {
   font-weight: 700;
 
   display: flex;
-
   align-items: center;
 
   gap: 10px;
@@ -599,18 +642,18 @@ body {
 
   white-space: nowrap;
 
-  transition: 0.2s;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   position: relative;
-
-  z-index: 1;
 }
 
 .create-room:hover {
   transform: translateY(-2px);
 
   box-shadow:
-    0 6px 18px rgba(110, 21, 228, 0.4);
+    0 6px 18px rgba(110, 21, 228, 0.40);
 }
 
 .create-room strong {
@@ -620,9 +663,9 @@ body {
 }
 
 
-/* =========================
+/* =====================================================
    ROOM CARD
-========================= */
+===================================================== */
 
 .room-card {
   width: 100%;
@@ -634,7 +677,7 @@ body {
   padding: 22px 26px;
 
   border:
-    1px solid rgba(213, 168, 255, 0.9);
+    1px solid rgba(213, 168, 255, 0.90);
 
   border-radius: 22px;
 
@@ -651,7 +694,6 @@ body {
     0 12px 32px rgba(0, 0, 0, 0.25);
 
   display: flex;
-
   align-items: center;
 
   gap: 24px;
@@ -662,15 +704,14 @@ body {
 }
 
 
-/* =========================
+/* =====================================================
    PERFIL
-========================= */
+===================================================== */
 
 .room-profile {
   min-width: 0;
 
   display: flex;
-
   align-items: center;
 
   gap: 18px;
@@ -680,7 +721,6 @@ body {
 
 .profile-photo {
   width: 82px;
-
   height: 82px;
 
   flex-shrink: 0;
@@ -695,24 +735,21 @@ body {
   background: #4a2860;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 }
 
 .profile-photo img {
   width: 100%;
-
   height: 100%;
 
   object-fit: cover;
 }
 
 
-/* =========================
-   TEXTO
-========================= */
+/* =====================================================
+   DETALHES DA SALA
+===================================================== */
 
 .room-details {
   min-width: 0;
@@ -727,9 +764,9 @@ body {
 }
 
 
-/* =========================
+/* =====================================================
    TAGS
-========================= */
+===================================================== */
 
 .room-tags {
   display: flex;
@@ -745,7 +782,6 @@ body {
   padding: 5px 10px;
 
   display: flex;
-
   align-items: center;
 
   gap: 6px;
@@ -771,16 +807,15 @@ body {
 
 .mode-tag img {
   width: 27px;
-
   height: 27px;
 
   object-fit: contain;
 }
 
 
-/* =========================
+/* =====================================================
    GÊNERO
-========================= */
+===================================================== */
 
 .gender-options {
   display: flex;
@@ -792,15 +827,12 @@ body {
 
 .gender-options span {
   width: 52px;
-
   height: 23px;
 
   border-radius: 20px;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
   font-weight: bold;
@@ -823,9 +855,9 @@ body {
 }
 
 
-/* =========================
+/* =====================================================
    MEMBROS
-========================= */
+===================================================== */
 
 .room-members {
   width: 125px;
@@ -835,14 +867,12 @@ body {
   padding-left: 20px;
 
   border-left:
-    1px solid rgba(255, 255, 255, 0.7);
+    1px solid rgba(255, 255, 255, 0.70);
 
   display: flex;
-
   flex-direction: column;
 
   align-items: center;
-
   justify-content: center;
 
   flex-shrink: 0;
@@ -863,14 +893,15 @@ body {
 }
 
 
-/* =========================
+/* =====================================================
    BOTÃO ENTRAR
-========================= */
+===================================================== */
 
 .join-button {
   width: 250px;
-
   height: 58px;
+
+  flex-shrink: 0;
 
   border:
     1px solid #dbb8ff;
@@ -892,32 +923,29 @@ body {
 
   cursor: pointer;
 
-  transition: 0.2s;
-
-  flex-shrink: 0;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   position: relative;
-
-  z-index: 1;
 }
 
 .join-button:hover {
   transform: translateY(-2px);
 
   box-shadow:
-    0 6px 18px rgba(110, 21, 228, 0.4);
+    0 6px 18px rgba(110, 21, 228, 0.40);
 }
 
 
-/* =========================
-   RESPONSIVO
-========================= */
+/* =====================================================
+   RESPONSIVO - 1200px
+===================================================== */
 
 @media (max-width: 1200px) {
 
   .rooms-main {
     padding-left: 35px;
-
     padding-right: 35px;
   }
 
@@ -934,21 +962,31 @@ body {
   .create-room {
     margin-left: 0;
   }
-
 }
 
+
+/* =====================================================
+   RESPONSIVO - 850px
+===================================================== */
 
 @media (max-width: 850px) {
 
   .sidebar {
     width: 65px;
+    min-width: 65px;
+
+    flex-basis: 65px;
   }
 
   .games-menu {
     justify-content: flex-start;
+
+    overflow-x: auto;
   }
 
   .game-menu-item {
+    flex: 0 0 auto;
+
     min-width: 80px;
   }
 
@@ -970,24 +1008,46 @@ body {
   .join-button {
     width: 100%;
   }
-
 }
 
+
+/* =====================================================
+   RESPONSIVO - 600px
+===================================================== */
 
 @media (max-width: 600px) {
 
   .rooms-main {
-    padding: 15px;
+    padding: 20px 15px 60px;
   }
 
   .games-menu {
+    height: 58px;
+
     padding: 0 5px;
+
+    overflow-x: auto;
+
+    justify-content: flex-start;
   }
 
   .game-menu-item {
+    height: 58px;
+
     padding: 0 7px;
 
     min-width: 75px;
+  }
+
+  .game-menu-item img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .top-search {
+    width: 100%;
+
+    min-width: 0;
   }
 
   .selected-game-logo {
@@ -999,5 +1059,4 @@ body {
 
     align-items: flex-start;
   }
-
 }

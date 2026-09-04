@@ -1,0 +1,1076 @@
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   PÁGINA DE CRIAR SALA
+   ========================================================= */
+
+.create-room-page {
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+
+  position: relative;
+
+  color: white;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+
+/* =========================================================
+   OVERLAY
+   ========================================================= */
+
+.create-room-page .create-room-overlay {
+  position: fixed;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30, 0, 65, 0.35) 0%,
+      rgba(35, 0, 75, 0.62) 50%,
+      rgba(25, 0, 55, 0.9) 100%
+    );
+
+  z-index: 0;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   IMPORTANTE:
+   Tudo está limitado à CREATE ROOM.
+   Não interfere na Rooms.
+   ========================================================= */
+
+.create-room-page .sidebar {
+  width: 76px;
+  min-height: 100vh;
+
+  flex-shrink: 0;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: rgba(36, 0, 68, 0.94);
+
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+
+  z-index: 50;
+
+  padding-top: 13px;
+}
+
+
+.create-room-page .sidebar-logo {
+  width: 42px;
+  height: 42px;
+
+  object-fit: contain;
+
+  margin-bottom: 22px;
+}
+
+
+.create-room-page .sidebar-menu {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.create-room-page .sidebar-item {
+  width: 52px;
+  height: 52px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: transparent;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.create-room-page .sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  transform: scale(1.03);
+}
+
+
+.create-room-page .sidebar-item img {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+
+  display: block;
+
+  transition: 0.2s ease;
+}
+
+
+.create-room-page .sidebar-item:hover img {
+  filter: brightness(1.2);
+}
+
+
+/* =========================================================
+   ÁREA AO LADO DA SIDEBAR
+   ========================================================= */
+
+.create-room-page .create-room-content {
+  flex: 1;
+
+  min-width: 0;
+  min-height: 100vh;
+
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================================
+   NAVBAR DE JOGOS
+   ========================================================= */
+
+.create-room-page .create-games-menu {
+  width: 100%;
+  height: 58px;
+  min-height: 58px;
+
+  flex: 0 0 58px;
+
+  padding: 0 10px;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+
+  background: rgba(92, 38, 133, 0.98);
+
+  position: relative;
+
+  z-index: 100;
+
+  isolation: isolate;
+
+  overflow: hidden;
+}
+
+
+.create-room-page .create-game-menu-item {
+  min-width: 90px;
+  height: 58px;
+
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0;
+
+  padding: 0 7px;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.create-room-page .create-game-menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  color: white;
+}
+
+
+.create-room-page .create-game-menu-item.selected {
+  background: rgba(255, 255, 255, 0.11);
+
+  color: white;
+}
+
+
+.create-room-page .create-game-menu-item img {
+  width: 48px;
+  height: 48px;
+
+  object-fit: contain;
+
+  opacity: 0.85;
+}
+
+
+.create-room-page .create-game-menu-item.selected img {
+  opacity: 1;
+
+  filter:
+    drop-shadow(0 0 8px rgba(200, 130, 255, 0.7));
+}
+
+
+/* =========================================================
+   ÁREA PRINCIPAL
+   ========================================================= */
+
+.create-room-main {
+  width: min(1380px, 94%);
+
+  margin: 0 auto;
+
+  padding-top: 30px;
+  padding-bottom: 50px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =========================================================
+   BOTÃO VOLTAR
+   ========================================================= */
+
+.create-room-top {
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+
+  margin-bottom: 5px;
+}
+
+
+.back-button {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  background: rgba(20, 12, 25, 0.75);
+
+  color: white;
+
+  padding: 10px 18px;
+
+  border-radius: 7px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.back-button:hover {
+  background: rgba(84, 33, 111, 0.9);
+
+  border-color: rgba(202, 130, 255, 0.5);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   LOGO GRANDE DO LOL
+   ========================================================= */
+
+.create-game-header {
+  height: 155px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+
+.create-game-logo {
+  width: 350px;
+
+  max-width: 80%;
+  max-height: 125px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 18px rgba(0, 0, 0, 0.75));
+}
+
+
+/* =========================================================
+   SEÇÕES
+   ========================================================= */
+
+.create-section {
+  width: 100%;
+
+  margin: 0 auto 28px;
+}
+
+
+.section-title {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 14px;
+}
+
+
+.section-title span {
+  flex: 1;
+
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.16);
+}
+
+
+.section-title p {
+  margin: 0;
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   MODOS DE JOGO
+   ========================================================= */
+
+.game-modes {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 18px;
+}
+
+
+.mode-card {
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  cursor: pointer;
+
+  min-width: 0;
+}
+
+
+.mode-image {
+  position: relative;
+
+  height: 165px;
+
+  overflow: hidden;
+
+  border-radius: 9px;
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+
+  background: rgba(0, 0, 0, 0.3);
+
+  transition: 0.2s ease;
+}
+
+
+.mode-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  transition: 0.25s ease;
+}
+
+
+.mode-image-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.55),
+      transparent 60%
+    );
+
+  pointer-events: none;
+}
+
+
+.mode-card:hover .mode-image {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+
+.mode-card:hover .mode-image img {
+  transform: scale(1.04);
+}
+
+
+/* =========================================================
+   NOME DO MODO
+   ========================================================= */
+
+.mode-name {
+  margin-top: -1px;
+
+  height: 29px;
+
+  background: white;
+
+  color: #151015;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  letter-spacing: 0.3px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  transition: 0.2s;
+}
+
+
+.mode-card.selected .mode-name {
+  background: #54216f;
+
+  color: white;
+
+  box-shadow:
+    0 0 12px rgba(185, 106, 255, 0.4);
+}
+
+
+.mode-card.selected .mode-image {
+  border-color: #a85ed1;
+
+  box-shadow:
+    0 0 15px rgba(142, 63, 181, 0.4);
+}
+
+
+/* =========================================================
+   TAMANHO DA EQUIPE
+   ========================================================= */
+
+.team-size {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 14px;
+
+  flex-wrap: wrap;
+}
+
+
+.team-button {
+  width: 155px;
+  height: 38px;
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  background: rgba(255, 255, 255, 0.06);
+
+  color: white;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  font-size: 12px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.team-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+
+.team-button.selected {
+  background: white;
+
+  color: #24152a;
+
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+
+/* =========================================================
+   ELOS
+   ========================================================= */
+
+.rank-selection {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 82px;
+
+  padding: 10px 28px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 45px;
+
+  border-radius: 10px;
+
+  background: rgba(15, 8, 20, 0.55);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  transition: 0.25s ease;
+}
+
+
+.rank-item {
+  width: 80px;
+  height: 65px;
+
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.rank-placeholder {
+  width: 70px;
+  height: 50px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  transition: 0.2s ease;
+}
+
+
+.rank-icon {
+  width: 76px;
+  height: 76px;
+
+  object-fit: contain;
+
+  transition: 0.2s ease;
+}
+
+
+.rank-item:hover .rank-icon {
+  transform: scale(1.12);
+}
+
+
+.rank-item.selected .rank-placeholder {
+  transform: scale(1.08);
+
+  background: transparent;
+
+  box-shadow: none;
+}
+
+.rank-item.selected .rank-icon {
+  transform: scale(1.12);
+
+  filter:
+    drop-shadow(0 0 5px rgba(210, 150, 255, 0.65))
+    drop-shadow(0 0 12px rgba(170, 90, 230, 0.35));
+}
+
+.rank-selection.disabled {
+  opacity: 0.35;
+
+  filter: grayscale(1);
+
+  pointer-events: none;
+}
+
+
+.rank-disabled-message {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+
+  background: rgba(15, 8, 20, 0.72);
+
+  color: white;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  letter-spacing: 0.5px;
+
+  text-align: center;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   GÊNERO
+   ========================================================= */
+
+.gender-selection {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+}
+
+
+.gender-button {
+  width: 155px;
+  height: 42px;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  background: rgba(255, 255, 255, 0.06);
+
+  color: white;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  font-size: 12px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.gender-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+
+.gender-button.selected {
+  background: #54216f;
+
+  color: white;
+
+  box-shadow:
+    0 0 12px rgba(185, 106, 255, 0.35);
+}
+
+
+/* =========================================================
+   DETALHES DA SALA
+   ========================================================= */
+
+.room-details-form {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 40px;
+}
+
+
+.detail-box {
+  height: 125px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.detail-box label {
+  color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+
+.detail-box input,
+.detail-box textarea {
+  width: 100%;
+
+  flex: 1;
+
+  resize: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+
+  border-radius: 8px;
+
+  background: rgba(10, 7, 13, 0.65);
+
+  color: white;
+
+  outline: none;
+
+  padding: 13px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  transition: 0.2s ease;
+}
+
+
+.detail-box input:focus,
+.detail-box textarea:focus {
+  border-color: rgba(184, 99, 230, 0.7);
+
+  box-shadow:
+    0 0 10px rgba(154, 69, 194, 0.18);
+}
+
+
+.detail-box input::placeholder,
+.detail-box textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* =========================================================
+   BOTÕES FINAIS
+   ========================================================= */
+
+.create-actions {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 35px;
+}
+
+
+.create-button,
+.cancel-button {
+  width: 225px;
+  height: 56px;
+
+  border: none;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  font-size: 13px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.create-button {
+  background: #54216f;
+
+  color: white;
+
+  box-shadow:
+    0 0 18px rgba(135, 53, 180, 0.3);
+}
+
+
+.create-button:hover {
+  background: #6c2b8e;
+
+  transform: translateY(-2px);
+}
+
+
+.cancel-button {
+  background: white;
+
+  color: #24152a;
+}
+
+
+.cancel-button:hover {
+  background: #e9e9e9;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+  .create-room-page .create-games-menu {
+    overflow-x: auto;
+
+    justify-content: flex-start;
+
+    gap: 10px;
+  }
+
+  .create-room-page .create-game-menu-item {
+    flex: 0 0 90px;
+  }
+
+  .game-modes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .mode-image {
+    height: 155px;
+  }
+
+  .rank-selection {
+    gap: 8px;
+
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+
+@media (max-width: 900px) {
+
+  .create-room-page .create-games-menu {
+    gap: 5px;
+  }
+
+  .create-room-page .create-game-menu-item {
+    min-width: 80px;
+    flex: 0 0 80px;
+  }
+
+  .create-room-page .create-game-menu-item img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .create-room-page .create-game-menu-item span {
+    font-size: 9px;
+  }
+
+  .game-modes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .room-details-form {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .rank-selection {
+    flex-wrap: wrap;
+
+    padding: 15px;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .create-room-page .sidebar {
+    width: 60px;
+  }
+
+  .create-room-page .sidebar-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .create-room-page .sidebar-item {
+    width: 45px;
+    height: 45px;
+  }
+
+  .create-room-page .sidebar-item img {
+    width: 27px;
+    height: 27px;
+  }
+
+  .create-room-main {
+    width: 92%;
+
+    padding-top: 20px;
+    padding-bottom: 35px;
+  }
+
+  .create-room-page .create-games-menu {
+    padding: 0 5px;
+
+    height: 58px;
+    min-height: 58px;
+  }
+
+  .create-room-page .create-game-menu-item {
+    min-width: 75px;
+    flex: 0 0 75px;
+  }
+
+  .game-modes {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+  }
+
+  .mode-image {
+    height: 125px;
+  }
+
+  .team-button,
+  .gender-button {
+    width: 135px;
+  }
+
+  .create-button,
+  .cancel-button {
+    width: 170px;
+  }
+
+  .create-actions {
+    flex-wrap: wrap;
+  }
+}

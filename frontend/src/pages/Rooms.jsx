@@ -1,22 +1,17 @@
 import { useState } from "react";
+
 import "./Rooms.css";
 
 import logo from "../assets/logo.png";
 
-// =============================
-// ÍCONES DA BARRA LATERAL
-// =============================
-
+/* SIDEBAR */
 import homeIcon from "../assets/sidebar/home.png";
 import perfilIcon from "../assets/sidebar/perfil.png";
 import historicoIcon from "../assets/sidebar/historico.png";
 import mensagensIcon from "../assets/sidebar/mensagem.png";
 import configuracoesIcon from "../assets/sidebar/configuracoes.png";
 
-// =============================
-// MINI LOGOS DO TOPO
-// =============================
-
+/* MINI LOGOS */
 import owLogo from "../assets/icon/ow icon.png";
 import cs2Logo from "../assets/icon/cs icon.png";
 import valorantLogo from "../assets/icon/val icon.png";
@@ -26,20 +21,13 @@ import dotaLogo from "../assets/icon/dota icon.png";
 import rivalsLogo from "../assets/icon/marvel icon.png";
 import lolLogo from "../assets/icon/lol icon.png";
 
-// =============================
-// LOGO GRANDE
-// =============================
-
+/* LOGO GRANDE */
 import lolBigLogo from "../assets/LOGAO/lol-big.png";
 
-// =============================
-// FUNDO
-// =============================
-
+/* FUNDO */
 import lolBackground from "../assets/rooms-bg.png";
 
-
-function Rooms({ game, onHome }) {
+function Rooms({ game, onHome, onCreateRoom, onProfile }) {
 
   const [menuAberto, setMenuAberto] = useState(null);
 
@@ -50,14 +38,17 @@ function Rooms({ game, onHome }) {
     modo: "Modo"
   });
 
-
   if (!game) {
     return null;
   }
 
+  function abrirMenu(tipo) {
+    setMenuAberto(
+      menuAberto === tipo ? null : tipo
+    );
+  }
 
   function selecionarFiltro(tipo, valor) {
-
     setFiltros({
       ...filtros,
       [tipo]: valor
@@ -65,17 +56,6 @@ function Rooms({ game, onHome }) {
 
     setMenuAberto(null);
   }
-
-
-  function abrirMenu(tipo) {
-
-    if (menuAberto === tipo) {
-      setMenuAberto(null);
-    } else {
-      setMenuAberto(tipo);
-    }
-  }
-
 
   return (
     <div
@@ -87,11 +67,7 @@ function Rooms({ game, onHome }) {
 
       <div className="rooms-background-overlay"></div>
 
-
-      {/* =========================
-          SIDEBAR
-      ========================= */}
-
+      {/* SIDEBAR */}
       <aside className="sidebar">
 
         <img
@@ -116,6 +92,7 @@ function Rooms({ game, onHome }) {
           <button
             className="sidebar-item"
             type="button"
+            onClick={onProfile}
           >
             <img
               src={perfilIcon}
@@ -158,17 +135,10 @@ function Rooms({ game, onHome }) {
       </aside>
 
 
-      {/* =========================
-          CONTEÚDO
-      ========================= */}
-
+      {/* CONTEÚDO */}
       <div className="rooms-content">
 
-
-        {/* =========================
-            MINI LOGOS
-        ========================= */}
-
+        {/* MENU SUPERIOR */}
         <nav className="games-menu">
 
           <div className="game-menu-item">
@@ -214,23 +184,13 @@ function Rooms({ game, onHome }) {
         </nav>
 
 
-        {/* =========================
-            PRINCIPAL
-        ========================= */}
-
+        {/* PRINCIPAL */}
         <main className="rooms-main">
 
-
-          {/* BUSCA */}
           <div className="top-search">
-            <input
-              type="text"
-              placeholder=""
-            />
+            <input type="text" />
           </div>
 
-
-          {/* LOGO GRANDE */}
           <div className="selected-game">
 
             <img
@@ -242,15 +202,10 @@ function Rooms({ game, onHome }) {
           </div>
 
 
-          {/* =========================
-              FILTROS
-          ========================= */}
-
+          {/* FILTROS */}
           <div className="filters">
 
-
-            {/* BUSCA */}
-
+            {/* BUSCAR */}
             <div className="search-box">
 
               <span>⌕</span>
@@ -264,7 +219,6 @@ function Rooms({ game, onHome }) {
 
 
             {/* GÊNERO */}
-
             <div className="filter-dropdown">
 
               <button
@@ -272,17 +226,10 @@ function Rooms({ game, onHome }) {
                 onClick={() => abrirMenu("genero")}
                 type="button"
               >
-
                 <span>⚥</span>
-
-                <span>
-                  {filtros.genero}
-                </span>
-
+                <span>{filtros.genero}</span>
                 <b>⌄</b>
-
               </button>
-
 
               {menuAberto === "genero" && (
 
@@ -290,7 +237,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("genero", "Masculino")
+                      selecionarFiltro(
+                        "genero",
+                        "Masculino"
+                      )
                     }
                   >
                     Masculino
@@ -298,7 +248,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("genero", "Feminino")
+                      selecionarFiltro(
+                        "genero",
+                        "Feminino"
+                      )
                     }
                   >
                     Feminino
@@ -306,7 +259,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("genero", "Qualquer")
+                      selecionarFiltro(
+                        "genero",
+                        "Qualquer"
+                      )
                     }
                   >
                     Qualquer
@@ -320,7 +276,6 @@ function Rooms({ game, onHome }) {
 
 
             {/* JOGADORES */}
-
             <div className="filter-dropdown">
 
               <button
@@ -328,17 +283,10 @@ function Rooms({ game, onHome }) {
                 onClick={() => abrirMenu("jogadores")}
                 type="button"
               >
-
                 <span>♟</span>
-
-                <span>
-                  {filtros.jogadores}
-                </span>
-
+                <span>{filtros.jogadores}</span>
                 <b>⌄</b>
-
               </button>
-
 
               {menuAberto === "jogadores" && (
 
@@ -346,7 +294,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("jogadores", "1 jogador")
+                      selecionarFiltro(
+                        "jogadores",
+                        "1 jogador"
+                      )
                     }
                   >
                     1 jogador
@@ -354,7 +305,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("jogadores", "2 jogadores")
+                      selecionarFiltro(
+                        "jogadores",
+                        "2 jogadores"
+                      )
                     }
                   >
                     2 jogadores
@@ -362,7 +316,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("jogadores", "3 jogadores")
+                      selecionarFiltro(
+                        "jogadores",
+                        "3 jogadores"
+                      )
                     }
                   >
                     3 jogadores
@@ -370,7 +327,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("jogadores", "4 jogadores")
+                      selecionarFiltro(
+                        "jogadores",
+                        "4 jogadores"
+                      )
                     }
                   >
                     4 jogadores
@@ -384,7 +344,6 @@ function Rooms({ game, onHome }) {
 
 
             {/* ELO */}
-
             <div className="filter-dropdown">
 
               <button
@@ -392,91 +351,48 @@ function Rooms({ game, onHome }) {
                 onClick={() => abrirMenu("elo")}
                 type="button"
               >
-
                 <span>♛</span>
-
-                <span>
-                  {filtros.elo}
-                </span>
-
+                <span>{filtros.elo}</span>
                 <b>⌄</b>
-
               </button>
-
 
               {menuAberto === "elo" && (
 
                 <div className="dropdown-menu">
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Ferro")
-                    }
-                  >
+                  <button onClick={() => selecionarFiltro("elo", "Ferro")}>
                     Ferro
                   </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Bronze")
-                    }
-                  >
+                  <button onClick={() => selecionarFiltro("elo", "Bronze")}>
                     Bronze
                   </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Prata")
-                    }
-                  >
+                  <button onClick={() => selecionarFiltro("elo", "Prata")}>
                     Prata
                   </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Ouro")
-                    }
-                  >
+                  <button onClick={() => selecionarFiltro("elo", "Ouro")}>
                     Ouro
                   </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Platina")
-                    }
-                  >
+                  <button onClick={() => selecionarFiltro("elo", "Platina")}>
                     Platina
                   </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Diamante")
-                    }
-                  >
+                  <button onClick={() => selecionarFiltro("elo", "Diamante")}>
                     Diamante
                   </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Mestre")
-                    }
-                  >
+                  <button onClick={() => selecionarFiltro("elo", "Mestre")}>
                     Mestre
                   </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Grão-Mestre")
-                    }
-                  >
+                  <button onClick={() => selecionarFiltro("elo", "Grão-Mestre")}>
                     Grão-Mestre
                   </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Desafiante")
-                    }
-                  >
+                  <button onClick={() => selecionarFiltro("elo", "Desafiante")}>
                     Desafiante
                   </button>
 
@@ -488,7 +404,6 @@ function Rooms({ game, onHome }) {
 
 
             {/* MODO */}
-
             <div className="filter-dropdown">
 
               <button
@@ -496,17 +411,10 @@ function Rooms({ game, onHome }) {
                 onClick={() => abrirMenu("modo")}
                 type="button"
               >
-
                 <span>🎮</span>
-
-                <span>
-                  {filtros.modo}
-                </span>
-
+                <span>{filtros.modo}</span>
                 <b>⌄</b>
-
               </button>
-
 
               {menuAberto === "modo" && (
 
@@ -514,7 +422,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("modo", "Ranked Soloqueue")
+                      selecionarFiltro(
+                        "modo",
+                        "Ranked Soloqueue"
+                      )
                     }
                   >
                     Ranked Soloqueue
@@ -522,7 +433,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("modo", "Ranked Flex")
+                      selecionarFiltro(
+                        "modo",
+                        "Ranked Flex"
+                      )
                     }
                   >
                     Ranked Flex
@@ -530,7 +444,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("modo", "ARAM")
+                      selecionarFiltro(
+                        "modo",
+                        "ARAM"
+                      )
                     }
                   >
                     ARAM
@@ -538,7 +455,10 @@ function Rooms({ game, onHome }) {
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("modo", "Normal")
+                      selecionarFiltro(
+                        "modo",
+                        "Normal"
+                      )
                     }
                   >
                     Normal
@@ -552,46 +472,32 @@ function Rooms({ game, onHome }) {
 
 
             {/* CRIAR SALA */}
-
             <button
               className="create-room"
+              onClick={onCreateRoom}
               type="button"
             >
-
               <strong>+</strong>
-
-              <span>
-                Criar Sala
-              </span>
-
+              <span>Criar Sala</span>
             </button>
 
           </div>
 
 
-          {/* =========================
-              SALA
-          ========================= */}
-
+          {/* SALA */}
           <div className="room-card">
 
             <div className="room-profile">
 
               <div className="profile-photo">
-
-                <span>
-                  👤
-                </span>
-
+                <span>👤</span>
               </div>
-
 
               <div className="room-details">
 
                 <h2>
                   Ranked Soloqueue
                 </h2>
-
 
                 <div className="room-tags">
 
@@ -612,7 +518,6 @@ function Rooms({ game, onHome }) {
 
                 </div>
 
-
                 <div className="gender-options">
 
                   <span className="male">
@@ -624,7 +529,6 @@ function Rooms({ game, onHome }) {
                   </span>
 
                 </div>
-
 
                 <p>
                   Procuro por um duo focado na vitória e na resenha
