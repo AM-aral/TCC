@@ -1,432 +1,1455 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #210044;
-  color: white;
-}
+/* =====================================================
+   RESET APENAS DO PERFIL
+===================================================== */
 
 .profile-page {
-  min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    #210044,
-    #39006d,
-    #19002f
-  );
-}
-
-/* =========================
-   BARRA SUPERIOR
-========================= */
-
-.top-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 58px;
-
-  background: #542080;
-
-  display: flex;
-  align-items: center;
-
-  z-index: 10;
-}
-
-.logo {
-  width: 65px;
-  text-align: center;
-  font-weight: bold;
-  color: #19c7a3;
-}
-
-.games {
-  flex: 1;
-
-  display: flex;
-  justify-content: space-around;
-
-  font-size: 13px;
-  font-weight: bold;
-  color: #eee;
-}
-
-/* =========================
-   MENU LATERAL
-========================= */
-
-.sidebar {
-  position: fixed;
-
-  top: 58px;
-  left: 0;
-
-  width: 65px;
-  height: calc(100vh - 58px);
-
-  background: #21003e;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  padding-top: 20px;
-
-  z-index: 9;
-}
-
-.side-icon {
-  width: 65px;
-  height: 58px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 24px;
-
-  cursor: pointer;
-
-  transition: 0.2s;
-}
-
-.side-icon:hover {
-  background: #4b1472;
-}
-
-.profile-icon:hover {
-  color: #c084ff;
-}
-
-/* =========================
-   CONTEÚDO
-========================= */
-
-.profile-content {
-  margin-left: 65px;
-  padding-top: 58px;
-
   min-height: 100vh;
 
-  padding-bottom: 40px;
-}
+  margin: 0;
+  padding: 0;
 
-/* =========================
-   CABEÇALHO
-========================= */
+  display: flex;
 
-.profile-header {
   position: relative;
 
-  margin: 25px 25px 35px;
+  overflow-x: hidden;
 
-  min-height: 155px;
+  background:
+    linear-gradient(
+      180deg,
+      #32105a 0%,
+      #24003f 55%,
+      #180029 100%
+    );
 
-  background: white;
+  color: white;
 
-  color: #111;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.profile-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 76px;
+  right: 0;
+
+  height: 70px;
+
+  z-index: 100;
 
   display: flex;
   align-items: center;
 
-  padding: 20px 30px;
+  background:
+    linear-gradient(
+      90deg,
+      #69379a,
+      #63318f
+    );
 
-  overflow: hidden;
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.20);
 }
 
-/* FOTO */
 
-.profile-photo {
-  width: 110px;
-  height: 110px;
+/* =====================================================
+   LOGO
+===================================================== */
 
-  border-radius: 50%;
-
-  overflow: hidden;
-
-  border: 3px solid #ddd;
+.profile-navbar-logo {
+  width: 115px;
+  height: 70px;
 
   flex-shrink: 0;
-}
 
-.profile-photo img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-/* INFORMAÇÕES */
-
-.profile-info {
-  margin-left: 20px;
-
-  position: relative;
-  z-index: 2;
-}
-
-.online {
-  font-size: 13px;
-  margin-bottom: 7px;
-}
-
-.online span {
-  display: inline-block;
-
-  width: 9px;
-  height: 9px;
-
-  background: #16c784;
-
-  border-radius: 50%;
-
-  margin-right: 7px;
-}
-
-.profile-info h1 {
-  margin: 0;
-
-  font-size: 19px;
-}
-
-.profile-info h3 {
-  margin: 4px 0;
-
-  font-size: 14px;
-}
-
-.profile-info p {
-  margin: 5px 0;
-
-  font-size: 13px;
-}
-
-.profile-tags {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
 }
 
-.profile-tags span {
-  background: #eee;
+.profile-navbar-logo img {
+  width: 58px;
+  height: 58px;
 
-  border: 1px solid #ccc;
-
-  border-radius: 5px;
-
-  padding: 4px 8px;
-
-  font-size: 9px;
-}
-
-/* BANNER */
-
-.banner-image {
-  position: absolute;
-
-  right: 0;
-  top: 0;
-
-  width: 35%;
-  height: 100%;
-}
-
-.banner-image img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-/* =========================
-   JOGOS
-========================= */
-
-.games-section {
-  margin: 0 30px;
-}
-
-.games-section h2 {
-  text-align: center;
-
-  font-size: 21px;
-
-  font-weight: normal;
-
-  margin-bottom: 12px;
-}
-
-.games-container {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 45px;
-}
-
-/* CARD */
-
-.game-card {
-  border: 1px solid #eee;
-
-  background: #28103c;
-
-  overflow: hidden;
-}
-
-.game-card > img {
-  width: 100%;
-
-  height: 100px;
-
-  object-fit: cover;
+  object-fit: contain;
 
   display: block;
 }
 
-.game-info {
-  height: 38px;
 
-  padding: 7px 12px;
+/* =====================================================
+   MENU DE JOGOS
+===================================================== */
+
+.profile-games-navbar {
+  flex: 1;
+
+  height: 70px;
 
   display: flex;
-  justify-content: space-between;
+  align-items: stretch;
 
-  font-size: 10px;
+  justify-content: space-evenly;
+
+  min-width: 0;
 }
 
-.game-info span:first-child {
-  background: #2f1750;
 
-  padding: 4px 8px;
+.profile-navbar-game {
+  flex: 1;
 
-  border: 1px solid #aaa;
-}
+  min-width: 95px;
 
-.game-bottom {
-  display: grid;
+  max-width: 180px;
 
-  grid-template-columns: 1fr 1fr;
+  height: 70px;
 
-  border-top: 1px solid #aaa;
-}
-
-.game-bottom div {
-  height: 45px;
+  padding:
+    4px 8px;
 
   display: flex;
   flex-direction: column;
 
   align-items: center;
   justify-content: center;
-}
 
-.game-bottom div:first-child {
-  border-right: 1px solid #aaa;
-}
+  gap: 2px;
 
-.game-bottom small {
-  font-size: 9px;
-}
-
-.game-bottom strong {
-  font-size: 18px;
-  margin-top: 2px;
-}
-
-/* =========================
-   PARTE INFERIOR
-========================= */
-
-.bottom-section {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr 1fr;
-
-  gap: 25px;
-
-  margin: 35px 30px 0;
-}
-
-.info-box {
-  min-height: 120px;
-
-  background: #28103c;
-
-  border: 1px solid #170022;
-
-  border-radius: 18px;
-
-  padding: 18px;
-}
-
-.info-box h2 {
-  margin: 0 0 18px;
-
-  font-size: 17px;
-
-  font-weight: normal;
-}
-
-.info-box p {
-  font-size: 11px;
-
-  line-height: 1.5;
-
-  color: #ddd;
-}
-
-/* =========================
-   PREFERÊNCIAS
-========================= */
-
-.preferences {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 10px;
-}
-
-.preferences span {
-  border: 1px solid #8d3fd1;
-
-  border-radius: 4px;
-
-  padding: 7px;
+  color:
+    rgba(255, 255, 255, 0.68);
 
   font-size: 10px;
 
-  text-align: center;
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
-/* =========================
-   ATIVIDADES
-========================= */
 
-.activities h2 {
-  margin-bottom: 10px;
+.profile-navbar-game:hover {
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color: white;
 }
 
-.activity {
-  border-top: 1px solid #5c3972;
 
-  padding: 8px 0;
+.profile-navbar-game img {
+  width: 31px;
+  height: 31px;
 
-  font-size: 9px;
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.78;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.profile-navbar-game:hover img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+
+.profile-navbar-active {
+  background:
+    rgba(255, 255, 255, 0.12);
+
+  color: white;
+
+  box-shadow:
+    inset 0 -3px 0 #ffffff;
+}
+
+
+.profile-navbar-active img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.profile-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 76px;
+
+  z-index: 200;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background:
+    rgba(36, 0, 68, 0.98);
+
+  border-right:
+    1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+/* =====================================================
+   MENU SIDEBAR
+===================================================== */
+
+.profile-sidebar-menu {
+  width: 100%;
+
+  margin-top: 92px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+/* =====================================================
+   ITEM SIDEBAR
+===================================================== */
+
+.profile-sidebar-item {
+  width: 52px;
+  height: 52px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: transparent;
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
-  gap: 6px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
-.activity small {
-  margin-left: auto;
 
-  color: #bbb;
+.profile-sidebar-item:hover {
+  background:
+    rgba(255, 255, 255, 0.09);
+
+  transform: scale(1.04);
+}
+
+
+.profile-sidebar-item img {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.70;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.profile-sidebar-item:hover img {
+  opacity: 1;
+
+  transform: scale(1.06);
+}
+
+
+.profile-sidebar-active {
+  background:
+    rgba(147, 71, 218, 0.32);
+
+  box-shadow:
+    inset 3px 0 0 #b86cff;
+}
+
+
+.profile-sidebar-active img {
+  opacity: 1;
+}
+
+
+/* =====================================================
+   ÁREA PRINCIPAL
+===================================================== */
+
+.profile-main {
+  width: calc(100% - 76px);
+
+  min-height: 100vh;
+
+  margin-left: 76px;
+
+  padding:
+    98px 5vw 60px;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 25px;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(131, 50, 185, 0.18),
+      transparent 45%
+    );
+}
+
+
+/* =====================================================
+   BANNER
+===================================================== */
+
+.profile-header-card {
+  width: 100%;
+
+  min-height: 245px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 14px 35px rgba(0, 0, 0, 0.24);
+}
+
+
+/* =====================================================
+   IMAGEM DO BANNER
+===================================================== */
+
+.profile-banner-background {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 48%;
+  height: 100%;
+
+  object-fit: cover;
+
+  object-position: center;
+
+  display: block;
+}
+
+
+/* =====================================================
+   ESCURECIMENTO
+===================================================== */
+
+.profile-banner-dark {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0.98) 40%,
+      rgba(255, 255, 255, 0.60) 62%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+}
+
+
+/* =====================================================
+   ÁREA DO USUÁRIO
+===================================================== */
+
+.profile-user-area {
+  position: relative;
+
+  z-index: 2;
+
+  min-height: 245px;
+
+  padding:
+    32px 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 28px;
+}
+
+
+/* =====================================================
+   FOTO
+===================================================== */
+
+.profile-avatar-wrapper {
+  width: 145px;
+  height: 145px;
+
+  flex-shrink: 0;
+
+  position: relative;
+
+  border-radius: 50%;
+
+  padding: 4px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #a83cff,
+      #6411c5
+    );
+
+  box-shadow:
+    0 7px 22px rgba(77, 0, 120, 0.30);
+}
+
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border:
+    4px solid white;
+}
+
+
+/* =====================================================
+   ONLINE
+===================================================== */
+
+.profile-online-dot {
+  position: absolute;
+
+  right: 8px;
+  bottom: 10px;
+
+  width: 24px;
+  height: 24px;
+
+  border-radius: 50%;
+
+  background: #35d46c;
+
+  border:
+    4px solid white;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =====================================================
+   TEXTOS DO PERFIL
+===================================================== */
+
+.profile-user-text {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+}
+
+
+.profile-user-text h1 {
+  margin: 0;
+
+  color: #241234;
+
+  font-size: clamp(28px, 2.5vw, 42px);
+
+  line-height: 1.05;
+
+  font-weight: 800;
+}
+
+
+.profile-user-name {
+  margin-top: 5px;
+
+  color: #765f84;
+
+  font-size: 15px;
+
+  font-weight: 600;
+}
+
+
+.profile-user-text p {
+  max-width: 650px;
+
+  margin:
+    13px 0 13px;
+
+  color: #5e5365;
+
+  font-size: 15px;
+
+  line-height: 1.45;
+
+  font-weight: 500;
+}
+
+
+/* =====================================================
+   TAGS
+===================================================== */
+
+.profile-user-tags {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+
+.profile-user-tags span {
+  padding:
+    7px 13px;
+
+  border-radius: 20px;
+
+  background:
+    #eeeeef;
+
+  color: #5c5064;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   MEUS JOGOS
+===================================================== */
+
+.profile-games-section {
+  width: 100%;
+
+  padding:
+    24px 25px 27px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(42, 5, 70, 0.96),
+      rgba(30, 0, 52, 0.98)
+    );
+
+  border:
+    1px solid rgba(201, 147, 255, 0.13);
+
+  box-shadow:
+    0 13px 32px rgba(0, 0, 0, 0.20);
+}
+
+
+/* =====================================================
+   CABEÇALHO DA SEÇÃO
+===================================================== */
+
+.profile-section-header {
+  width: 100%;
+
+  margin-bottom: 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+
+.profile-section-header h2 {
+  margin: 0;
+
+  font-size: 24px;
+
+  font-weight: 800;
+}
+
+
+.profile-section-header span {
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   GRID DE JOGOS
+===================================================== */
+
+.profile-games-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+/* =====================================================
+   CARD DO JOGO
+===================================================== */
+
+.profile-game-card {
+  min-width: 0;
+
+  overflow: hidden;
+
+  border-radius: 13px;
+
+  background:
+    #220735;
+
+  border:
+    1px solid rgba(205, 158, 255, 0.16);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.24);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.profile-game-card:hover {
+  transform: translateY(-3px);
+
+  border-color:
+    rgba(207, 153, 255, 0.38);
+}
+
+
+/* =====================================================
+   CAPA
+===================================================== */
+
+.profile-game-cover {
+  width: 100%;
+
+  height: clamp(190px, 17vw, 245px);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   IMAGEM
+===================================================== */
+
+.profile-game-cover-image {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  transition:
+    transform 0.35s ease;
+}
+
+
+.profile-game-card:hover .profile-game-cover-image {
+  transform: scale(1.04);
+}
+
+
+/* =====================================================
+   GRADIENTE
+===================================================== */
+
+.profile-game-gradient {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(20, 0, 35, 0.35) 0%,
+      rgba(20, 0, 35, 0.08) 35%,
+      rgba(20, 0, 35, 0.82) 100%
+    );
+}
+
+
+/* =====================================================
+   TÍTULO DO JOGO
+===================================================== */
+
+.profile-game-title {
+  position: absolute;
+
+  top: 17px;
+  left: 18px;
+
+  z-index: 2;
+
+  margin: 0;
+
+  font-size: clamp(13px, 1.1vw, 18px);
+
+  font-weight: 900;
+
+  letter-spacing: 0.3px;
+
+  text-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.70);
+}
+
+
+.profile-game-title-lol {
+  color: #f3c900;
+}
+
+
+.profile-game-title-valorant {
+  color: #ff4c59;
+}
+
+
+.profile-game-title-cs {
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   SETA
+===================================================== */
+
+.profile-game-arrow {
+  position: absolute;
+
+  top: 13px;
+  right: 13px;
+
+  z-index: 3;
+
+  width: 33px;
+  height: 33px;
+
+  padding: 0;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.30);
+
+  border-radius: 50%;
+
+  background:
+    rgba(30, 0, 50, 0.55);
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 19px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.profile-game-arrow:hover {
+  background:
+    rgba(131, 50, 190, 0.75);
+
+  transform: translateX(2px);
+}
+
+
+/* =====================================================
+   ELO
+===================================================== */
+
+.profile-game-rank {
+  position: absolute;
+
+  left: 17px;
+  bottom: 16px;
+
+  z-index: 3;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+}
+
+
+.profile-rank-image {
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  object-fit: contain;
+
+  display: block;
+
+  filter:
+    drop-shadow(
+      0 3px 5px rgba(0, 0, 0, 0.55)
+    );
+}
+
+
+.profile-rank-text {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+.profile-rank-text strong {
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  text-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+
+.profile-rank-text span {
+  color:
+    rgba(255, 255, 255, 0.75);
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   RODAPÉ DO CARD
+===================================================== */
+
+.profile-game-footer {
+  min-height: 78px;
+
+  padding:
+    12px 15px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 10px;
+
+  background:
+    #27083c;
+}
+
+
+/* =====================================================
+   FUNÇÕES
+===================================================== */
+
+.profile-game-role {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.profile-game-role img {
+  width: 37px;
+  height: 37px;
+
+  flex-shrink: 0;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+.profile-game-role div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+.profile-game-role span {
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  font-size: 10px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.profile-game-role strong {
+  color: white;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   PARTE INFERIOR
+===================================================== */
+
+.profile-bottom-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr 1.2fr;
+
+  gap: 18px;
+}
+
+
+/* =====================================================
+   CARDS INFERIORES
+===================================================== */
+
+.profile-bottom-card {
+  min-height: 155px;
+
+  padding:
+    21px 22px;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(51, 8, 81, 0.96),
+      rgba(34, 3, 58, 0.98)
+    );
+
+  border:
+    1px solid rgba(204, 155, 255, 0.13);
+
+  box-shadow:
+    0 9px 25px rgba(0, 0, 0, 0.18);
+}
+
+
+.profile-bottom-card h2 {
+  margin:
+    0 0 13px;
+
+  color: white;
+
+  font-size: 18px;
+
+  font-weight: 800;
+}
+
+
+.profile-bottom-card > p {
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.65);
+
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+
+/* =====================================================
+   PREFERÊNCIAS
+===================================================== */
+
+.profile-preferences {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.profile-preference-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.profile-preference-item span {
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  border-radius: 7px;
+
+  background:
+    rgba(151, 75, 211, 0.20);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+}
+
+
+.profile-preference-item p {
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.70);
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   ATIVIDADES
+===================================================== */
+
+.profile-activity {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 11px;
+}
+
+
+.profile-activity:last-child {
+  margin-bottom: 0;
+}
+
+
+.profile-activity-icon {
+  width: 35px;
+  height: 35px;
+
+  flex-shrink: 0;
+
+  border-radius: 9px;
+
+  background:
+    rgba(150, 70, 215, 0.22);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+}
+
+
+.profile-activity-text {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.profile-activity-text strong {
+  color: white;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.profile-activity-text span {
+  color:
+    rgba(255, 255, 255, 0.50);
+
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   RESPONSIVO — 1200px
+===================================================== */
+
+@media (max-width: 1200px) {
+
+  .profile-main {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+
+  .profile-navbar-game {
+    min-width: 80px;
+
+    font-size: 9px;
+  }
+
+  .profile-navbar-game img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .profile-bottom-grid {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .profile-bottom-card:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVO — 900px
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .profile-navbar {
+    left: 65px;
+  }
+
+  .profile-sidebar {
+    width: 65px;
+  }
+
+  .profile-main {
+    width: calc(100% - 65px);
+
+    margin-left: 65px;
+
+    padding:
+      92px 25px 50px;
+  }
+
+  .profile-navbar-logo {
+    width: 85px;
+  }
+
+  .profile-games-navbar {
+    overflow-x: auto;
+
+    justify-content: flex-start;
+  }
+
+  .profile-navbar-game {
+    flex:
+      0 0 100px;
+  }
+
+  .profile-games-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .profile-game-cover {
+    height: 250px;
+  }
+
+  .profile-bottom-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .profile-bottom-card:last-child {
+    grid-column: auto;
+  }
+
+  .profile-banner-background {
+    width: 55%;
+
+    opacity: 0.65;
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVO — 650px
+===================================================== */
+
+@media (max-width: 650px) {
+
+  .profile-sidebar {
+    width: 58px;
+  }
+
+  .profile-navbar {
+    left: 58px;
+
+    height: 60px;
+  }
+
+  .profile-navbar-logo {
+    display: none;
+  }
+
+  .profile-games-navbar {
+    height: 60px;
+  }
+
+  .profile-navbar-game {
+    height: 60px;
+
+    flex-basis: 90px;
+  }
+
+  .profile-main {
+    width: calc(100% - 58px);
+
+    margin-left: 58px;
+
+    padding:
+      78px 15px 40px;
+
+    gap: 17px;
+  }
+
+  .profile-sidebar-menu {
+    margin-top: 72px;
+
+    gap: 7px;
+  }
+
+  .profile-sidebar-item {
+    width: 45px;
+    height: 45px;
+  }
+
+  .profile-sidebar-item img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .profile-header-card {
+    min-height: 360px;
+  }
+
+  .profile-user-area {
+    min-height: 360px;
+
+    padding:
+      25px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    justify-content: center;
+
+    gap: 17px;
+  }
+
+  .profile-avatar-wrapper {
+    width: 110px;
+    height: 110px;
+  }
+
+  .profile-user-text h1 {
+    font-size: 29px;
+  }
+
+  .profile-banner-background {
+    width: 100%;
+
+    opacity: 0.22;
+  }
+
+  .profile-banner-dark {
+    background:
+      rgba(255, 255, 255, 0.91);
+  }
+
+  .profile-games-section {
+    padding:
+      19px 15px 20px;
+  }
+
+  .profile-game-cover {
+    height: 220px;
+  }
+
+  .profile-game-footer {
+    grid-template-columns:
+      1fr;
+  }
+
+  .profile-game-role {
+    padding-bottom: 7px;
+
+    border-bottom:
+      1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .profile-game-role:last-child {
+    border-bottom: 0;
+
+    padding-bottom: 0;
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSIVO — 450px
+===================================================== */
+
+@media (max-width: 450px) {
+
+  .profile-navbar-game {
+    flex-basis: 82px;
+
+    font-size: 8px;
+  }
+
+  .profile-navbar-game img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .profile-main {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .profile-header-card {
+    border-radius: 13px;
+  }
+
+  .profile-user-area {
+    padding: 20px;
+  }
+
+  .profile-user-text h1 {
+    font-size: 25px;
+  }
+
+  .profile-section-header h2 {
+    font-size: 20px;
+  }
+
+  .profile-game-cover {
+    height: 200px;
+  }
+
+  .profile-rank-image {
+    width: 48px;
+    height: 48px;
+  }
 }

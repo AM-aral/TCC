@@ -1,166 +1,357 @@
+import logo from "../assets/logo.png";
+
+// SIDEBAR
+import homeIcon from "../assets/sidebar/home.png";
+import perfilIcon from "../assets/sidebar/perfil.png";
+import historicoIcon from "../assets/sidebar/historico.png";
+import mensagemIcon from "../assets/sidebar/mensagem.png";
+import configuracoesIcon from "../assets/sidebar/configuracoes.png";
+
+// JOGOS DO TOPO
+import owIcon from "../assets/icon/ow icon.png";
+import csIcon from "../assets/icon/cs icon.png";
+import valIcon from "../assets/icon/val icon.png";
+import fortniteIcon from "../assets/icon/fortinite icon.png";
+import rocketIcon from "../assets/icon/rocket icon.png";
+import dotaIcon from "../assets/icon/dota icon.png";
+import rivalsIcon from "../assets/icon/marvel icon.png";
+import lolIcon from "../assets/icon/lol icon.png";
+
+// JOGOS
+import lolGame from "../assets/games/lol.png";
+import valorantGame from "../assets/games/valorant.png";
+import csGame from "../assets/games/cs2.png";
+
+// PERFIL
+import profilePhoto from "../assets/profile/profile-photo.png";
+import profileBanner from "../assets/profile/banner.png";
+
+// ELOS
+import lolDesafiante from "../assets/elos/lol/desafiante.png";
+import csGlobal from "../assets/elos/cs/Global.png";
+
+// FUNÇÕES
+import topIcon from "../assets/funcoes/top.png";
+import jungleIcon from "../assets/funcoes/jungle.png";
+
+import duelistaIcon from "../assets/funcoes/duelista.png";
+import iniciadorIcon from "../assets/funcoes/iniciador.png";
+
+import awperIcon from "../assets/funcoes/awper.png";
+import lurkerIcon from "../assets/funcoes/lurker.png";
+
 import "./Profile.css";
 
-function Profile() {
+
+// ======================================================
+// PROCURAR AUTOMATICAMENTE O RADIANTE
+// ======================================================
+
+const valorantRanks = import.meta.glob(
+  "../assets/elos/valorant/*",
+  {
+    eager: true,
+    query: "?url",
+    import: "default",
+  }
+);
+
+const valorantRadiante =
+  Object.entries(valorantRanks).find(([path]) =>
+    path.toLowerCase().includes("radiante")
+  )?.[1] || null;
+
+
+// ======================================================
+// JOGOS DO PERFIL
+// ======================================================
+
+const games = [
+  {
+    id: "lol",
+
+    image: lolGame,
+
+    name: "LEAGUE OF LEGENDS",
+
+    rank: "Desafiante",
+    rankInfo: "1467 Pdl",
+    rankImage: lolDesafiante,
+
+    mainLabel: "Rota Principal",
+    mainIcon: topIcon,
+
+    secondaryLabel: "Rota Secundária",
+    secondaryIcon: jungleIcon,
+  },
+
+  {
+    id: "valorant",
+
+    image: valorantGame,
+
+    name: "VALORANT",
+
+    rank: "Radiante",
+    rankInfo: "Top 1 BR",
+    rankImage: valorantRadiante,
+
+    mainLabel: "Função Principal",
+    mainIcon: duelistaIcon,
+
+    secondaryLabel: "Função Secundária",
+    secondaryIcon: iniciadorIcon,
+  },
+
+  {
+    id: "cs",
+
+    image: csGame,
+
+    name: "COUNTER STRIKE",
+
+    rank: "Global Elite",
+    rankInfo: "★",
+    rankImage: csGlobal,
+
+    mainLabel: "Função Principal",
+    mainIcon: awperIcon,
+
+    secondaryLabel: "Função Secundária",
+    secondaryIcon: lurkerIcon,
+  },
+];
+
+
+// ======================================================
+// COMPONENTE
+// ======================================================
+
+export default function Profile({ onHome }) {
   return (
     <div className="profile-page">
 
-      {/* BARRA SUPERIOR */}
-      <header className="top-bar">
-        <div className="logo">LFGP</div>
 
-        <div className="games">
-          <span>◉ OW</span>
-          <span>♟ CS</span>
-          <span>◈ Val</span>
-          <span>F Fortnite</span>
-          <span>◉ RL</span>
-          <span>◈ Dota</span>
-          <span>≋ Rivals</span>
-          <span>▣ LoL</span>
+      {/* ==================================================
+          NAVBAR
+      ================================================== */}
+
+      <header className="profile-navbar">
+
+        {/* LOGO */}
+        <div className="profile-navbar-logo">
+          <img
+            src={logo}
+            alt="Logo"
+          />
         </div>
+
+
+        {/* JOGOS */}
+        <div className="profile-games-navbar">
+
+          <div className="profile-navbar-game">
+            <img src={owIcon} alt="Overwatch" />
+            <span>OVERWATCH</span>
+          </div>
+
+          <div className="profile-navbar-game">
+            <img src={csIcon} alt="CS2" />
+            <span>CS2</span>
+          </div>
+
+          <div className="profile-navbar-game">
+            <img src={valIcon} alt="Valorant" />
+            <span>VALORANT</span>
+          </div>
+
+          <div className="profile-navbar-game">
+            <img src={fortniteIcon} alt="Fortnite" />
+            <span>FORTNITE</span>
+          </div>
+
+          <div className="profile-navbar-game">
+            <img src={rocketIcon} alt="Rocket League" />
+            <span>ROCKET LEAGUE</span>
+          </div>
+
+          <div className="profile-navbar-game">
+            <img src={dotaIcon} alt="Dota 2" />
+            <span>DOTA 2</span>
+          </div>
+
+          <div className="profile-navbar-game">
+            <img src={rivalsIcon} alt="Marvel Rivals" />
+            <span>MARVEL RIVALS</span>
+          </div>
+
+          <div className="profile-navbar-game profile-navbar-active">
+            <img
+              src={lolIcon}
+              alt="League of Legends"
+            />
+            <span>LEAGUE OF LEGENDS</span>
+          </div>
+
+        </div>
+
       </header>
 
-      {/* MENU LATERAL */}
-      <aside className="sidebar">
-        <div className="side-icon">▦</div>
 
-        {/* PERFIL */}
-        <div
-          className="side-icon profile-icon"
-          onClick={() => window.location.href = "/profile"}
-        >
-          👤
+      {/* ==================================================
+          SIDEBAR
+      ================================================== */}
+
+      <aside className="profile-sidebar">
+
+        <div className="profile-sidebar-menu">
+
+          {/* HOME */}
+          <button
+            className="profile-sidebar-item"
+            onClick={onHome}
+            title="Home"
+          >
+            <img
+              src={homeIcon}
+              alt="Home"
+            />
+          </button>
+
+
+          {/* PERFIL */}
+          <button
+            className="profile-sidebar-item profile-sidebar-active"
+            title="Perfil"
+          >
+            <img
+              src={perfilIcon}
+              alt="Perfil"
+            />
+          </button>
+
+
+          {/* HISTÓRICO */}
+          <button
+            className="profile-sidebar-item"
+            title="Histórico"
+          >
+            <img
+              src={historicoIcon}
+              alt="Histórico"
+            />
+          </button>
+
+
+          {/* MENSAGENS */}
+          <button
+            className="profile-sidebar-item"
+            title="Mensagens"
+          >
+            <img
+              src={mensagemIcon}
+              alt="Mensagens"
+            />
+          </button>
+
+
+          {/* CONFIGURAÇÕES */}
+          <button
+            className="profile-sidebar-item"
+            title="Configurações"
+          >
+            <img
+              src={configuracoesIcon}
+              alt="Configurações"
+            />
+          </button>
+
         </div>
 
-        <div className="side-icon">↶</div>
-        <div className="side-icon">▤</div>
-        <div className="side-icon">⚙</div>
       </aside>
 
-      {/* CONTEÚDO */}
-      <main className="profile-content">
 
-        {/* BANNER / CABEÇALHO */}
-        <section className="profile-header">
+      {/* ==================================================
+          CONTEÚDO
+      ================================================== */}
 
-          {/* FOTO */}
-          <div className="profile-photo">
-            <img
-              src="/images/profile.png"
-              alt="Foto de perfil"
-            />
-          </div>
+      <main className="profile-main">
 
-          <div className="profile-info">
-            <div className="online">
-              <span></span> ONLINE
-            </div>
 
-            <h1>TENEBROSO_DA_CINTURA_TORTA</h1>
+        {/* =================================================
+            BANNER / INFORMAÇÕES DO PERFIL
+        ================================================= */}
 
-            <h3>@SEJMELO</h3>
-
-            <p>Competitivo, mas pela resenha.</p>
-
-            <div className="profile-tags">
-              <span>📅 Entrou em jan 15, 2024</span>
-              <span>⭐ Avaliação: 4.7</span>
-            </div>
-          </div>
+        <section className="profile-header-card">
 
           {/* IMAGEM DO BANNER */}
-          <div className="banner-image">
-            <img
-              src="/images/profile-banner.png"
-              alt="Banner"
-            />
-          </div>
 
-        </section>
+          <img
+            src={profileBanner}
+            className="profile-banner-background"
+            alt=""
+          />
 
 
-        {/* MEUS JOGOS */}
-        <section className="games-section">
+          {/* ESCURECIMENTO DO BANNER */}
 
-          <h2>Meus Jogos</h2>
+          <div className="profile-banner-dark"></div>
 
-          <div className="games-container">
 
-            {/* LEAGUE OF LEGENDS */}
-            <div className="game-card">
+          {/* INFORMAÇÕES */}
+
+          <div className="profile-user-area">
+
+            {/* FOTO */}
+
+            <div className="profile-avatar-wrapper">
+
               <img
-                src="/images/lol.png"
-                alt="League of Legends"
+                src={profilePhoto}
+                className="profile-avatar"
+                alt="Foto de perfil"
               />
 
-              <div className="game-info">
-                <span>Desafiante</span>
-                <span>1467 LP</span>
-              </div>
+              <span className="profile-online-dot"></span>
 
-              <div className="game-bottom">
-                <div>
-                  <small>Rota Principal</small>
-                  <strong>🛡️</strong>
-                </div>
-
-                <div>
-                  <small>Rota Secundária</small>
-                  <strong>⚔️</strong>
-                </div>
-              </div>
             </div>
 
 
-            {/* VALORANT */}
-            <div className="game-card">
-              <img
-                src="/images/valorant.png"
-                alt="Valorant"
-              />
+            {/* TEXTOS */}
 
-              <div className="game-info">
-                <span>Radiante</span>
-                <span>Top 1 BR</span>
+            <div className="profile-user-text">
+
+              <h1>
+                TENEBROSO_DA_CINTURA_TORTA
+              </h1>
+
+              <span className="profile-user-name">
+                @ESJMELO
+              </span>
+
+              <p>
+                Procurando players para jogar e subir de elo.
+              </p>
+
+
+              {/* TAGS */}
+
+              <div className="profile-user-tags">
+
+                <span>
+                  🎮 Casual
+                </span>
+
+                <span>
+                  🏆 Competitivo
+                </span>
+
+                <span>
+                  🔥 Tryhard
+                </span>
+
               </div>
 
-              <div className="game-bottom">
-                <div>
-                  <small>Função Principal</small>
-                  <strong>◈</strong>
-                </div>
-
-                <div>
-                  <small>Rota Secundária</small>
-                  <strong>✕</strong>
-                </div>
-              </div>
-            </div>
-
-
-            {/* CS */}
-            <div className="game-card">
-              <img
-                src="/images/cs.png"
-                alt="Counter Strike"
-              />
-
-              <div className="game-info">
-                <span>Global Elite</span>
-                <span>⭐</span>
-              </div>
-
-              <div className="game-bottom">
-                <div>
-                  <small>Função Principal</small>
-                  <strong>🎯</strong>
-                </div>
-
-                <div>
-                  <small>Disponibilidade</small>
-                  <strong>🌙</strong>
-                </div>
-              </div>
             </div>
 
           </div>
@@ -168,54 +359,292 @@ function Profile() {
         </section>
 
 
-        {/* PARTE INFERIOR */}
-        <section className="bottom-section">
+        {/* =================================================
+            MEUS JOGOS
+        ================================================= */}
+
+        <section className="profile-games-section">
+
+
+          {/* TÍTULO */}
+
+          <div className="profile-section-header">
+
+            <h2>
+              Meus Jogos
+            </h2>
+
+            <span>
+              3 jogos
+            </span>
+
+          </div>
+
+
+          {/* CARDS */}
+
+          <div className="profile-games-grid">
+
+            {games.map((game) => (
+
+              <article
+                className="profile-game-card"
+                key={game.id}
+              >
+
+
+                {/* IMAGEM */}
+
+                <div className="profile-game-cover">
+
+                  <img
+                    src={game.image}
+                    alt={game.name}
+                    className="profile-game-cover-image"
+                  />
+
+
+                  {/* GRADIENTE */}
+
+                  <div className="profile-game-gradient"></div>
+
+
+                  {/* NOME */}
+
+                  <h3
+                    className={`profile-game-title profile-game-title-${game.id}`}
+                  >
+                    {game.name}
+                  </h3>
+
+
+                  {/* SETA */}
+
+                  <button
+                    className="profile-game-arrow"
+                    type="button"
+                  >
+                    →
+                  </button>
+
+
+                  {/* ELO */}
+
+                  <div className="profile-game-rank">
+
+                    {game.rankImage && (
+                      <img
+                        src={game.rankImage}
+                        className="profile-rank-image"
+                        alt={game.rank}
+                      />
+                    )}
+
+                    <div className="profile-rank-text">
+
+                      <strong>
+                        {game.rank}
+                      </strong>
+
+                      <span>
+                        {game.rankInfo}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                {/* RODAPÉ */}
+
+                <div className="profile-game-footer">
+
+
+                  {/* FUNÇÃO PRINCIPAL */}
+
+                  <div className="profile-game-role">
+
+                    <img
+                      src={game.mainIcon}
+                      alt=""
+                    />
+
+                    <div>
+
+                      <span>
+                        {game.mainLabel}
+                      </span>
+
+                      <strong>
+                        Principal
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+
+                  {/* FUNÇÃO SECUNDÁRIA */}
+
+                  <div className="profile-game-role">
+
+                    <img
+                      src={game.secondaryIcon}
+                      alt=""
+                    />
+
+                    <div>
+
+                      <span>
+                        {game.secondaryLabel}
+                      </span>
+
+                      <strong>
+                        Secundária
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </article>
+
+            ))}
+
+          </div>
+
+        </section>
+
+
+        {/* =================================================
+            PARTE INFERIOR
+        ================================================= */}
+
+        <section className="profile-bottom-grid">
+
 
           {/* SOBRE MIM */}
-          <div className="info-box">
-            <h2>👤 Sobre Mim</h2>
+
+          <div className="profile-bottom-card">
+
+            <h2>
+              Sobre Mim
+            </h2>
 
             <p>
-              Gosto de jogar para vencer, mas o mais importante
-              é me divertir e conhecer pessoas novas.
-              Comunicação é tudo.
+              Gosto de jogar com pessoas que levam o jogo
+              a sério, mas sem perder a diversão.
             </p>
+
           </div>
 
 
           {/* PREFERÊNCIAS */}
-          <div className="info-box">
-            <h2>💜 Preferências</h2>
 
-            <div className="preferences">
-              <span>🏆 Competitivo</span>
-              <span>👥 Competitivo</span>
-              <span>🎙️ Comunicação</span>
-              <span>🤝 Respeito sempre</span>
+          <div className="profile-bottom-card">
+
+            <h2>
+              Preferências
+            </h2>
+
+            <div className="profile-preferences">
+
+
+              <div className="profile-preference-item">
+
+                <span>
+                  🎙️
+                </span>
+
+                <p>
+                  Comunicação por voz
+                </p>
+
+              </div>
+
+
+              <div className="profile-preference-item">
+
+                <span>
+                  🏆
+                </span>
+
+                <p>
+                  Competitivo
+                </p>
+
+              </div>
+
+
+              <div className="profile-preference-item">
+
+                <span>
+                  🌎
+                </span>
+
+                <p>
+                  Servidor Brasil
+                </p>
+
+              </div>
+
             </div>
+
           </div>
 
 
           {/* ATIVIDADES */}
-          <div className="info-box activities">
-            <h2>↶ Atividades Recentes</h2>
 
-            <div className="activity">
-              <span>◈</span>
-              Entrou em uma sala de Valorant
-              <small>há 20 min</small>
+          <div className="profile-bottom-card">
+
+            <h2>
+              Atividades Recentes
+            </h2>
+
+
+            <div className="profile-activity">
+
+              <div className="profile-activity-icon">
+                🎮
+              </div>
+
+              <div className="profile-activity-text">
+
+                <strong>
+                  Jogou League of Legends
+                </strong>
+
+                <span>
+                  Há 2 horas
+                </span>
+
+              </div>
+
             </div>
 
-            <div className="activity">
-              <span>▣</span>
-              Entrou em uma sala de League of Legends
-              <small>Ontem</small>
-            </div>
 
-            <div className="activity">
-              <span>F</span>
-              Entrou em uma sala de Fortnite
-              <small>há 2 dias</small>
+            <div className="profile-activity">
+
+              <div className="profile-activity-icon">
+                🔥
+              </div>
+
+              <div className="profile-activity-text">
+
+                <strong>
+                  Atualizou seu perfil
+                </strong>
+
+                <span>
+                  Ontem
+                </span>
+
+              </div>
+
             </div>
 
           </div>
@@ -223,8 +652,7 @@ function Profile() {
         </section>
 
       </main>
+
     </div>
   );
 }
-
-export default Profile;

@@ -32,16 +32,16 @@ import flexImg from "../assets/room-modes/flex.png";
 import soloqImg from "../assets/room-modes/soloq.png";
 
 /* ELOS */
-import ferroIcon from "../assets/elos/ferro.png";
-import bronzeIcon from "../assets/elos/bronze.png";
-import prataIcon from "../assets/elos/prata.png";
-import goldIcon from "../assets/elos/ouro.png";
-import platIcon from "../assets/elos/platina.png";
-import esmerIcon from "../assets/elos/esmeralda.png";
-import dimaIcon from "../assets/elos/diamante.png";
-import mestreIcon from "../assets/elos/mestre.png";
-import graoIcon from "../assets/elos/grao.png";
-import desaIcon from "../assets/elos/desafiante.png";
+import ferroIcon from "../assets/elos/lol/ferro.png";
+import bronzeIcon from "../assets/elos/lol/bronze.png";
+import prataIcon from "../assets/elos/lol/prata.png";
+import goldIcon from "../assets/elos/lol/ouro.png";
+import platIcon from "../assets/elos/lol/platina.png";
+import esmerIcon from "../assets/elos/lol/esmeralda.png";
+import dimaIcon from "../assets/elos/lol/diamante.png";
+import mestreIcon from "../assets/elos/lol/mestre.png";
+import graoIcon from "../assets/elos/lol/grao.png";
+import desaIcon from "../assets/elos/lol/desafiante.png";
 
 import lolBackground from "../assets/rooms-bg.png";
 
