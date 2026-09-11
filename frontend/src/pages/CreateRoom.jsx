@@ -1,16 +1,22 @@
+
 import { useState } from "react";
 import "./CreateRoom.css";
 
 import logo from "../assets/logo.png";
 
-/* SIDEBAR */
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
 import homeIcon from "../assets/sidebar/home.png";
 import perfilIcon from "../assets/sidebar/perfil.png";
 import historicoIcon from "../assets/sidebar/historico.png";
-import mensagensIcon from "../assets/sidebar/mensagem.png";
 import configuracoesIcon from "../assets/sidebar/configuracoes.png";
 
-/* MINI LOGOS */
+/* =====================================================
+   ÍCONES DOS JOGOS
+===================================================== */
+
 import owLogo from "../assets/icon/ow icon.png";
 import cs2Logo from "../assets/icon/cs icon.png";
 import valorantLogo from "../assets/icon/val icon.png";
@@ -20,10 +26,16 @@ import dotaLogo from "../assets/icon/dota icon.png";
 import rivalsLogo from "../assets/icon/marvel icon.png";
 import lolLogo from "../assets/icon/lol icon.png";
 
-/* LOGO GRANDE */
+/* =====================================================
+   LOGO GRANDE
+===================================================== */
+
 import lolBigLogo from "../assets/LOGAO/lol-big.png";
 
-/* MODOS */
+/* =====================================================
+   MODOS
+===================================================== */
+
 import normalImg from "../assets/room-modes/normal.png";
 import aramImg from "../assets/room-modes/aram.png";
 import classicImg from "../assets/room-modes/classic.png";
@@ -31,7 +43,10 @@ import arenaImg from "../assets/room-modes/arena.png";
 import flexImg from "../assets/room-modes/flex.png";
 import soloqImg from "../assets/room-modes/soloq.png";
 
-/* ELOS */
+/* =====================================================
+   ELOS
+===================================================== */
+
 import ferroIcon from "../assets/elos/lol/ferro.png";
 import bronzeIcon from "../assets/elos/lol/bronze.png";
 import prataIcon from "../assets/elos/lol/prata.png";
@@ -43,165 +58,474 @@ import mestreIcon from "../assets/elos/lol/mestre.png";
 import graoIcon from "../assets/elos/lol/grao.png";
 import desaIcon from "../assets/elos/lol/desafiante.png";
 
+/* =====================================================
+   FUNDO
+===================================================== */
+
 import lolBackground from "../assets/rooms-bg.png";
 
-function CreateRoom({ game, onBack, onProfile }) {
+
+function CreateRoom({
+    game,
+    onBack,
+    onProfile,
+    onHistory,
+    onFeedbacks,
+    onGameSelect
+}) {
+
     const [selectedMode, setSelectedMode] = useState("NORMAL");
+
     const [selectedTeam, setSelectedTeam] = useState("DUO");
+
     const [selectedRank, setSelectedRank] = useState(null);
+
     const [selectedGender, setSelectedGender] = useState("HOMEM");
 
+
+    /* =====================================================
+       MODOS
+    ===================================================== */
+
     const modes = [
-        { name: "NORMAL", image: normalImg },
-        { name: "ARAM", image: aramImg },
-        { name: "CLASSIC", image: classicImg },
-        { name: "ARENA", image: arenaImg },
-        { name: "SOLOQ", image: soloqImg },
-        { name: "FLEX", image: flexImg },
+        {
+            name: "NORMAL",
+            image: normalImg
+        },
+        {
+            name: "ARAM",
+            image: aramImg
+        },
+        {
+            name: "CLASSIC",
+            image: classicImg
+        },
+        {
+            name: "ARENA",
+            image: arenaImg
+        },
+        {
+            name: "SOLOQ",
+            image: soloqImg
+        },
+        {
+            name: "FLEX",
+            image: flexImg
+        }
     ];
 
-    const teams = ["DUO", "TRIO", "SQUAD", "5V5"];
+
+    /* =====================================================
+       TAMANHO DAS EQUIPES
+    ===================================================== */
+
+    const teams = [
+        "DUO",
+        "TRIO",
+        "SQUAD",
+        "5V5"
+    ];
+
+
+    /* =====================================================
+       ELOS
+    ===================================================== */
 
     const ranks = [
-        { name: "FERRO", image: ferroIcon },
-        { name: "BRONZE", image: bronzeIcon },
-        { name: "PRATA", image: prataIcon },
-        { name: "OURO", image: goldIcon },
-        { name: "PLATINA", image: platIcon },
-        { name: "ESMERALDA", image: esmerIcon },
-        { name: "DIAMANTE", image: dimaIcon },
-        { name: "MESTRE", image: mestreIcon },
-        { name: "GM", image: graoIcon },
-        { name: "DESAFIANTE", image: desaIcon },
+        {
+            name: "FERRO",
+            image: ferroIcon
+        },
+        {
+            name: "BRONZE",
+            image: bronzeIcon
+        },
+        {
+            name: "PRATA",
+            image: prataIcon
+        },
+        {
+            name: "OURO",
+            image: goldIcon
+        },
+        {
+            name: "PLATINA",
+            image: platIcon
+        },
+        {
+            name: "ESMERALDA",
+            image: esmerIcon
+        },
+        {
+            name: "DIAMANTE",
+            image: dimaIcon
+        },
+        {
+            name: "MESTRE",
+            image: mestreIcon
+        },
+        {
+            name: "GM",
+            image: graoIcon
+        },
+        {
+            name: "DESAFIANTE",
+            image: desaIcon
+        }
     ];
+
+
+    /* =====================================================
+       HABILITAÇÃO DO ELO
+    ===================================================== */
 
     const rankEnabled =
         selectedMode === "SOLOQ" ||
         selectedMode === "FLEX";
 
+
+    /* =====================================================
+       TROCAR MODO
+    ===================================================== */
+
     const handleModeChange = (mode) => {
+
         setSelectedMode(mode);
 
-        if (mode !== "SOLOQ" && mode !== "FLEX") {
+        if (
+            mode !== "SOLOQ" &&
+            mode !== "FLEX"
+        ) {
             setSelectedRank(null);
         }
+
     };
 
-    if (!game) return null;
+
+    if (!game) {
+        return null;
+    }
+
 
     return (
+
         <div
             className="create-room-page"
-            style={{ backgroundImage: `url(${lolBackground})` }}
+            style={{
+                backgroundImage: `url(${lolBackground})`
+            }}
         >
+
             <div className="create-room-overlay"></div>
 
-            {/* ================= SIDEBAR ================= */}
 
-            <aside className="sidebar">
+            {/* =================================================
+                SIDEBAR
+            ================================================= */}
 
-                <img
-                    src={logo}
-                    alt="LFG"
-                    className="sidebar-logo"
-                />
+            <aside className="create-sidebar">
 
-                <nav className="sidebar-menu">
+                <nav className="create-sidebar-menu">
+
+
+                    {/* HOME */}
 
                     <button
-                        className="sidebar-item"
+                        className="create-sidebar-item"
                         type="button"
                         onClick={onBack}
+                        title="Home"
                     >
-                        <img src={homeIcon} alt="Home" />
+
+                        <img
+                            src={homeIcon}
+                            alt="Home"
+                        />
+
                     </button>
 
+
+                    {/* PERFIL */}
+
                     <button
-                        className="sidebar-item"
+                        className="create-sidebar-item"
                         type="button"
                         onClick={onProfile}
+                        title="Perfil"
                     >
-                        <img src={perfilIcon} alt="Perfil" />
+
+                        <img
+                            src={perfilIcon}
+                            alt="Perfil"
+                        />
+
                     </button>
 
-                    <button
-                        className="sidebar-item"
-                        type="button"
-                    >
-                        <img src={historicoIcon} alt="Histórico" />
-                    </button>
+
+                    {/* HISTÓRICO */}
 
                     <button
-                        className="sidebar-item"
+                        className="create-sidebar-item"
                         type="button"
+                        onClick={onHistory}
+                        title="Histórico"
                     >
-                        <img src={mensagensIcon} alt="Mensagens" />
+
+                        <img
+                            src={historicoIcon}
+                            alt="Histórico"
+                        />
+
                     </button>
 
+
+                    {/* FEEDBACKS */}
+
                     <button
-                        className="sidebar-item"
+                        className="create-sidebar-item"
                         type="button"
+                        onClick={onFeedbacks}
+                        title="Feedbacks"
                     >
-                        <img src={configuracoesIcon} alt="Configurações" />
+
+                        <span className="create-feedback-star">
+                            ★
+                        </span>
+
+                    </button>
+
+
+                    {/* CONFIGURAÇÕES */}
+
+                    <button
+                        className="create-sidebar-item"
+                        type="button"
+                        title="Configurações"
+                    >
+
+                        <img
+                            src={configuracoesIcon}
+                            alt="Configurações"
+                        />
+
                     </button>
 
                 </nav>
 
             </aside>
 
-            {/* ================= CONTEÚDO ================= */}
 
-            <div className="rooms-content">
+            {/* =================================================
+                CONTEÚDO
+            ================================================= */}
 
-                {/* ================= NAVBAR ================= */}
+            <div className="create-room-content">
 
-                <nav className="games-menu">
 
-                    <div className="game-menu-item">
-                        <img src={owLogo} alt="Overwatch" />
-                        <span>OW</span>
+                {/* =================================================
+                    NAVBAR
+                ================================================= */}
+
+                <header className="create-navbar">
+
+
+                    {/* LOGO */}
+
+                    <div className="create-navbar-logo">
+
+                        <img
+                            src={logo}
+                            alt="LFG"
+                        />
+
                     </div>
 
-                    <div className="game-menu-item">
-                        <img src={cs2Logo} alt="Counter Strike" />
-                        <span>CS</span>
+
+                    {/* JOGOS */}
+
+                    <div className="create-games-navbar">
+
+
+                        {/* OVERWATCH */}
+
+                        <div
+                            className="create-navbar-game"
+                            onClick={() =>
+                                onGameSelect("Overwatch")
+                            }
+                        >
+
+                            <img
+                                src={owLogo}
+                                alt="Overwatch"
+                            />
+
+                            <span>
+                                OVERWATCH
+                            </span>
+
+                        </div>
+
+
+                        {/* CS2 */}
+
+                        <div
+                            className="create-navbar-game"
+                            onClick={() =>
+                                onGameSelect("Counter-Strike 2")
+                            }
+                        >
+
+                            <img
+                                src={cs2Logo}
+                                alt="Counter-Strike 2"
+                            />
+
+                            <span>
+                                CS2
+                            </span>
+
+                        </div>
+
+
+                        {/* VALORANT */}
+
+                        <div
+                            className="create-navbar-game"
+                            onClick={() =>
+                                onGameSelect("Valorant")
+                            }
+                        >
+
+                            <img
+                                src={valorantLogo}
+                                alt="Valorant"
+                            />
+
+                            <span>
+                                VALORANT
+                            </span>
+
+                        </div>
+
+
+                        {/* FORTNITE */}
+
+                        <div
+                            className="create-navbar-game"
+                            onClick={() =>
+                                onGameSelect("Fortnite")
+                            }
+                        >
+
+                            <img
+                                src={fortniteLogo}
+                                alt="Fortnite"
+                            />
+
+                            <span>
+                                FORTNITE
+                            </span>
+
+                        </div>
+
+
+                        {/* ROCKET LEAGUE */}
+
+                        <div
+                            className="create-navbar-game"
+                            onClick={() =>
+                                onGameSelect("Rocket League")
+                            }
+                        >
+
+                            <img
+                                src={rocketLogo}
+                                alt="Rocket League"
+                            />
+
+                            <span>
+                                ROCKET LEAGUE
+                            </span>
+
+                        </div>
+
+
+                        {/* DOTA 2 */}
+
+                        <div
+                            className="create-navbar-game"
+                            onClick={() =>
+                                onGameSelect("Dota 2")
+                            }
+                        >
+
+                            <img
+                                src={dotaLogo}
+                                alt="Dota 2"
+                            />
+
+                            <span>
+                                DOTA 2
+                            </span>
+
+                        </div>
+
+
+                        {/* MARVEL RIVALS */}
+
+                        <div
+                            className="create-navbar-game"
+                            onClick={() =>
+                                onGameSelect("Marvel Rivals")
+                            }
+                        >
+
+                            <img
+                                src={rivalsLogo}
+                                alt="Marvel Rivals"
+                            />
+
+                            <span>
+                                MARVEL RIVALS
+                            </span>
+
+                        </div>
+
+
+                        {/* LEAGUE OF LEGENDS */}
+
+                        <div
+                            className="create-navbar-game create-navbar-active"
+                            onClick={() =>
+                                onGameSelect("League of Legends")
+                            }
+                        >
+
+                            <img
+                                src={lolLogo}
+                                alt="League of Legends"
+                            />
+
+                            <span>
+                                LEAGUE OF LEGENDS
+                            </span>
+
+                        </div>
+
                     </div>
 
-                    <div className="game-menu-item">
-                        <img src={valorantLogo} alt="Valorant" />
-                        <span>Val</span>
-                    </div>
+                </header>
 
-                    <div className="game-menu-item">
-                        <img src={fortniteLogo} alt="Fortnite" />
-                        <span>Fortnite</span>
-                    </div>
 
-                    <div className="game-menu-item">
-                        <img src={rocketLogo} alt="Rocket League" />
-                        <span>RL</span>
-                    </div>
-
-                    <div className="game-menu-item">
-                        <img src={dotaLogo} alt="Dota 2" />
-                        <span>Dota</span>
-                    </div>
-
-                    <div className="game-menu-item">
-                        <img src={rivalsLogo} alt="Marvel Rivals" />
-                        <span>Rivals</span>
-                    </div>
-
-                    <div className="game-menu-item selected">
-                        <img src={lolLogo} alt="League of Legends" />
-                        <span>LoL</span>
-                    </div>
-
-                </nav>
-
-                {/* ================= CRIAÇÃO DA SALA ================= */}
+                {/* =================================================
+                    CRIAÇÃO DA SALA
+                ================================================= */}
 
                 <main className="create-room-main">
+
+
+                    {/* TOPO */}
 
                     <div className="create-room-top">
 
@@ -215,6 +539,9 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                     </div>
 
+
+                    {/* LOGO DO JOGO */}
+
                     <div className="create-game-header">
 
                         <img
@@ -225,15 +552,25 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                     </div>
 
-                    {/* ================= MODO ================= */}
+
+                    {/* =================================================
+                        MODO DE JOGO
+                    ================================================= */}
 
                     <section className="create-section">
 
                         <div className="section-title">
+
                             <span></span>
-                            <p>MODO DE JOGO</p>
+
+                            <p>
+                                MODO DE JOGO
+                            </p>
+
                             <span></span>
+
                         </div>
+
 
                         <div className="game-modes">
 
@@ -241,10 +578,13 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                                 <button
                                     key={mode.name}
-                                    className={`mode-card ${selectedMode === mode.name
-                                            ? "selected"
-                                            : ""
-                                        }`}
+                                    className={
+                                        `mode-card ${
+                                            selectedMode === mode.name
+                                                ? "selected"
+                                                : ""
+                                        }`
+                                    }
                                     onClick={() =>
                                         handleModeChange(mode.name)
                                     }
@@ -262,6 +602,7 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                                     </div>
 
+
                                     <div className="mode-name">
                                         {mode.name}
                                     </div>
@@ -274,15 +615,25 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                     </section>
 
-                    {/* ================= TAMANHO ================= */}
+
+                    {/* =================================================
+                        TAMANHO DA EQUIPE
+                    ================================================= */}
 
                     <section className="create-section">
 
                         <div className="section-title">
+
                             <span></span>
-                            <p>TAMANHO DA EQUIPE</p>
+
+                            <p>
+                                TAMANHO DA EQUIPE
+                            </p>
+
                             <span></span>
+
                         </div>
+
 
                         <div className="team-size">
 
@@ -290,10 +641,13 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                                 <button
                                     key={team}
-                                    className={`team-button ${selectedTeam === team
-                                            ? "selected"
-                                            : ""
-                                        }`}
+                                    className={
+                                        `team-button ${
+                                            selectedTeam === team
+                                                ? "selected"
+                                                : ""
+                                        }`
+                                    }
                                     onClick={() =>
                                         setSelectedTeam(team)
                                     }
@@ -308,32 +662,52 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                     </section>
 
-                    {/* ================= ELO ================= */}
+
+                    {/* =================================================
+                        ELO
+                    ================================================= */}
 
                     <section className="create-section">
 
                         <div className="section-title">
+
                             <span></span>
-                            <p>ELO</p>
+
+                            <p>
+                                ELO
+                            </p>
+
                             <span></span>
+
                         </div>
 
+
                         <div
-                            className={`rank-selection ${!rankEnabled ? "disabled" : ""
-                                }`}
+                            className={
+                                `rank-selection ${
+                                    !rankEnabled
+                                        ? "disabled"
+                                        : ""
+                                }`
+                            }
                         >
 
                             {ranks.map((rank) => (
 
                                 <button
                                     key={rank.name}
-                                    className={`rank-item ${selectedRank === rank.name
-                                            ? "selected"
-                                            : ""
-                                        }`}
+                                    className={
+                                        `rank-item ${
+                                            selectedRank === rank.name
+                                                ? "selected"
+                                                : ""
+                                        }`
+                                    }
                                     onClick={() => {
 
-                                        if (!rankEnabled) return;
+                                        if (!rankEnabled) {
+                                            return;
+                                        }
 
                                         setSelectedRank(rank.name);
 
@@ -355,10 +729,14 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                             ))}
 
+
                             {!rankEnabled && (
 
                                 <div className="rank-disabled-message">
-                                    ELO DISPONÍVEL APENAS PARA SOLOQ E FLEX
+
+                                    ELO DISPONÍVEL APENAS PARA
+                                    SOLOQ E FLEX
+
                                 </div>
 
                             )}
@@ -367,24 +745,37 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                     </section>
 
-                    {/* ================= GÊNERO ================= */}
+
+                    {/* =================================================
+                        GÊNERO
+                    ================================================= */}
 
                     <section className="create-section">
 
                         <div className="section-title">
+
                             <span></span>
-                            <p>GÊNERO</p>
+
+                            <p>
+                                GÊNERO
+                            </p>
+
                             <span></span>
+
                         </div>
+
 
                         <div className="gender-selection">
 
                             <button
                                 type="button"
-                                className={`gender-button male ${selectedGender === "HOMEM"
-                                        ? "selected"
-                                        : ""
-                                    }`}
+                                className={
+                                    `gender-button male ${
+                                        selectedGender === "HOMEM"
+                                            ? "selected"
+                                            : ""
+                                    }`
+                                }
                                 onClick={() =>
                                     setSelectedGender("HOMEM")
                                 }
@@ -392,12 +783,16 @@ function CreateRoom({ game, onBack, onProfile }) {
                                 ♂ HOMEM
                             </button>
 
+
                             <button
                                 type="button"
-                                className={`gender-button female ${selectedGender === "MULHER"
-                                        ? "selected"
-                                        : ""
-                                    }`}
+                                className={
+                                    `gender-button female ${
+                                        selectedGender === "MULHER"
+                                            ? "selected"
+                                            : ""
+                                    }`
+                                }
                                 onClick={() =>
                                     setSelectedGender("MULHER")
                                 }
@@ -409,21 +804,33 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                     </section>
 
-                    {/* ================= DETALHES ================= */}
+
+                    {/* =================================================
+                        DETALHES
+                    ================================================= */}
 
                     <section className="create-section">
 
                         <div className="section-title">
+
                             <span></span>
-                            <p>DETALHES DA SALA</p>
+
+                            <p>
+                                DETALHES DA SALA
+                            </p>
+
                             <span></span>
+
                         </div>
+
 
                         <div className="room-details-form">
 
                             <div className="detail-box">
 
-                                <label>Nome da sala</label>
+                                <label>
+                                    Nome da sala
+                                </label>
 
                                 <input
                                     type="text"
@@ -432,9 +839,12 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                             </div>
 
+
                             <div className="detail-box">
 
-                                <label>Descrição</label>
+                                <label>
+                                    Descrição
+                                </label>
 
                                 <textarea
                                     placeholder="Digite uma descrição..."
@@ -446,7 +856,10 @@ function CreateRoom({ game, onBack, onProfile }) {
 
                     </section>
 
-                    {/* ================= BOTÕES ================= */}
+
+                    {/* =================================================
+                        BOTÕES
+                    ================================================= */}
 
                     <div className="create-actions">
 
@@ -456,6 +869,7 @@ function CreateRoom({ game, onBack, onProfile }) {
                         >
                             CRIAR SALA
                         </button>
+
 
                         <button
                             className="cancel-button"
@@ -474,5 +888,6 @@ function CreateRoom({ game, onBack, onProfile }) {
         </div>
     );
 }
+
 
 export default CreateRoom;

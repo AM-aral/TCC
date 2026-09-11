@@ -4,7 +4,6 @@ import logo from "../assets/logo.png";
 import homeIcon from "../assets/sidebar/home.png";
 import perfilIcon from "../assets/sidebar/perfil.png";
 import historicoIcon from "../assets/sidebar/historico.png";
-import mensagemIcon from "../assets/sidebar/mensagem.png";
 import configuracoesIcon from "../assets/sidebar/configuracoes.png";
 
 // JOGOS DO TOPO
@@ -42,7 +41,6 @@ import lurkerIcon from "../assets/funcoes/lurker.png";
 
 import "./Profile.css";
 
-
 // ======================================================
 // PROCURAR AUTOMATICAMENTE O RADIANTE
 // ======================================================
@@ -60,7 +58,6 @@ const valorantRadiante =
   Object.entries(valorantRanks).find(([path]) =>
     path.toLowerCase().includes("radiante")
   )?.[1] || null;
-
 
 // ======================================================
 // JOGOS DO PERFIL
@@ -122,15 +119,19 @@ const games = [
   },
 ];
 
-
 // ======================================================
 // COMPONENTE
 // ======================================================
 
-export default function Profile({ onHome }) {
+export default function Profile({
+  onHome,
+  onHistory,
+  onFeedbacks,
+  onGameSelect,
+}) {
+
   return (
     <div className="profile-page">
-
 
       {/* ==================================================
           NAVBAR
@@ -139,64 +140,183 @@ export default function Profile({ onHome }) {
       <header className="profile-navbar">
 
         {/* LOGO */}
+
         <div className="profile-navbar-logo">
+
           <img
             src={logo}
             alt="Logo"
           />
+
         </div>
 
-
         {/* JOGOS */}
+
         <div className="profile-games-navbar">
 
-          <div className="profile-navbar-game">
-            <img src={owIcon} alt="Overwatch" />
-            <span>OVERWATCH</span>
+          {/* OVERWATCH */}
+
+          <div
+            className="profile-navbar-game"
+            onClick={() =>
+              onGameSelect("Overwatch")
+            }
+          >
+
+            <img
+              src={owIcon}
+              alt="Overwatch"
+            />
+
+            <span>
+              OVERWATCH
+            </span>
+
           </div>
 
-          <div className="profile-navbar-game">
-            <img src={csIcon} alt="CS2" />
-            <span>CS2</span>
+          {/* CS2 */}
+
+          <div
+            className="profile-navbar-game"
+            onClick={() =>
+              onGameSelect("Counter-Strike 2")
+            }
+          >
+
+            <img
+              src={csIcon}
+              alt="CS2"
+            />
+
+            <span>
+              CS2
+            </span>
+
           </div>
 
-          <div className="profile-navbar-game">
-            <img src={valIcon} alt="Valorant" />
-            <span>VALORANT</span>
+          {/* VALORANT */}
+
+          <div
+            className="profile-navbar-game"
+            onClick={() =>
+              onGameSelect("Valorant")
+            }
+          >
+
+            <img
+              src={valIcon}
+              alt="Valorant"
+            />
+
+            <span>
+              VALORANT
+            </span>
+
           </div>
 
-          <div className="profile-navbar-game">
-            <img src={fortniteIcon} alt="Fortnite" />
-            <span>FORTNITE</span>
+          {/* FORTNITE */}
+
+          <div
+            className="profile-navbar-game"
+            onClick={() =>
+              onGameSelect("Fortnite")
+            }
+          >
+
+            <img
+              src={fortniteIcon}
+              alt="Fortnite"
+            />
+
+            <span>
+              FORTNITE
+            </span>
+
           </div>
 
-          <div className="profile-navbar-game">
-            <img src={rocketIcon} alt="Rocket League" />
-            <span>ROCKET LEAGUE</span>
+          {/* ROCKET LEAGUE */}
+
+          <div
+            className="profile-navbar-game"
+            onClick={() =>
+              onGameSelect("Rocket League")
+            }
+          >
+
+            <img
+              src={rocketIcon}
+              alt="Rocket League"
+            />
+
+            <span>
+              ROCKET LEAGUE
+            </span>
+
           </div>
 
-          <div className="profile-navbar-game">
-            <img src={dotaIcon} alt="Dota 2" />
-            <span>DOTA 2</span>
+          {/* DOTA 2 */}
+
+          <div
+            className="profile-navbar-game"
+            onClick={() =>
+              onGameSelect("Dota 2")
+            }
+          >
+
+            <img
+              src={dotaIcon}
+              alt="Dota 2"
+            />
+
+            <span>
+              DOTA 2
+            </span>
+
           </div>
 
-          <div className="profile-navbar-game">
-            <img src={rivalsIcon} alt="Marvel Rivals" />
-            <span>MARVEL RIVALS</span>
+          {/* MARVEL RIVALS */}
+
+          <div
+            className="profile-navbar-game"
+            onClick={() =>
+              onGameSelect("Marvel Rivals")
+            }
+          >
+
+            <img
+              src={rivalsIcon}
+              alt="Marvel Rivals"
+            />
+
+            <span>
+              MARVEL RIVALS
+            </span>
+
           </div>
 
-          <div className="profile-navbar-game profile-navbar-active">
+          {/* LEAGUE OF LEGENDS */}
+
+          <div
+            className="profile-navbar-game profile-navbar-active"
+            onClick={() =>
+              onGameSelect("League of Legends")
+            }
+          >
+
             <img
               src={lolIcon}
               alt="League of Legends"
             />
-            <span>LEAGUE OF LEGENDS</span>
+
+            <span>
+              LEAGUE OF LEGENDS
+            </span>
+
           </div>
 
         </div>
 
       </header>
-
 
       {/* ==================================================
           SIDEBAR
@@ -207,69 +327,85 @@ export default function Profile({ onHome }) {
         <div className="profile-sidebar-menu">
 
           {/* HOME */}
+
           <button
             className="profile-sidebar-item"
             onClick={onHome}
             title="Home"
+            type="button"
           >
+
             <img
               src={homeIcon}
               alt="Home"
             />
+
           </button>
 
-
           {/* PERFIL */}
+
           <button
             className="profile-sidebar-item profile-sidebar-active"
             title="Perfil"
+            type="button"
           >
+
             <img
               src={perfilIcon}
               alt="Perfil"
             />
+
           </button>
 
-
           {/* HISTÓRICO */}
+
           <button
             className="profile-sidebar-item"
+            onClick={onHistory}
             title="Histórico"
+            type="button"
           >
+
             <img
               src={historicoIcon}
               alt="Histórico"
             />
+
           </button>
 
+          {/* FEEDBACKS */}
 
-          {/* MENSAGENS */}
           <button
             className="profile-sidebar-item"
-            title="Mensagens"
+            type="button"
+            onClick={onFeedbacks}
+            title="Feedbacks"
           >
-            <img
-              src={mensagemIcon}
-              alt="Mensagens"
-            />
+
+            <span className="profile-feedback-star">
+              ★
+            </span>
+
           </button>
 
-
           {/* CONFIGURAÇÕES */}
+
           <button
             className="profile-sidebar-item"
             title="Configurações"
+            type="button"
           >
+
             <img
               src={configuracoesIcon}
               alt="Configurações"
             />
+
           </button>
 
         </div>
 
       </aside>
-
 
       {/* ==================================================
           CONTEÚDO
@@ -277,14 +413,13 @@ export default function Profile({ onHome }) {
 
       <main className="profile-main">
 
-
         {/* =================================================
-            BANNER / INFORMAÇÕES DO PERFIL
+            BANNER
         ================================================= */}
 
         <section className="profile-header-card">
 
-          {/* IMAGEM DO BANNER */}
+          {/* BANNER */}
 
           <img
             src={profileBanner}
@@ -292,11 +427,9 @@ export default function Profile({ onHome }) {
             alt=""
           />
 
-
-          {/* ESCURECIMENTO DO BANNER */}
+          {/* ESCURECIMENTO */}
 
           <div className="profile-banner-dark"></div>
-
 
           {/* INFORMAÇÕES */}
 
@@ -316,7 +449,6 @@ export default function Profile({ onHome }) {
 
             </div>
 
-
             {/* TEXTOS */}
 
             <div className="profile-user-text">
@@ -332,7 +464,6 @@ export default function Profile({ onHome }) {
               <p>
                 Procurando players para jogar e subir de elo.
               </p>
-
 
               {/* TAGS */}
 
@@ -358,13 +489,11 @@ export default function Profile({ onHome }) {
 
         </section>
 
-
         {/* =================================================
             MEUS JOGOS
         ================================================= */}
 
         <section className="profile-games-section">
-
 
           {/* TÍTULO */}
 
@@ -380,7 +509,6 @@ export default function Profile({ onHome }) {
 
           </div>
 
-
           {/* CARDS */}
 
           <div className="profile-games-grid">
@@ -392,7 +520,6 @@ export default function Profile({ onHome }) {
                 key={game.id}
               >
 
-
                 {/* IMAGEM */}
 
                 <div className="profile-game-cover">
@@ -403,11 +530,9 @@ export default function Profile({ onHome }) {
                     className="profile-game-cover-image"
                   />
 
-
                   {/* GRADIENTE */}
 
                   <div className="profile-game-gradient"></div>
-
 
                   {/* NOME */}
 
@@ -416,7 +541,6 @@ export default function Profile({ onHome }) {
                   >
                     {game.name}
                   </h3>
-
 
                   {/* SETA */}
 
@@ -427,17 +551,18 @@ export default function Profile({ onHome }) {
                     →
                   </button>
 
-
                   {/* ELO */}
 
                   <div className="profile-game-rank">
 
                     {game.rankImage && (
+
                       <img
                         src={game.rankImage}
                         className="profile-rank-image"
                         alt={game.rank}
                       />
+
                     )}
 
                     <div className="profile-rank-text">
@@ -456,11 +581,9 @@ export default function Profile({ onHome }) {
 
                 </div>
 
-
                 {/* RODAPÉ */}
 
                 <div className="profile-game-footer">
-
 
                   {/* FUNÇÃO PRINCIPAL */}
 
@@ -484,7 +607,6 @@ export default function Profile({ onHome }) {
                     </div>
 
                   </div>
-
 
                   {/* FUNÇÃO SECUNDÁRIA */}
 
@@ -519,13 +641,11 @@ export default function Profile({ onHome }) {
 
         </section>
 
-
         {/* =================================================
             PARTE INFERIOR
         ================================================= */}
 
         <section className="profile-bottom-grid">
-
 
           {/* SOBRE MIM */}
 
@@ -542,7 +662,6 @@ export default function Profile({ onHome }) {
 
           </div>
 
-
           {/* PREFERÊNCIAS */}
 
           <div className="profile-bottom-card">
@@ -552,7 +671,6 @@ export default function Profile({ onHome }) {
             </h2>
 
             <div className="profile-preferences">
-
 
               <div className="profile-preference-item">
 
@@ -566,7 +684,6 @@ export default function Profile({ onHome }) {
 
               </div>
 
-
               <div className="profile-preference-item">
 
                 <span>
@@ -578,7 +695,6 @@ export default function Profile({ onHome }) {
                 </p>
 
               </div>
-
 
               <div className="profile-preference-item">
 
@@ -596,7 +712,6 @@ export default function Profile({ onHome }) {
 
           </div>
 
-
           {/* ATIVIDADES */}
 
           <div className="profile-bottom-card">
@@ -604,7 +719,6 @@ export default function Profile({ onHome }) {
             <h2>
               Atividades Recentes
             </h2>
-
 
             <div className="profile-activity">
 
@@ -625,7 +739,6 @@ export default function Profile({ onHome }) {
               </div>
 
             </div>
-
 
             <div className="profile-activity">
 

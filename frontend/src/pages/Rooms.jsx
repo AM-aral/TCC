@@ -4,14 +4,19 @@ import "./Rooms.css";
 
 import logo from "../assets/logo.png";
 
-/* SIDEBAR */
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
 import homeIcon from "../assets/sidebar/home.png";
 import perfilIcon from "../assets/sidebar/perfil.png";
 import historicoIcon from "../assets/sidebar/historico.png";
-import mensagensIcon from "../assets/sidebar/mensagem.png";
 import configuracoesIcon from "../assets/sidebar/configuracoes.png";
 
-/* MINI LOGOS */
+/* =====================================================
+   ÍCONES DOS JOGOS
+===================================================== */
+
 import owLogo from "../assets/icon/ow icon.png";
 import cs2Logo from "../assets/icon/cs icon.png";
 import valorantLogo from "../assets/icon/val icon.png";
@@ -21,13 +26,27 @@ import dotaLogo from "../assets/icon/dota icon.png";
 import rivalsLogo from "../assets/icon/marvel icon.png";
 import lolLogo from "../assets/icon/lol icon.png";
 
-/* LOGO GRANDE */
+/* =====================================================
+   LOGO GRANDE
+===================================================== */
+
 import lolBigLogo from "../assets/LOGAO/lol-big.png";
 
-/* FUNDO */
+/* =====================================================
+   FUNDO
+===================================================== */
+
 import lolBackground from "../assets/rooms-bg.png";
 
-function Rooms({ game, onHome, onCreateRoom, onProfile }) {
+
+function Rooms({
+  game,
+  onHome,
+  onCreateRoom,
+  onProfile,
+  onHistory,
+  onFeedbacks
+}) {
 
   const [menuAberto, setMenuAberto] = useState(null);
 
@@ -38,9 +57,15 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
     modo: "Modo"
   });
 
+
   if (!game) {
     return null;
   }
+
+
+  /* =====================================================
+     ABRIR DROPDOWN
+  ===================================================== */
 
   function abrirMenu(tipo) {
     setMenuAberto(
@@ -48,7 +73,13 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
     );
   }
 
+
+  /* =====================================================
+     SELECIONAR FILTRO
+  ===================================================== */
+
   function selecionarFiltro(tipo, valor) {
+
     setFiltros({
       ...filtros,
       [tipo]: valor
@@ -57,7 +88,9 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
     setMenuAberto(null);
   }
 
+
   return (
+
     <div
       className="rooms-page"
       style={{
@@ -67,67 +100,92 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
 
       <div className="rooms-background-overlay"></div>
 
-      {/* SIDEBAR */}
-      <aside className="sidebar">
 
-        <img
-          src={logo}
-          alt="LFG"
-          className="sidebar-logo"
-        />
+      {/* =====================================================
+          SIDEBAR
+      ===================================================== */}
 
-        <nav className="sidebar-menu">
+      <aside className="rooms-sidebar">
+
+        <nav className="rooms-sidebar-menu">
+
+          {/* HOME */}
 
           <button
-            className="sidebar-item active"
+            className="rooms-sidebar-item rooms-sidebar-active"
             onClick={onHome}
             type="button"
           >
+
             <img
               src={homeIcon}
               alt="Home"
             />
+
           </button>
 
+
+          {/* PERFIL */}
+
           <button
-            className="sidebar-item"
+            className="rooms-sidebar-item"
             type="button"
             onClick={onProfile}
           >
+
             <img
               src={perfilIcon}
               alt="Perfil"
             />
+
           </button>
 
+
+          {/* HISTÓRICO */}
+
           <button
-            className="sidebar-item"
+            className="rooms-sidebar-item"
             type="button"
+            onClick={onHistory}
           >
+
             <img
               src={historicoIcon}
               alt="Histórico"
             />
+
           </button>
 
-          <button
-            className="sidebar-item"
-            type="button"
-          >
-            <img
-              src={mensagensIcon}
-              alt="Mensagens"
-            />
-          </button>
+
+          {/* FEEDBACKS */}
 
           <button
-            className="sidebar-item"
+            className="rooms-sidebar-item"
             type="button"
+            onClick={onFeedbacks}
+            title="Feedbacks"
           >
+
+            <span className="rooms-feedback-star">
+              ★
+            </span>
+
+          </button>
+
+
+          {/* CONFIGURAÇÕES */}
+
+          <button
+            className="rooms-sidebar-item"
+            type="button"
+            title="Configurações"
+          >
+
             <img
               src={configuracoesIcon}
               alt="Configurações"
             />
+
           </button>
 
         </nav>
@@ -135,61 +193,191 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
       </aside>
 
 
-      {/* CONTEÚDO */}
+      {/* =====================================================
+          CONTEÚDO
+      ===================================================== */}
+
       <div className="rooms-content">
 
-        {/* MENU SUPERIOR */}
-        <nav className="games-menu">
 
-          <div className="game-menu-item">
-            <img src={owLogo} alt="Overwatch" />
-            <span>OW</span>
+        {/* =====================================================
+            NAVBAR
+        ===================================================== */}
+
+        <header className="rooms-navbar">
+
+          {/* LOGO */}
+
+          <div className="rooms-navbar-logo">
+
+            <img
+              src={logo}
+              alt="LFG"
+            />
+
           </div>
 
-          <div className="game-menu-item">
-            <img src={cs2Logo} alt="Counter Strike" />
-            <span>CS</span>
+
+          {/* JOGOS */}
+
+          <div className="rooms-games-navbar">
+
+
+            {/* OVERWATCH */}
+
+            <div className="rooms-navbar-game">
+
+              <img
+                src={owLogo}
+                alt="Overwatch"
+              />
+
+              <span>
+                OVERWATCH
+              </span>
+
+            </div>
+
+
+            {/* CS2 */}
+
+            <div className="rooms-navbar-game">
+
+              <img
+                src={cs2Logo}
+                alt="Counter-Strike 2"
+              />
+
+              <span>
+                CS2
+              </span>
+
+            </div>
+
+
+            {/* VALORANT */}
+
+            <div className="rooms-navbar-game">
+
+              <img
+                src={valorantLogo}
+                alt="Valorant"
+              />
+
+              <span>
+                VALORANT
+              </span>
+
+            </div>
+
+
+            {/* FORTNITE */}
+
+            <div className="rooms-navbar-game">
+
+              <img
+                src={fortniteLogo}
+                alt="Fortnite"
+              />
+
+              <span>
+                FORTNITE
+              </span>
+
+            </div>
+
+
+            {/* ROCKET LEAGUE */}
+
+            <div className="rooms-navbar-game">
+
+              <img
+                src={rocketLogo}
+                alt="Rocket League"
+              />
+
+              <span>
+                ROCKET LEAGUE
+              </span>
+
+            </div>
+
+
+            {/* DOTA 2 */}
+
+            <div className="rooms-navbar-game">
+
+              <img
+                src={dotaLogo}
+                alt="Dota 2"
+              />
+
+              <span>
+                DOTA 2
+              </span>
+
+            </div>
+
+
+            {/* MARVEL RIVALS */}
+
+            <div className="rooms-navbar-game">
+
+              <img
+                src={rivalsLogo}
+                alt="Marvel Rivals"
+              />
+
+              <span>
+                MARVEL RIVALS
+              </span>
+
+            </div>
+
+
+            {/* LEAGUE OF LEGENDS */}
+
+            <div className="rooms-navbar-game rooms-navbar-active">
+
+              <img
+                src={lolLogo}
+                alt="League of Legends"
+              />
+
+              <span>
+                LEAGUE OF LEGENDS
+              </span>
+
+            </div>
+
           </div>
 
-          <div className="game-menu-item">
-            <img src={valorantLogo} alt="Valorant" />
-            <span>Val</span>
-          </div>
-
-          <div className="game-menu-item">
-            <img src={fortniteLogo} alt="Fortnite" />
-            <span>Fortnite</span>
-          </div>
-
-          <div className="game-menu-item">
-            <img src={rocketLogo} alt="Rocket League" />
-            <span>RL</span>
-          </div>
-
-          <div className="game-menu-item">
-            <img src={dotaLogo} alt="Dota 2" />
-            <span>Dota</span>
-          </div>
-
-          <div className="game-menu-item">
-            <img src={rivalsLogo} alt="Marvel Rivals" />
-            <span>Rivals</span>
-          </div>
-
-          <div className="game-menu-item selected">
-            <img src={lolLogo} alt="League of Legends" />
-            <span>LoL</span>
-          </div>
-
-        </nav>
+        </header>
 
 
-        {/* PRINCIPAL */}
+        {/* =====================================================
+            ÁREA PRINCIPAL
+        ===================================================== */}
+
         <main className="rooms-main">
 
+
+          {/* =====================================================
+              PESQUISA DO TOPO
+          ===================================================== */}
+
           <div className="top-search">
-            <input type="text" />
+
+            <input
+              type="text"
+            />
+
           </div>
+
+
+          {/* =====================================================
+              JOGO SELECIONADO
+          ===================================================== */}
 
           <div className="selected-game">
 
@@ -202,13 +390,20 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
           </div>
 
 
-          {/* FILTROS */}
+          {/* =====================================================
+              FILTROS
+          ===================================================== */}
+
           <div className="filters">
 
+
             {/* BUSCAR */}
+
             <div className="search-box">
 
-              <span>⌕</span>
+              <span>
+                ⌕
+              </span>
 
               <input
                 type="text"
@@ -218,7 +413,10 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
             </div>
 
 
-            {/* GÊNERO */}
+            {/* =================================================
+                GÊNERO
+            ================================================= */}
+
             <div className="filter-dropdown">
 
               <button
@@ -226,10 +424,21 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
                 onClick={() => abrirMenu("genero")}
                 type="button"
               >
-                <span>⚥</span>
-                <span>{filtros.genero}</span>
-                <b>⌄</b>
+
+                <span>
+                  ⚥
+                </span>
+
+                <span>
+                  {filtros.genero}
+                </span>
+
+                <b>
+                  ⌄
+                </b>
+
               </button>
+
 
               {menuAberto === "genero" && (
 
@@ -275,7 +484,10 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
             </div>
 
 
-            {/* JOGADORES */}
+            {/* =================================================
+                JOGADORES
+            ================================================= */}
+
             <div className="filter-dropdown">
 
               <button
@@ -283,10 +495,21 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
                 onClick={() => abrirMenu("jogadores")}
                 type="button"
               >
-                <span>♟</span>
-                <span>{filtros.jogadores}</span>
-                <b>⌄</b>
+
+                <span>
+                  ♟
+                </span>
+
+                <span>
+                  {filtros.jogadores}
+                </span>
+
+                <b>
+                  ⌄
+                </b>
+
               </button>
+
 
               {menuAberto === "jogadores" && (
 
@@ -343,7 +566,10 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
             </div>
 
 
-            {/* ELO */}
+            {/* =================================================
+                ELO
+            ================================================= */}
+
             <div className="filter-dropdown">
 
               <button
@@ -351,48 +577,101 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
                 onClick={() => abrirMenu("elo")}
                 type="button"
               >
-                <span>♛</span>
-                <span>{filtros.elo}</span>
-                <b>⌄</b>
+
+                <span>
+                  ♛
+                </span>
+
+                <span>
+                  {filtros.elo}
+                </span>
+
+                <b>
+                  ⌄
+                </b>
+
               </button>
+
 
               {menuAberto === "elo" && (
 
                 <div className="dropdown-menu">
 
-                  <button onClick={() => selecionarFiltro("elo", "Ferro")}>
+                  <button
+                    onClick={() =>
+                      selecionarFiltro("elo", "Ferro")
+                    }
+                  >
                     Ferro
                   </button>
 
-                  <button onClick={() => selecionarFiltro("elo", "Bronze")}>
+                  <button
+                    onClick={() =>
+                      selecionarFiltro("elo", "Bronze")
+                    }
+                  >
                     Bronze
                   </button>
 
-                  <button onClick={() => selecionarFiltro("elo", "Prata")}>
+                  <button
+                    onClick={() =>
+                      selecionarFiltro("elo", "Prata")
+                    }
+                  >
                     Prata
                   </button>
 
-                  <button onClick={() => selecionarFiltro("elo", "Ouro")}>
+                  <button
+                    onClick={() =>
+                      selecionarFiltro("elo", "Ouro")
+                    }
+                  >
                     Ouro
                   </button>
 
-                  <button onClick={() => selecionarFiltro("elo", "Platina")}>
+                  <button
+                    onClick={() =>
+                      selecionarFiltro("elo", "Platina")
+                    }
+                  >
                     Platina
                   </button>
 
-                  <button onClick={() => selecionarFiltro("elo", "Diamante")}>
+                  <button
+                    onClick={() =>
+                      selecionarFiltro("elo", "Diamante")
+                    }
+                  >
                     Diamante
                   </button>
 
-                  <button onClick={() => selecionarFiltro("elo", "Mestre")}>
+                  <button
+                    onClick={() =>
+                      selecionarFiltro("elo", "Mestre")
+                    }
+                  >
                     Mestre
                   </button>
 
-                  <button onClick={() => selecionarFiltro("elo", "Grão-Mestre")}>
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "elo",
+                        "Grão-Mestre"
+                      )
+                    }
+                  >
                     Grão-Mestre
                   </button>
 
-                  <button onClick={() => selecionarFiltro("elo", "Desafiante")}>
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "elo",
+                        "Desafiante"
+                      )
+                    }
+                  >
                     Desafiante
                   </button>
 
@@ -403,7 +682,10 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
             </div>
 
 
-            {/* MODO */}
+            {/* =================================================
+                MODO
+            ================================================= */}
+
             <div className="filter-dropdown">
 
               <button
@@ -411,10 +693,21 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
                 onClick={() => abrirMenu("modo")}
                 type="button"
               >
-                <span>🎮</span>
-                <span>{filtros.modo}</span>
-                <b>⌄</b>
+
+                <span>
+                  🎮
+                </span>
+
+                <span>
+                  {filtros.modo}
+                </span>
+
+                <b>
+                  ⌄
+                </b>
+
               </button>
+
 
               {menuAberto === "modo" && (
 
@@ -471,27 +764,48 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
             </div>
 
 
-            {/* CRIAR SALA */}
+            {/* =================================================
+                CRIAR SALA
+            ================================================= */}
+
             <button
               className="create-room"
               onClick={onCreateRoom}
               type="button"
             >
-              <strong>+</strong>
-              <span>Criar Sala</span>
+
+              <strong>
+                +
+              </strong>
+
+              <span>
+                Criar Sala
+              </span>
+
             </button>
 
           </div>
 
 
-          {/* SALA */}
+          {/* =====================================================
+              SALA
+          ===================================================== */}
+
           <div className="room-card">
+
+
+            {/* PERFIL DA SALA */}
 
             <div className="room-profile">
 
               <div className="profile-photo">
-                <span>👤</span>
+
+                <span>
+                  👤
+                </span>
+
               </div>
+
 
               <div className="room-details">
 
@@ -499,11 +813,13 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
                   Ranked Soloqueue
                 </h2>
 
+
                 <div className="room-tags">
 
                   <span className="rank-tag">
                     🏆 Silver/Gold/Platina
                   </span>
+
 
                   <span className="mode-tag">
 
@@ -518,6 +834,7 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
 
                 </div>
 
+
                 <div className="gender-options">
 
                   <span className="male">
@@ -530,6 +847,7 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
 
                 </div>
 
+
                 <p>
                   Procuro por um duo focado na vitória e na resenha
                 </p>
@@ -538,6 +856,8 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
 
             </div>
 
+
+            {/* MEMBROS */}
 
             <div className="room-members">
 
@@ -551,6 +871,8 @@ function Rooms({ game, onHome, onCreateRoom, onProfile }) {
 
             </div>
 
+
+            {/* ENTRAR */}
 
             <button
               className="join-button"

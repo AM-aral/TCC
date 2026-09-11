@@ -14,6 +14,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+
 /* =====================================================
    PÁGINA
 ===================================================== */
@@ -21,9 +22,6 @@ body {
 .rooms-page {
   width: 100%;
   min-height: 100vh;
-
-  display: flex;
-  align-items: stretch;
 
   position: relative;
 
@@ -62,44 +60,35 @@ body {
 
 /* =====================================================
    SIDEBAR
+   PADRÃO DO PROFILE
 ===================================================== */
 
-.sidebar {
+.rooms-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
   width: 76px;
-  min-width: 76px;
-  min-height: 100vh;
 
-  flex: 0 0 76px;
-
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  background: rgba(36, 0, 68, 0.96);
+  background: rgba(36, 0, 68, 0.98);
 
   border-right:
     1px solid rgba(255, 255, 255, 0.06);
 
-  z-index: 50;
+  z-index: 200;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.sidebar-logo {
-  width: 42px;
-  height: 42px;
 
-  margin-top: 13px;
-
-  object-fit: contain;
-
-  display: block;
-}
-
-.sidebar-menu {
+.rooms-sidebar-menu {
   width: 100%;
 
-  margin-top: 22px;
+  margin-top: 92px;
 
   display: flex;
   flex-direction: column;
@@ -108,22 +97,211 @@ body {
   gap: 12px;
 }
 
-.sidebar-item {
+
+.rooms-sidebar-item {
   width: 52px;
   height: 52px;
 
   padding: 0;
 
   border: 0;
-  border-radius: 8px;
+  border-radius: 9px;
 
   background: transparent;
-
-  color: #ddd;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.rooms-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  transform: scale(1.04);
+}
+
+
+.rooms-sidebar-item img {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.70;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.rooms-sidebar-item:hover img {
+  opacity: 1;
+
+  transform: scale(1.04);
+}
+
+
+.rooms-sidebar-active {
+  background: rgba(147, 71, 218, 0.32);
+
+  box-shadow:
+    inset 3px 0 0 #b86cff;
+}
+
+
+.rooms-sidebar-active img {
+  opacity: 1;
+}
+
+
+.rooms-feedback-star {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+
+/* =====================================================
+   CONTEÚDO
+===================================================== */
+
+.rooms-content {
+  width: calc(100% - 76px);
+
+  min-height: 100vh;
+
+  margin-left: 76px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =====================================================
+   NAVBAR
+   PADRÃO DO PROFILE
+===================================================== */
+
+.rooms-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 76px;
+  right: 0;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #69379a,
+      #63318f
+    );
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.20);
+
+  z-index: 100;
+
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   LOGO DA NAVBAR
+===================================================== */
+
+.rooms-navbar-logo {
+  width: 115px;
+  height: 70px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.rooms-navbar-logo img {
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+/* =====================================================
+   JOGOS DA NAVBAR
+===================================================== */
+
+.rooms-games-navbar {
+  flex: 1;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  min-width: 0;
+}
+
+
+.rooms-navbar-game {
+  flex: 1;
+
+  min-width: 95px;
+  max-width: 180px;
+
+  height: 70px;
+
+  padding: 4px 8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 2px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-align: center;
 
   cursor: pointer;
 
@@ -133,146 +311,48 @@ body {
     transform 0.2s ease;
 }
 
-.sidebar-item:hover {
+
+.rooms-navbar-game:hover {
   background: rgba(255, 255, 255, 0.08);
 
   color: white;
 }
 
-.sidebar-item.active {
-  color: white;
-}
 
-.sidebar-item img {
-  width: 30px;
-  height: 30px;
-
-  object-fit: contain;
-
-  display: block;
-}
-
-
-/* =====================================================
-   CONTEÚDO DA DIREITA
-===================================================== */
-
-.rooms-content {
-  flex: 1;
-
-  min-width: 0;
-  min-height: 100vh;
-
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-
-  z-index: 2;
-}
-
-
-/* =====================================================
-   NAVBAR
-===================================================== */
-
-.games-menu {
-  width: 100%;
-  height: 58px;
-
-  min-height: 58px;
-
-  flex: 0 0 58px;
-
-  padding: 0 18px;
-
-  background: rgba(92, 38, 133, 0.98);
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  position: relative;
-
-  z-index: 100;
-
-  border-bottom:
-    1px solid rgba(255, 255, 255, 0.10);
-
-  overflow: hidden;
-
-  isolation: isolate;
-}
-
-
-/* =====================================================
-   ITEM DA NAVBAR
-===================================================== */
-
-.game-menu-item {
-  flex: 1;
-
-  min-width: 90px;
-  height: 58px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 0 8px;
-
-  color: rgba(255, 255, 255, 0.72);
-
-  font-size: 12px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.game-menu-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-
-  color: white;
-}
-
-.game-menu-item.selected {
-  background: rgba(255, 255, 255, 0.13);
-
-  color: white;
-}
-
-
-/* =====================================================
-   ÍCONES DA NAVBAR
-===================================================== */
-
-.game-menu-item img {
-  width: 48px;
-  height: 48px;
+.rooms-navbar-game img {
+  width: 31px;
+  height: 31px;
 
   object-fit: contain;
 
   display: block;
 
-  opacity: 0.82;
+  opacity: 0.78;
 
   transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
-.game-menu-item:hover img {
+
+.rooms-navbar-game:hover img {
   opacity: 1;
 
   transform: scale(1.08);
 }
 
-.game-menu-item.selected img {
+
+.rooms-navbar-active {
+  background: rgba(255, 255, 255, 0.13);
+
+  color: white;
+
+  box-shadow:
+    inset 0 -3px 0 white;
+}
+
+
+.rooms-navbar-active img {
   opacity: 1;
 
   transform: scale(1.08);
@@ -286,9 +366,9 @@ body {
 .rooms-main {
   width: 100%;
 
-  flex: 1;
+  min-height: 100vh;
 
-  padding: 30px 7vw 80px;
+  padding: 98px 7vw 80px;
 
   position: relative;
 
@@ -327,6 +407,7 @@ body {
   overflow: hidden;
 }
 
+
 .top-search input {
   width: 100%;
   height: 100%;
@@ -342,6 +423,7 @@ body {
 
   font-size: 14px;
 }
+
 
 .top-search input::placeholder {
   color: #777;
@@ -363,6 +445,7 @@ body {
 
   position: relative;
 }
+
 
 .selected-game-logo {
   width: 340px;
@@ -414,7 +497,7 @@ body {
 
 
 /* =====================================================
-   CAIXA DE BUSCA DOS FILTROS
+   CAIXA DE BUSCA
 ===================================================== */
 
 .search-box {
@@ -439,6 +522,7 @@ body {
   position: relative;
 }
 
+
 .search-box span {
   font-size: 22px;
 
@@ -446,6 +530,7 @@ body {
 
   line-height: 1;
 }
+
 
 .search-box input {
   width: 100%;
@@ -461,6 +546,7 @@ body {
 
   font-size: 14px;
 }
+
 
 .search-box input::placeholder {
   color: #d0b5e5;
@@ -478,6 +564,7 @@ body {
 
   flex-shrink: 0;
 }
+
 
 .filter-dropdown:has(.dropdown-menu) {
   z-index: 200;
@@ -523,10 +610,12 @@ body {
     background 0.2s ease;
 }
 
+
 .filter-button:hover {
   background:
     rgba(110, 34, 173, 0.42);
 }
+
 
 .filter-button b {
   font-size: 18px;
@@ -536,7 +625,7 @@ body {
 
 
 /* =====================================================
-   MENU DO DROPDOWN
+   MENU DROPDOWN
 ===================================================== */
 
 .dropdown-menu {
@@ -572,6 +661,7 @@ body {
   overflow: visible;
 }
 
+
 .dropdown-menu button {
   width: 100%;
 
@@ -598,6 +688,7 @@ body {
   transition:
     background 0.15s ease;
 }
+
 
 .dropdown-menu button:hover {
   background: #6c21a8;
@@ -649,12 +740,14 @@ body {
   position: relative;
 }
 
+
 .create-room:hover {
   transform: translateY(-2px);
 
   box-shadow:
     0 6px 18px rgba(110, 21, 228, 0.40);
 }
+
 
 .create-room strong {
   font-size: 27px;
@@ -719,6 +812,7 @@ body {
   flex: 1;
 }
 
+
 .profile-photo {
   width: 82px;
   height: 82px;
@@ -739,6 +833,7 @@ body {
   justify-content: center;
 }
 
+
 .profile-photo img {
   width: 100%;
   height: 100%;
@@ -754,6 +849,7 @@ body {
 .room-details {
   min-width: 0;
 }
+
 
 .room-details h2 {
   margin: 0 0 9px;
@@ -776,6 +872,7 @@ body {
   flex-wrap: wrap;
 }
 
+
 .room-tags span {
   min-height: 29px;
 
@@ -793,17 +890,20 @@ body {
   font-weight: 700;
 }
 
+
 .rank-tag {
   background: #6517dc;
 
   color: #ffe500;
 }
 
+
 .mode-tag {
   background: #7423bb;
 
   color: #dfc7f9;
 }
+
 
 .mode-tag img {
   width: 27px;
@@ -825,6 +925,7 @@ body {
   margin-top: 7px;
 }
 
+
 .gender-options span {
   width: 52px;
   height: 23px;
@@ -838,13 +939,16 @@ body {
   font-weight: bold;
 }
 
+
 .gender-options .male {
   background: #34a9c7;
 }
 
+
 .gender-options .female {
   background: #d25abf;
 }
+
 
 .room-details p {
   margin: 6px 4px 10px;
@@ -878,9 +982,11 @@ body {
   flex-shrink: 0;
 }
 
+
 .room-members strong {
   font-size: 23px;
 }
+
 
 .room-members span {
   margin-top: 4px;
@@ -930,6 +1036,7 @@ body {
   position: relative;
 }
 
+
 .join-button:hover {
   transform: translateY(-2px);
 
@@ -944,19 +1051,24 @@ body {
 
 @media (max-width: 1200px) {
 
+  .rooms-navbar-game {
+    min-width: 80px;
+
+    font-size: 9px;
+  }
+
+  .rooms-navbar-game img {
+    width: 28px;
+    height: 28px;
+  }
+
   .rooms-main {
     padding-left: 35px;
     padding-right: 35px;
   }
 
-  .games-menu {
-    overflow-x: auto;
-  }
-
   .filters {
     flex-wrap: wrap;
-
-    overflow: visible;
   }
 
   .create-room {
@@ -966,28 +1078,43 @@ body {
 
 
 /* =====================================================
-   RESPONSIVO - 850px
+   RESPONSIVO - 900px
 ===================================================== */
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
 
-  .sidebar {
+  .rooms-sidebar {
     width: 65px;
-    min-width: 65px;
-
-    flex-basis: 65px;
   }
 
-  .games-menu {
-    justify-content: flex-start;
+  .rooms-sidebar-menu {
+    margin-top: 82px;
+  }
 
+  .rooms-content {
+    width: calc(100% - 65px);
+
+    margin-left: 65px;
+  }
+
+  .rooms-navbar {
+    left: 65px;
+  }
+
+  .rooms-navbar-logo {
+    width: 85px;
+  }
+
+  .rooms-games-navbar {
     overflow-x: auto;
+
+    justify-content: flex-start;
   }
 
-  .game-menu-item {
-    flex: 0 0 auto;
+  .rooms-navbar-game {
+    flex: 0 0 100px;
 
-    min-width: 80px;
+    min-width: 100px;
   }
 
   .room-card {
@@ -1012,36 +1139,77 @@ body {
 
 
 /* =====================================================
-   RESPONSIVO - 600px
+   RESPONSIVO - 650px
 ===================================================== */
 
-@media (max-width: 600px) {
+@media (max-width: 650px) {
 
-  .rooms-main {
-    padding: 20px 15px 60px;
+  .rooms-sidebar {
+    width: 58px;
   }
 
-  .games-menu {
-    height: 58px;
+  .rooms-sidebar-menu {
+    margin-top: 72px;
 
-    padding: 0 5px;
-
-    overflow-x: auto;
-
-    justify-content: flex-start;
+    gap: 7px;
   }
 
-  .game-menu-item {
-    height: 58px;
-
-    padding: 0 7px;
-
-    min-width: 75px;
-  }
-
-  .game-menu-item img {
+  .rooms-sidebar-item {
     width: 45px;
     height: 45px;
+  }
+
+  .rooms-sidebar-item img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .rooms-feedback-star {
+    width: 26px;
+    height: 26px;
+
+    font-size: 22px;
+  }
+
+  .rooms-content {
+    width: calc(100% - 58px);
+
+    margin-left: 58px;
+  }
+
+  .rooms-navbar {
+    left: 58px;
+
+    height: 60px;
+  }
+
+  .rooms-navbar-logo {
+    display: none;
+  }
+
+  .rooms-games-navbar {
+    height: 60px;
+
+    overflow-x: auto;
+  }
+
+  .rooms-navbar-game {
+    height: 60px;
+
+    flex: 0 0 90px;
+
+    min-width: 90px;
+
+    font-size: 9px;
+  }
+
+  .rooms-navbar-game img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .rooms-main {
+    padding: 80px 15px 60px;
   }
 
   .top-search {
@@ -1058,5 +1226,63 @@ body {
     flex-direction: column;
 
     align-items: flex-start;
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVO - 450px
+===================================================== */
+
+@media (max-width: 450px) {
+
+  .rooms-navbar-game {
+    flex-basis: 82px;
+
+    min-width: 82px;
+
+    font-size: 8px;
+  }
+
+  .rooms-navbar-game img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .rooms-main {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .filters {
+    gap: 8px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .filter-dropdown {
+    width: 100%;
+  }
+
+  .filter-button {
+    width: 100%;
+  }
+
+  .create-room {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+  .room-card {
+    padding: 18px 15px;
+
+    border-radius: 17px;
+  }
+
+  .room-details h2 {
+    font-size: 23px;
   }
 }
