@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import "./CreateRoom.css";
 
@@ -71,8 +70,13 @@ function CreateRoom({
     onProfile,
     onHistory,
     onFeedbacks,
-    onGameSelect
+    onGameSelect,
+    onSettings
 }) {
+
+    /* =====================================================
+       ESTADOS
+    ===================================================== */
 
     const [selectedMode, setSelectedMode] = useState("NORMAL");
 
@@ -81,6 +85,46 @@ function CreateRoom({
     const [selectedRank, setSelectedRank] = useState(null);
 
     const [selectedGender, setSelectedGender] = useState("HOMEM");
+
+
+    /* =====================================================
+       JOGOS DA NAVBAR
+    ===================================================== */
+
+    const navbarGames = [
+        {
+            name: "Overwatch",
+            logo: owLogo
+        },
+        {
+            name: "Counter-Strike 2",
+            logo: cs2Logo
+        },
+        {
+            name: "Valorant",
+            logo: valorantLogo
+        },
+        {
+            name: "Fortnite",
+            logo: fortniteLogo
+        },
+        {
+            name: "Rocket League",
+            logo: rocketLogo
+        },
+        {
+            name: "Dota 2",
+            logo: dotaLogo
+        },
+        {
+            name: "Marvel Rivals",
+            logo: rivalsLogo
+        },
+        {
+            name: "League of Legends",
+            logo: lolLogo
+        }
+    ];
 
 
     /* =====================================================
@@ -198,9 +242,32 @@ function CreateRoom({
         ) {
             setSelectedRank(null);
         }
-
     };
 
+
+    /* =====================================================
+       TROCAR JOGO PELA NAVBAR
+       
+       IMPORTANTE:
+       Aqui o jogo é enviado para o App.jsx.
+    ===================================================== */
+
+    const handleGameSelect = (selectedGame) => {
+
+        console.log(
+            "Jogo selecionado na navbar:",
+            selectedGame
+        );
+
+        if (typeof onGameSelect === "function") {
+            onGameSelect(selectedGame);
+        }
+    };
+
+
+    /* =====================================================
+       SE NÃO EXISTIR JOGO
+    ===================================================== */
 
     if (!game) {
         return null;
@@ -300,6 +367,7 @@ function CreateRoom({
                     <button
                         className="create-sidebar-item"
                         type="button"
+                        onClick={onSettings}
                         title="Configurações"
                     >
 
@@ -331,7 +399,11 @@ function CreateRoom({
 
                     {/* LOGO */}
 
-                    <div className="create-navbar-logo">
+                    <div
+                        className="create-navbar-logo"
+                        onClick={onBack}
+                        title="Home"
+                    >
 
                         <img
                             src={logo}
@@ -341,177 +413,44 @@ function CreateRoom({
                     </div>
 
 
-                    {/* JOGOS */}
+                    {/* =================================================
+                        JOGOS
+                    ================================================= */}
 
                     <div className="create-games-navbar">
 
+                        {navbarGames.map((item) => (
 
-                        {/* OVERWATCH */}
+                            <div
+                                key={item.name}
+                                className={
+                                    `create-navbar-game ${
+                                        game === item.name
+                                            ? "create-navbar-active"
+                                            : ""
+                                    }`
+                                }
+                                onClick={() =>
+                                    handleGameSelect(item.name)
+                                }
+                                title={`Ir para salas de ${item.name}`}
+                            >
 
-                        <div
-                            className="create-navbar-game"
-                            onClick={() =>
-                                onGameSelect("Overwatch")
-                            }
-                        >
+                                <img
+                                    src={item.logo}
+                                    alt={item.name}
+                                />
 
-                            <img
-                                src={owLogo}
-                                alt="Overwatch"
-                            />
+                                <span>
+                                    {item.name === "Counter-Strike 2"
+                                        ? "CS2"
+                                        : item.name.toUpperCase()
+                                    }
+                                </span>
 
-                            <span>
-                                OVERWATCH
-                            </span>
+                            </div>
 
-                        </div>
-
-
-                        {/* CS2 */}
-
-                        <div
-                            className="create-navbar-game"
-                            onClick={() =>
-                                onGameSelect("Counter-Strike 2")
-                            }
-                        >
-
-                            <img
-                                src={cs2Logo}
-                                alt="Counter-Strike 2"
-                            />
-
-                            <span>
-                                CS2
-                            </span>
-
-                        </div>
-
-
-                        {/* VALORANT */}
-
-                        <div
-                            className="create-navbar-game"
-                            onClick={() =>
-                                onGameSelect("Valorant")
-                            }
-                        >
-
-                            <img
-                                src={valorantLogo}
-                                alt="Valorant"
-                            />
-
-                            <span>
-                                VALORANT
-                            </span>
-
-                        </div>
-
-
-                        {/* FORTNITE */}
-
-                        <div
-                            className="create-navbar-game"
-                            onClick={() =>
-                                onGameSelect("Fortnite")
-                            }
-                        >
-
-                            <img
-                                src={fortniteLogo}
-                                alt="Fortnite"
-                            />
-
-                            <span>
-                                FORTNITE
-                            </span>
-
-                        </div>
-
-
-                        {/* ROCKET LEAGUE */}
-
-                        <div
-                            className="create-navbar-game"
-                            onClick={() =>
-                                onGameSelect("Rocket League")
-                            }
-                        >
-
-                            <img
-                                src={rocketLogo}
-                                alt="Rocket League"
-                            />
-
-                            <span>
-                                ROCKET LEAGUE
-                            </span>
-
-                        </div>
-
-
-                        {/* DOTA 2 */}
-
-                        <div
-                            className="create-navbar-game"
-                            onClick={() =>
-                                onGameSelect("Dota 2")
-                            }
-                        >
-
-                            <img
-                                src={dotaLogo}
-                                alt="Dota 2"
-                            />
-
-                            <span>
-                                DOTA 2
-                            </span>
-
-                        </div>
-
-
-                        {/* MARVEL RIVALS */}
-
-                        <div
-                            className="create-navbar-game"
-                            onClick={() =>
-                                onGameSelect("Marvel Rivals")
-                            }
-                        >
-
-                            <img
-                                src={rivalsLogo}
-                                alt="Marvel Rivals"
-                            />
-
-                            <span>
-                                MARVEL RIVALS
-                            </span>
-
-                        </div>
-
-
-                        {/* LEAGUE OF LEGENDS */}
-
-                        <div
-                            className="create-navbar-game create-navbar-active"
-                            onClick={() =>
-                                onGameSelect("League of Legends")
-                            }
-                        >
-
-                            <img
-                                src={lolLogo}
-                                alt="League of Legends"
-                            />
-
-                            <span>
-                                LEAGUE OF LEGENDS
-                            </span>
-
-                        </div>
+                        ))}
 
                     </div>
 
@@ -525,7 +464,9 @@ function CreateRoom({
                 <main className="create-room-main">
 
 
-                    {/* TOPO */}
+                    {/* =================================================
+                        TOPO
+                    ================================================= */}
 
                     <div className="create-room-top">
 
@@ -540,7 +481,9 @@ function CreateRoom({
                     </div>
 
 
-                    {/* LOGO DO JOGO */}
+                    {/* =================================================
+                        LOGO DO JOGO
+                    ================================================= */}
 
                     <div className="create-game-header">
 
@@ -653,7 +596,9 @@ function CreateRoom({
                                     }
                                     type="button"
                                 >
+
                                     {team}
+
                                 </button>
 
                             ))}
@@ -780,7 +725,9 @@ function CreateRoom({
                                     setSelectedGender("HOMEM")
                                 }
                             >
+
                                 ♂ HOMEM
+
                             </button>
 
 
@@ -797,7 +744,9 @@ function CreateRoom({
                                     setSelectedGender("MULHER")
                                 }
                             >
+
                                 ♀ MULHER
+
                             </button>
 
                         </div>

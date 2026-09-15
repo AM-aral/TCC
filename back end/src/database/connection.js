@@ -1,13 +1,14 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-export const connectDatabase = async () => {
-  try {
-    // Pega a URL do arquivo .env
-    const uri = process.env.MONGO_URI; 
+const conectarBanco = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
 
-    await mongoose.connect(uri);
-    console.log("Banco de dados conectado com sucesso!");
-  } catch (error) {
-    console.error("Erro ao conectar ao banco:", error);
-  }
+        console.log("MongoDB conectado com sucesso!");
+    } catch (erro) {
+        console.error("Erro ao conectar ao MongoDB:", erro);
+        process.exit(1);
+    }
 };
+
+module.exports = conectarBanco;

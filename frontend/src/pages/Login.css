@@ -4,16 +4,30 @@
   box-sizing: border-box;
 }
 
+
+/* =====================================================
+   PÁGINA
+===================================================== */
+
 .login-page {
   min-height: 100vh;
   width: 100%;
+
   position: relative;
+
   overflow-x: hidden;
+
   background: #321047;
 }
 
+
+/* =====================================================
+   HERO
+===================================================== */
+
 .hero-background {
   position: absolute;
+
   top: 0;
   left: 0;
 
@@ -27,8 +41,14 @@
   z-index: 1;
 }
 
+
+/* =====================================================
+   OVERLAY
+===================================================== */
+
 .background-overlay {
   position: absolute;
+
   top: 0;
   left: 0;
 
@@ -48,10 +68,13 @@
 }
 
 
-/* CONTEÚDO */
+/* =====================================================
+   CONTEÚDO
+===================================================== */
 
 .login-container {
   position: relative;
+
   z-index: 3;
 
   width: 100%;
@@ -67,7 +90,9 @@
 }
 
 
-/* LOGO */
+/* =====================================================
+   LOGO
+===================================================== */
 
 .logo {
   width: 130px;
@@ -75,18 +100,31 @@
 
   margin-bottom: 25px;
 
+  object-fit: contain;
+
   filter: drop-shadow(
-    4 4px 25px rgba(0, 0, 0, 0.4)
+    4px 4px 25px rgba(0, 0, 0, 0.4)
   );
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.03);
 }
 
 
-/* ABAS */
+/* =====================================================
+   ABAS
+===================================================== */
 
 .login-tabs {
   width: 100%;
 
   display: flex;
+
   justify-content: center;
 
   gap: 40px;
@@ -94,10 +132,12 @@
   margin-bottom: 25px;
 }
 
+
 .tab {
   position: relative;
 
   border: none;
+
   background: transparent;
 
   color: rgba(255, 255, 255, 0.55);
@@ -107,11 +147,25 @@
   padding: 10px 20px;
 
   cursor: pointer;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease,
+    opacity 0.25s ease;
 }
+
+
+.tab:hover {
+  color: rgba(255, 255, 255, 0.85);
+
+  transform: translateY(-1px);
+}
+
 
 .tab.active {
   color: white;
 }
+
 
 .tab.active::after {
   content: "";
@@ -129,10 +183,29 @@
   border-radius: 10px;
 
   box-shadow: 0 0 10px #7b2cff;
+
+  animation: tabUnderline 0.25s ease;
 }
 
 
-/* BOTÕES SOCIAIS */
+@keyframes tabUnderline {
+
+  from {
+    width: 0;
+    opacity: 0;
+  }
+
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+
+}
+
+
+/* =====================================================
+   BOTÕES SOCIAIS
+===================================================== */
 
 .social-buttons {
   width: 100%;
@@ -143,6 +216,7 @@
 
   margin-bottom: 25px;
 }
+
 
 .social-button {
   flex: 1;
@@ -161,39 +235,58 @@
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
 }
+
 
 .social-button:hover {
   transform: translateY(-2px);
+
+  filter: brightness(1.08);
 }
+
 
 .discord {
   background: #5865f2;
 }
 
+
 .google {
   background: #ff5a5f;
 }
+
 
 .twitch {
   background: #9146ff;
 }
 
 
-/* DIVISOR */
+.social-button img {
+  width: 25px;
+  height: 25px;
+
+  object-fit: contain;
+}
+
+
+/* =====================================================
+   DIVISOR
+===================================================== */
 
 .divider {
   width: 100%;
 
-
   display: flex;
+
   align-items: center;
 
   gap: 10px;
 
   margin-bottom: 25px;
 }
+
 
 .divider span {
   flex: 1;
@@ -203,6 +296,7 @@
   background: #4B2174;
 }
 
+
 .divider p {
   color: #4B2174;
 
@@ -210,17 +304,75 @@
 }
 
 
-/* FORMULÁRIO */
+/* =====================================================
+   FORMULÁRIO
+===================================================== */
 
 .login-form {
   width: 100%;
+
+  animation: formLoginIn 0.3s ease;
 }
 
-.input-container {
+
+.cadastro-form {
+  animation: formCadastroIn 0.3s ease;
+}
+
+
+/* =====================================================
+   ANIMAÇÃO LOGIN
+===================================================== */
+
+@keyframes formLoginIn {
+
+  from {
+    opacity: 0;
+
+    transform: translateX(-12px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateX(0);
+  }
+
+}
+
+
+/* =====================================================
+   ANIMAÇÃO CADASTRO
+===================================================== */
+
+@keyframes formCadastroIn {
+
+  from {
+    opacity: 0;
+
+    transform: translateX(12px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateX(0);
+  }
+
+}
+
+
+/* =====================================================
+   CAMPOS
+===================================================== */
+
+.input-box {
   width: 100%;
+
   height: 48px;
 
   display: flex;
+
   align-items: center;
 
   padding: 0 15px;
@@ -232,37 +384,66 @@
   border: 2px solid #7027ff;
 
   border-radius: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
-.input-icon {
-  margin-right: 12px;
+
+.input-box:focus-within {
+  border-color: #9b5cff;
+
+  box-shadow:
+    0 0 12px rgba(123, 44, 255, 0.35);
+
+  transform: translateY(-1px);
+}
+
+
+.input-box img {
   width: 25px;
   height: 25px;
 
-  font-size: 18px;
+  object-fit: contain;
+
+  margin-right: 12px;
+
+  flex-shrink: 0;
 }
 
-.input-container input {
+
+.input-box input {
   width: 100%;
   height: 100%;
 
   border: none;
+
   outline: none;
 
   background: transparent;
 
   color: #39175C;
+
+  font-size: 15px;
 }
 
-.input-container input::placeholder {
+
+.input-box input::placeholder {
   color: #39175C;
+
+  opacity: 1;
 }
 
 
-/* BOTÃO */
+/* =====================================================
+   BOTÃO ENTRAR / CADASTRAR
+===================================================== */
 
 .enter-button {
   width: 100%;
+
   height: 65px;
 
   margin-top: 15px;
@@ -284,16 +465,101 @@
   letter-spacing: 1px;
 
   cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    opacity 0.2s ease;
 }
 
 
-/* TERMOS */
+.enter-button:hover {
+  transform: translateY(-2px);
+
+  filter: brightness(1.08);
+}
+
+
+.enter-button:active {
+  transform: scale(0.97);
+}
+
+
+.enter-button:disabled {
+  opacity: 0.65;
+
+  cursor: wait;
+
+  transform: none;
+}
+
+
+/* =====================================================
+   MENSAGEM DE ERRO
+===================================================== */
+
+.login-error {
+  width: 100%;
+
+  margin-top: 5px;
+
+  color: #ff7070;
+
+  font-size: 13px;
+
+  text-align: center;
+
+  animation: messageIn 0.25s ease;
+}
+
+
+/* =====================================================
+   MENSAGEM DE SUCESSO
+===================================================== */
+
+.login-success {
+  width: 100%;
+
+  margin-top: 5px;
+
+  color: #70ffae;
+
+  font-size: 13px;
+
+  text-align: center;
+
+  animation: messageIn 0.25s ease;
+}
+
+
+@keyframes messageIn {
+
+  from {
+    opacity: 0;
+
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+
+}
+
+
+/* =====================================================
+   TERMOS
+===================================================== */
 
 .terms {
   margin-top: 20px;
 
   display: flex;
+
   justify-content: center;
+
   align-items: center;
 
   gap: 8px;
@@ -301,22 +567,75 @@
   color: rgba(255, 255, 255, 0.7);
 
   font-size: 13px;
+
+  text-align: center;
 }
+
 
 .terms input {
   width: 17px;
   height: 17px;
+
+  flex-shrink: 0;
 }
+
 
 .terms a {
   color: #9b5cff;
 
   text-decoration: none;
+
+  transition: color 0.2s ease;
 }
 
-.social-button img {
-  width: 25px;
-  height: 25px;
 
-  object-fit: contain;
+.terms a:hover {
+  color: #c19aff;
+}
+
+
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+
+@media (max-width: 600px) {
+
+  .login-container {
+    width: calc(100% - 40px);
+
+    padding-top: 30px;
+  }
+
+
+  .logo {
+    width: 110px;
+    height: 125px;
+
+    margin-bottom: 20px;
+  }
+
+
+  .login-tabs {
+    gap: 20px;
+  }
+
+
+  .tab {
+    font-size: 17px;
+
+    padding: 8px 15px;
+  }
+
+
+  .social-button {
+    height: 45px;
+  }
+
+
+  .enter-button {
+    height: 58px;
+
+    font-size: 18px;
+  }
+
 }

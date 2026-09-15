@@ -1,15 +1,14 @@
-
 import "./History.css";
 
 import logo from "../assets/logo.png";
 
-/* SIDEBAR */
+// SIDEBAR
 import homeIcon from "../assets/sidebar/home.png";
 import perfilIcon from "../assets/sidebar/perfil.png";
 import historicoIcon from "../assets/sidebar/historico.png";
 import configuracoesIcon from "../assets/sidebar/configuracoes.png";
 
-/* MINI LOGOS */
+// MINI LOGOS DA NAVBAR
 import owLogo from "../assets/icon/ow icon.png";
 import cs2Logo from "../assets/icon/cs icon.png";
 import valorantLogo from "../assets/icon/val icon.png";
@@ -19,28 +18,41 @@ import dotaLogo from "../assets/icon/dota icon.png";
 import rivalsLogo from "../assets/icon/marvel icon.png";
 import lolLogo from "../assets/icon/lol icon.png";
 
-/* FUNDO */
+// FUNDO
 import roomsBackground from "../assets/rooms-bg.png";
 
-/* IMAGENS DOS JOGOS */
+// IMAGENS DOS JOGOS
 import lolBackground from "../assets/games/lol.png";
 import valorantBackground from "../assets/games/valorant.png";
 import csBackground from "../assets/games/cs2.png";
-
 
 function History({
   onHome,
   onProfile,
   onHistory,
   onFeedbacks,
+  onSettings,
   onGameSelect
 }) {
+
+  // =====================================================
+  // FUNÇÃO PARA SELECIONAR JOGO
+  // =====================================================
+
+  const selecionarJogo = (game) => {
+    if (typeof onGameSelect === "function") {
+      onGameSelect(game);
+    }
+  };
+
+  // =====================================================
+  // HISTÓRICO
+  // =====================================================
 
   const historico = [
     {
       id: 1,
       jogo: "League of Legends",
-      jogoIcon: lolLogo,
       imagem: lolBackground,
       sala: "Ranked Soloqueue",
       tipo: "Participou",
@@ -53,7 +65,6 @@ function History({
     {
       id: 2,
       jogo: "Valorant",
-      jogoIcon: valorantLogo,
       imagem: valorantBackground,
       sala: "Ranked para subir",
       tipo: "Criou",
@@ -66,7 +77,6 @@ function History({
     {
       id: 3,
       jogo: "Counter-Strike 2",
-      jogoIcon: cs2Logo,
       imagem: csBackground,
       sala: "Duo competitivo",
       tipo: "Participou",
@@ -79,7 +89,6 @@ function History({
     {
       id: 4,
       jogo: "League of Legends",
-      jogoIcon: lolLogo,
       imagem: lolBackground,
       sala: "Procurando duo",
       tipo: "Criou",
@@ -92,7 +101,6 @@ function History({
     {
       id: 5,
       jogo: "Valorant",
-      jogoIcon: valorantLogo,
       imagem: valorantBackground,
       sala: "Ranked 5x5",
       tipo: "Participou",
@@ -105,7 +113,6 @@ function History({
     {
       id: 6,
       jogo: "Counter-Strike 2",
-      jogoIcon: cs2Logo,
       imagem: csBackground,
       sala: "Procurando time",
       tipo: "Criou",
@@ -116,9 +123,7 @@ function History({
     }
   ];
 
-
   return (
-
     <div
       className="history-page"
       style={{
@@ -128,7 +133,6 @@ function History({
 
       <div className="history-background-overlay"></div>
 
-
       {/* =====================================================
           SIDEBAR
       ===================================================== */}
@@ -136,6 +140,8 @@ function History({
       <aside className="history-sidebar">
 
         <nav className="history-sidebar-menu">
+
+          {/* HOME */}
 
           <button
             className="history-sidebar-item"
@@ -149,6 +155,7 @@ function History({
             />
           </button>
 
+          {/* PERFIL */}
 
           <button
             className="history-sidebar-item"
@@ -162,6 +169,7 @@ function History({
             />
           </button>
 
+          {/* HISTÓRICO */}
 
           <button
             className="history-sidebar-item history-sidebar-active"
@@ -175,6 +183,7 @@ function History({
             />
           </button>
 
+          {/* FEEDBACKS */}
 
           <button
             className="history-sidebar-item"
@@ -187,10 +196,12 @@ function History({
             </span>
           </button>
 
+          {/* CONFIGURAÇÕES */}
 
           <button
             className="history-sidebar-item"
             type="button"
+            onClick={onSettings}
             title="Configurações"
           >
             <img
@@ -203,13 +214,11 @@ function History({
 
       </aside>
 
-
       {/* =====================================================
           CONTEÚDO
       ===================================================== */}
 
       <div className="history-content">
-
 
         {/* =====================================================
             NAVBAR
@@ -217,26 +226,29 @@ function History({
 
         <header className="history-navbar">
 
-          <div className="history-navbar-logo">
+          {/* LOGO */}
 
+          <div
+            className="history-navbar-logo"
+            onClick={onHome}
+            title="Home"
+          >
             <img
               src={logo}
               alt="LFG"
             />
-
           </div>
 
+          {/* JOGOS */}
 
           <div className="history-games-navbar">
-
 
             {/* OVERWATCH */}
 
             <div
               className="history-navbar-game"
-              onClick={() => onGameSelect("Overwatch")}
+              onClick={() => selecionarJogo("Overwatch")}
             >
-
               <img
                 src={owLogo}
                 alt="Overwatch"
@@ -245,17 +257,14 @@ function History({
               <span>
                 OVERWATCH
               </span>
-
             </div>
-
 
             {/* CS2 */}
 
             <div
               className="history-navbar-game"
-              onClick={() => onGameSelect("Counter-Strike 2")}
+              onClick={() => selecionarJogo("Counter-Strike 2")}
             >
-
               <img
                 src={cs2Logo}
                 alt="Counter-Strike 2"
@@ -264,17 +273,14 @@ function History({
               <span>
                 CS2
               </span>
-
             </div>
-
 
             {/* VALORANT */}
 
             <div
               className="history-navbar-game"
-              onClick={() => onGameSelect("Valorant")}
+              onClick={() => selecionarJogo("Valorant")}
             >
-
               <img
                 src={valorantLogo}
                 alt="Valorant"
@@ -283,17 +289,14 @@ function History({
               <span>
                 VALORANT
               </span>
-
             </div>
-
 
             {/* FORTNITE */}
 
             <div
               className="history-navbar-game"
-              onClick={() => onGameSelect("Fortnite")}
+              onClick={() => selecionarJogo("Fortnite")}
             >
-
               <img
                 src={fortniteLogo}
                 alt="Fortnite"
@@ -302,17 +305,14 @@ function History({
               <span>
                 FORTNITE
               </span>
-
             </div>
-
 
             {/* ROCKET LEAGUE */}
 
             <div
               className="history-navbar-game"
-              onClick={() => onGameSelect("Rocket League")}
+              onClick={() => selecionarJogo("Rocket League")}
             >
-
               <img
                 src={rocketLogo}
                 alt="Rocket League"
@@ -321,17 +321,14 @@ function History({
               <span>
                 ROCKET LEAGUE
               </span>
-
             </div>
-
 
             {/* DOTA 2 */}
 
             <div
               className="history-navbar-game"
-              onClick={() => onGameSelect("Dota 2")}
+              onClick={() => selecionarJogo("Dota 2")}
             >
-
               <img
                 src={dotaLogo}
                 alt="Dota 2"
@@ -340,17 +337,14 @@ function History({
               <span>
                 DOTA 2
               </span>
-
             </div>
-
 
             {/* MARVEL RIVALS */}
 
             <div
               className="history-navbar-game"
-              onClick={() => onGameSelect("Marvel Rivals")}
+              onClick={() => selecionarJogo("Marvel Rivals")}
             >
-
               <img
                 src={rivalsLogo}
                 alt="Marvel Rivals"
@@ -359,17 +353,14 @@ function History({
               <span>
                 MARVEL RIVALS
               </span>
-
             </div>
-
 
             {/* LEAGUE OF LEGENDS */}
 
             <div
               className="history-navbar-game"
-              onClick={() => onGameSelect("League of Legends")}
+              onClick={() => selecionarJogo("League of Legends")}
             >
-
               <img
                 src={lolLogo}
                 alt="League of Legends"
@@ -378,19 +369,19 @@ function History({
               <span>
                 LEAGUE OF LEGENDS
               </span>
-
             </div>
 
           </div>
 
         </header>
 
-
         {/* =====================================================
             ÁREA PRINCIPAL
         ===================================================== */}
 
         <main className="history-main">
+
+          {/* CABEÇALHO */}
 
           <div className="history-header">
 
@@ -406,6 +397,7 @@ function History({
 
             </div>
 
+            {/* BUSCA */}
 
             <div className="history-search">
 
@@ -422,66 +414,37 @@ function History({
 
           </div>
 
-
-          {/* RESUMO */}
+          {/* =====================================================
+              RESUMO
+          ===================================================== */}
 
           <div className="history-summary">
 
             <div className="history-summary-card">
-
-              <strong>
-                24
-              </strong>
-
-              <span>
-                Atividades
-              </span>
-
+              <strong>24</strong>
+              <span>Atividades</span>
             </div>
 
-
             <div className="history-summary-card">
-
-              <strong>
-                8
-              </strong>
-
-              <span>
-                Salas criadas
-              </span>
-
+              <strong>8</strong>
+              <span>Salas criadas</span>
             </div>
 
-
             <div className="history-summary-card">
-
-              <strong>
-                16
-              </strong>
-
-              <span>
-                Salas participadas
-              </span>
-
+              <strong>16</strong>
+              <span>Salas participadas</span>
             </div>
 
-
             <div className="history-summary-card">
-
-              <strong>
-                21
-              </strong>
-
-              <span>
-                Concluídas
-              </span>
-
+              <strong>21</strong>
+              <span>Concluídas</span>
             </div>
 
           </div>
 
-
-          {/* FILTROS */}
+          {/* =====================================================
+              FILTROS
+          ===================================================== */}
 
           <div className="history-filters">
 
@@ -515,8 +478,9 @@ function History({
 
           </div>
 
-
-          {/* LISTA */}
+          {/* =====================================================
+              LISTA
+          ===================================================== */}
 
           <section className="history-list">
 
@@ -527,22 +491,18 @@ function History({
                 key={item.id}
               >
 
+                {/* IMAGEM DO JOGO */}
+
                 <div
                   className="history-card-image"
                   style={{
                     backgroundImage: `url(${item.imagem})`
                   }}
                 >
-
                   <div className="history-card-image-overlay"></div>
-
-                  <img
-                    src={item.jogoIcon}
-                    alt={item.jogo}
-                  />
-
                 </div>
 
+                {/* INFORMAÇÕES */}
 
                 <div className="history-card-info">
 
@@ -560,6 +520,7 @@ function History({
 
                     </div>
 
+                    {/* STATUS */}
 
                     <span
                       className={
@@ -573,6 +534,7 @@ function History({
 
                   </div>
 
+                  {/* TAGS */}
 
                   <div className="history-tags">
 
@@ -590,6 +552,7 @@ function History({
 
                   </div>
 
+                  {/* DATA */}
 
                   <span className="history-date">
                     🕒 {item.data}
@@ -611,6 +574,4 @@ function History({
   );
 }
 
-
 export default History;
-

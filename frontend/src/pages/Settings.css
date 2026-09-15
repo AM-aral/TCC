@@ -1,0 +1,362 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PÁGINA
+========================================================= */
+
+.settings-page {
+    width: 100%;
+    min-height: 100vh;
+    background: #f4eff8;
+    color: #24152d;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.settings-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 76px;
+    height: 100vh;
+
+    background: rgba(36, 0, 68, 0.98);
+
+    z-index: 100;
+}
+
+
+.settings-sidebar-menu {
+    margin-top: 92px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+.settings-sidebar-item {
+    width: 52px;
+    height: 52px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.settings-sidebar-item:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(1.05);
+}
+
+
+.settings-sidebar-item.active {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+
+.settings-sidebar-item img {
+    width: 27px;
+    height: 27px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.settings-navbar {
+    position: fixed;
+
+    top: 0;
+    left: 76px;
+    right: 0;
+
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+
+    background: linear-gradient(
+        90deg,
+        #69379a,
+        #63318f
+    );
+
+    z-index: 90;
+}
+
+
+/* LOGO */
+
+.settings-navbar-logo {
+    width: 115px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.settings-navbar-logo img {
+    width: 70px;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+/* JOGOS */
+
+.settings-games {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 0 18px;
+
+    overflow-x: auto;
+}
+
+
+.settings-game-button {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 12px;
+
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.settings-game-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+
+.settings-game-button img {
+    width: 30px;
+    height: 30px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   CONTEÚDO
+========================================================= */
+
+.settings-content {
+    margin-left: 76px;
+
+    min-height: 100vh;
+
+    padding:
+        110px
+        5vw
+        60px;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+.settings-header {
+    margin-bottom: 32px;
+}
+
+
+.settings-header h1 {
+    margin: 0 0 8px;
+
+    font-size: 34px;
+    font-weight: 700;
+
+    color: #321442;
+}
+
+
+.settings-header p {
+    margin: 0;
+
+    font-size: 16px;
+
+    color: #776580;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.settings-card {
+    width: 100%;
+    max-width: 850px;
+
+    padding: 28px 30px;
+
+    border-radius: 18px;
+
+    background: white;
+
+    border: 1px solid #e7dced;
+
+    box-shadow:
+        0 8px 25px rgba(50, 20, 66, 0.08);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+
+.settings-card-info {
+    flex: 1;
+}
+
+
+.settings-card-info h2 {
+    margin: 0 0 8px;
+
+    font-size: 21px;
+
+    color: #321442;
+}
+
+
+.settings-card-info p {
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    color: #806d88;
+}
+
+
+/* =========================================================
+   BOTÃO SAIR
+========================================================= */
+
+.settings-logout-button {
+    border: none;
+
+    padding: 13px 22px;
+
+    border-radius: 10px;
+
+    background: #7b3fa3;
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.settings-logout-button:hover {
+    background: #642f87;
+
+    transform: translateY(-1px);
+}
+
+
+.settings-logout-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .settings-navbar-logo {
+        width: 85px;
+    }
+
+    .settings-navbar-logo img {
+        width: 58px;
+    }
+
+    .settings-content {
+        padding:
+            100px
+            25px
+            50px;
+    }
+
+    .settings-header h1 {
+        font-size: 28px;
+    }
+
+    .settings-card {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .settings-logout-button {
+        width: 100%;
+    }
+}

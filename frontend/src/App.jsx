@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 import Login from "./pages/Login";
@@ -8,217 +7,310 @@ import CreateRoom from "./pages/CreateRoom";
 import Profile from "./pages/Profile";
 import History from "./pages/History";
 import Feedbacks from "./pages/Feedbacks";
+import Settings from "./pages/Settings";
 
 
 function App() {
 
-  const [pagina, setPagina] = useState("login");
+    // =====================================================
+    // ESTADOS
+    // =====================================================
 
-  const [jogoSelecionado, setJogoSelecionado] = useState(null);
+    const [pagina, setPagina] = useState("login");
+
+    const [jogoSelecionado, setJogoSelecionado] = useState(null);
 
 
-  function irParaRooms(jogo = null) {
+    // =====================================================
+    // LOGIN
+    // =====================================================
 
-    if (jogo) {
-      setJogoSelecionado(jogo);
+    const entrarNoSite = () => {
+        setPagina("home");
+    };
+
+
+    // =====================================================
+    // LOGOUT
+    // =====================================================
+
+    const sairDaConta = () => {
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("usuario");
+
+        setJogoSelecionado(null);
+
+        setPagina("login");
+    };
+
+
+    // =====================================================
+    // SELECIONAR JOGO
+    // =====================================================
+
+    const selecionarJogo = (game) => {
+
+        console.log("Jogo selecionado:", game);
+
+        // Guarda o jogo selecionado
+        setJogoSelecionado(game);
+
+        // Vai para a tela de salas
+        setPagina("rooms");
+    };
+
+
+    // =====================================================
+    // FEEDBACKS
+    // =====================================================
+
+    const irParaFeedbacks = () => {
+        setPagina("feedbacks");
+    };
+
+
+    // =====================================================
+    // LOGIN
+    // =====================================================
+
+    if (pagina === "login") {
+
+        return (
+            <Login
+                onLogin={entrarNoSite}
+            />
+        );
     }
 
-    setPagina("rooms");
-  }
+
+    // =====================================================
+    // HOME
+    // =====================================================
+
+    if (pagina === "home") {
+
+        return (
+            <Home
+
+                onSelectGame={selecionarJogo}
+
+                onProfile={() => setPagina("profile")}
+
+                onHistory={() => setPagina("history")}
+
+                onFeedbacks={irParaFeedbacks}
+
+                onSettings={() => setPagina("settings")}
+
+            />
+        );
+    }
 
 
-  function irParaFeedbacks() {
-    setPagina("feedbacks");
-  }
+    // =====================================================
+    // ROOMS
+    // =====================================================
+
+    if (pagina === "rooms") {
+
+        return (
+            <Rooms
+
+                game={jogoSelecionado}
+
+                onHome={() => setPagina("home")}
+
+                onCreateRoom={() => setPagina("create-room")}
+
+                onProfile={() => setPagina("profile")}
+
+                onHistory={() => setPagina("history")}
+
+                onFeedbacks={irParaFeedbacks}
+
+                onSettings={() => setPagina("settings")}
+
+                /*
+                 * IMPORTANTE:
+                 * Permite trocar de jogo pela navbar
+                 * da página Rooms.
+                 */
+                onSelectGame={selecionarJogo}
+
+            />
+        );
+    }
 
 
-  return (
-    <>
+    // =====================================================
+    // CREATE ROOM
+    // =====================================================
 
-      {/* =====================================================
-          LOGIN
-      ===================================================== */}
+    if (pagina === "create-room") {
 
-      {pagina === "login" && (
+        return (
+            <CreateRoom
 
+                game={jogoSelecionado}
+
+                /*
+                 * Voltar para as salas
+                 */
+                onBack={() => setPagina("rooms")}
+
+                /*
+                 * Perfil
+                 */
+                onProfile={() => setPagina("profile")}
+
+                /*
+                 * Histórico
+                 */
+                onHistory={() => setPagina("history")}
+
+                /*
+                 * Feedbacks
+                 */
+                onFeedbacks={irParaFeedbacks}
+
+                /*
+                 * Configurações
+                 */
+                onSettings={() => setPagina("settings")}
+
+                /*
+                 * IMPORTANTE:
+                 * Permite trocar o jogo pela navbar.
+                 */
+                onGameSelect={selecionarJogo}
+
+            />
+        );
+    }
+
+
+    // =====================================================
+    // PROFILE
+    // =====================================================
+
+    if (pagina === "profile") {
+
+        return (
+            <Profile
+
+                onHome={() => setPagina("home")}
+
+                onProfile={() => setPagina("profile")}
+
+                onHistory={() => setPagina("history")}
+
+                onFeedbacks={irParaFeedbacks}
+
+                onSettings={() => setPagina("settings")}
+
+                onSelectGame={selecionarJogo}
+
+            />
+        );
+    }
+
+
+    // =====================================================
+    // HISTORY
+    // =====================================================
+
+    if (pagina === "history") {
+
+        return (
+            <History
+
+                onHome={() => setPagina("home")}
+
+                onProfile={() => setPagina("profile")}
+
+                onHistory={() => setPagina("history")}
+
+                onFeedbacks={irParaFeedbacks}
+
+                onSettings={() => setPagina("settings")}
+
+                /*
+                 * IMPORTANTE:
+                 * É isso que faz o LoL da navbar
+                 * ir para Rooms.
+                 */
+                onGameSelect={selecionarJogo}
+
+            />
+        );
+    }
+
+
+    // =====================================================
+    // FEEDBACKS
+    // =====================================================
+
+    if (pagina === "feedbacks") {
+
+        return (
+            <Feedbacks
+
+                onHome={() => setPagina("home")}
+
+                onProfile={() => setPagina("profile")}
+
+                onHistory={() => setPagina("history")}
+
+                onFeedbacks={irParaFeedbacks}
+
+                onSettings={() => setPagina("settings")}
+
+                onSelectGame={selecionarJogo}
+
+            />
+        );
+    }
+
+
+    // =====================================================
+    // SETTINGS
+    // =====================================================
+
+    if (pagina === "settings") {
+
+        return (
+            <Settings
+
+                onHome={() => setPagina("home")}
+
+                onProfile={() => setPagina("profile")}
+
+                onHistory={() => setPagina("history")}
+
+                onFeedbacks={irParaFeedbacks}
+
+                onSettings={() => setPagina("settings")}
+
+                onSelectGame={selecionarJogo}
+
+                onLogout={sairDaConta}
+
+            />
+        );
+    }
+
+
+    // =====================================================
+    // FALLBACK
+    // =====================================================
+
+    return (
         <Login
-          onLogin={() => {
-            setPagina("home");
-          }}
+            onLogin={entrarNoSite}
         />
-
-      )}
-
-
-      {/* =====================================================
-          HOME
-      ===================================================== */}
-
-      {pagina === "home" && (
-
-        <Home
-          onSelectGame={(game) => {
-
-            setJogoSelecionado(game);
-
-            setPagina("rooms");
-
-          }}
-
-          onProfile={() => {
-            setPagina("profile");
-          }}
-        />
-
-      )}
-
-
-      {/* =====================================================
-          ROOMS
-      ===================================================== */}
-
-      {pagina === "rooms" && (
-
-        <Rooms
-
-          game={jogoSelecionado}
-
-          onHome={() => {
-            setPagina("home");
-          }}
-
-          onCreateRoom={() => {
-            setPagina("create-room");
-          }}
-
-          onProfile={() => {
-            setPagina("profile");
-          }}
-
-          onHistory={() => {
-            setPagina("history");
-          }}
-
-          onFeedbacks={irParaFeedbacks}
-
-        />
-
-      )}
-
-
-      {/* =====================================================
-          CREATE ROOM
-      ===================================================== */}
-
-      {pagina === "create-room" && (
-
-        <CreateRoom
-
-          game={jogoSelecionado}
-
-          onBack={() => {
-            setPagina("rooms");
-          }}
-
-          onProfile={() => {
-            setPagina("profile");
-          }}
-
-          onHistory={() => {
-            setPagina("history");
-          }}
-
-          onFeedbacks={irParaFeedbacks}
-
-        />
-
-      )}
-
-
-      {/* =====================================================
-          PROFILE
-      ===================================================== */}
-
-      {pagina === "profile" && (
-
-        <Profile
-
-          onHome={() => {
-            setPagina("home");
-          }}
-
-          onHistory={() => {
-            setPagina("history");
-          }}
-
-          onFeedbacks={irParaFeedbacks}
-
-        />
-
-      )}
-
-
-      {/* =====================================================
-          HISTORY
-      ===================================================== */}
-
-      {pagina === "history" && (
-
-        <History
-
-          onHome={() => {
-            setPagina("home");
-          }}
-
-          onProfile={() => {
-            setPagina("profile");
-          }}
-
-          onHistory={() => {
-            setPagina("history");
-          }}
-
-          onFeedbacks={irParaFeedbacks}
-
-          onGameSelect={irParaRooms}
-
-        />
-
-      )}
-
-
-      {/* =====================================================
-          FEEDBACKS
-      ===================================================== */}
-
-      {pagina === "feedbacks" && (
-
-        <Feedbacks
-
-          onHome={() => {
-            setPagina("home");
-          }}
-
-          onProfile={() => {
-            setPagina("profile");
-          }}
-
-          onHistory={() => {
-            setPagina("history");
-          }}
-
-          onFeedbacks={irParaFeedbacks}
-
-          onGameSelect={irParaRooms}
-
-        />
-
-      )}
-
-    </>
-  );
+    );
 }
 
 
 export default App;
-

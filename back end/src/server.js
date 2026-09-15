@@ -1,36 +1,59 @@
-import dns from "dns";
-dns.setDefaultResultOrder("ipv4first");
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
-import dotenv from "dotenv";
-dotenv.config(); 
+require("dotenv").config();
 
-import express from "express";
-import Produtosroutes from "./routes/Produtosroutes.js";
-import { connectDatabase } from "./database/connection.js";
+const express = require("express");
+const cors = require("cors");
+
+const conectarBanco = require("./database/connection");
+const authRoutes = require("./routes/authRoutes");
+
+
+// ==============================
+// CRIAR APLICAÇÃO
+// ==============================
 
 const app = express();
 
-console.log("ESTE É O SERVER.TS DA TECHSTORE");
 
-const PORT = 3001;
+// ==============================
+// MIDDLEWARES
+// ==============================
 
-connectDatabase();
+app.use(cors());
 
 app.use(express.json());
 
-console.log("Rotas de produtos carregadas");
-app.use("/produto", Produtosroutes);
+
+// ==============================
+// CONECTAR BANCO
+// ==============================
+
+conectarBanco();
+
+
+// ==============================
+// ROTAS
+// ==============================
+
+app.use("/auth", authRoutes);
+
+
+// ==============================
+// ROTA PRINCIPAL
+// ==============================
 
 app.get("/", (req, res) => {
-  res.json({
-    message: "API está funcionando!"
-  });
+    res.json({
+        mensagem: "Backend LFGP funcionando!"
+    });
 });
 
-app.get("/teste", (req, res) => {
-  res.send("Servidor de teste funcionando!");
-});
 
-const server = app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+// ==============================
+// SERVIDOR
+// ==============================
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
