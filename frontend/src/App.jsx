@@ -31,11 +31,12 @@ import R6Room from "./pages/r6Room";
 // CREATE ROOM
 // =====================================================
 //
-// ⚠️ Por enquanto só o CreateRoom do LoL está pronto de verdade.
-// Os outros arquivos xxxCreateRoom.jsx existem na pasta mas ainda
-// estão vazios/incompletos (sem "export default"), e importar um
-// arquivo desses quebra o site inteiro (foi o erro que você teve
-// com o brawlCreateRoom.jsx).
+// ⚠️ Por enquanto só o CreateRoom do LoL, Brawlhalla, Valorant e
+// Fortnite estão prontos de verdade. Os outros arquivos
+// xxxCreateRoom.jsx existem na pasta mas ainda estão
+// vazios/incompletos (sem "export default"), e importar um
+// arquivo desses quebra o site inteiro (foi o erro que você
+// teve com o brawlCreateRoom.jsx antes de terminá-lo).
 //
 // Conforme for terminando cada CreateRoom, faça 2 coisas aqui:
 //   1) adicione o import dele junto com os de baixo
@@ -47,6 +48,9 @@ import R6Room from "./pages/r6Room";
 //   ... e no mapa: "Dota 2": { Room: DotaRooms, CreateRoom: DotaCreateRoom },
 
 import LolCreateRoom from "./pages/lolCreateRoom";
+import BrawlCreateRoom from "./pages/brawlCreateRoom";
+import ValorantCreateRoom from "./pages/valCreateRoom";
+import FortniteCreateRoom from "./pages/fortCreateRoom";
 
 // =====================================================
 // OUTRAS PÁGINAS
@@ -67,19 +71,19 @@ import Settings from "./pages/Settings";
 
 const GAME_COMPONENTS = {
     "League of Legends": { Room: LolRooms, CreateRoom: LolCreateRoom },
-    "Valorant": { Room: ValRoom, CreateRoom: null },
+    "Valorant": { Room: ValRoom, CreateRoom: ValorantCreateRoom },
     "Counter-Strike 2": { Room: CSRoom, CreateRoom: null },
     "Dota 2": { Room: DotaRooms, CreateRoom: null },
     "League of Legends Wild Rift": { Room: WildRoom, CreateRoom: null },
     "Overwatch": { Room: OverRoom, CreateRoom: null },
     "Marvel Rivals": { Room: MarvelRoom, CreateRoom: null },
     "Dead By Daylight": { Room: DbdRoom, CreateRoom: null },
-    "Fortnite": { Room: FortRoom, CreateRoom: null },
+    "Fortnite": { Room: FortRoom, CreateRoom: FortniteCreateRoom },
     "Paladins": { Room: PaladinsRoom, CreateRoom: null },
     "Rocket League": { Room: RocketRoom, CreateRoom: null },
     "Sea of Thieves": { Room: SeaRoom, CreateRoom: null },
     "Team Fortress 2": { Room: TeamRoom, CreateRoom: null },
-    "Brawlhalla": { Room: BrawlRoom, CreateRoom: null },
+    "Brawlhalla": { Room: BrawlRoom, CreateRoom: BrawlCreateRoom },
     "Warzone": { Room: WarzoneRoom, CreateRoom: null },
     "Rainbow Six Siege": { Room: R6Room, CreateRoom: null },
 };
@@ -323,6 +327,9 @@ function App() {
 
         const config = GAME_COMPONENTS[nomeJogo];
 
+        // Antes isso caía sempre no LolCreateRoom quando não achava
+        // o jogo no mapa. Agora só cai no LoL como último recurso
+        // se o jogo realmente não tiver CreateRoom nenhum ainda.
         const CreateRoomComponent = config?.CreateRoom ?? LolCreateRoom;
 
         return (

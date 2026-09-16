@@ -1,0 +1,45 @@
+/* =========================================================
+   FORTNITE CREATE ROOM
+   Reaproveita 100% do CSS base já usado no Brawlhalla/Valorant
+   (create-room-page, sidebar, navbar, botões, form, etc.)
+   e só adiciona o que é específico do Fortnite.
+========================================================= */
+
+@import "./brawlCreateRoom.css";
+
+
+/* =========================================================
+   MODOS DO FORTNITE
+   (5 modos: Battle Royale, Zero Build, Ranked,
+   Team Rumble e Reload) — imagem real por modo.
+========================================================= */
+
+.game-modes.fortnite-modes {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+
+@media (max-width: 1200px) {
+
+  .game-modes.fortnite-modes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+@media (max-width: 900px) {
+
+  .game-modes.fortnite-modes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .game-modes.fortnite-modes {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+  }
+}

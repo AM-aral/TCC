@@ -35,7 +35,7 @@ import rivalsLogo from "../assets/games-icon/rivals icon.png";
 import rocketLogo from "../assets/games-icon/rocket icon.png";
 import seaLogo from "../assets/games-icon/sea icon.png";
 import tf2Logo from "../assets/games-icon/TF2.png";
-import valorantLogo from "../assets/games-icon/valoranticon.png";
+import valorantLogo from "../assets/games-icon/valorant icon.png";
 import warzoneLogo from "../assets/games-icon/warzone icon.png";
 
 function Home({ onSelectGame }) {

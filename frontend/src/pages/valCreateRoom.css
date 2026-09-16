@@ -1,0 +1,46 @@
+/* =========================================================
+   VALORANT CREATE ROOM
+   Reaproveita 100% do CSS base já usado no Brawlhalla
+   (create-room-page, sidebar, navbar, botões, form, etc.)
+   e só adiciona o que é específico do Valorant.
+========================================================= */
+
+@import "./brawlCreateRoom.css";
+
+
+/* =========================================================
+   MODOS DO VALORANT
+   (5 modos: Competitivo, Não-Classificatória, Deathmatch,
+   Spike Rush, Escaramuça) — usam imagem real em vez de
+   ícone SVG, já que cada modo tem seu próprio "card" visual.
+========================================================= */
+
+.game-modes.valorant-modes {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+
+@media (max-width: 1200px) {
+
+  .game-modes.valorant-modes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+@media (max-width: 900px) {
+
+  .game-modes.valorant-modes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .game-modes.valorant-modes {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+  }
+}

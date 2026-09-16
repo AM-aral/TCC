@@ -35,12 +35,12 @@ import lolBigLogo from "../assets/LOGAO/lol-big.png";
    MODOS
 ===================================================== */
 
-import normalImg from "../assets/room-modes/normal.png";
-import aramImg from "../assets/room-modes/aram.png";
-import classicImg from "../assets/room-modes/classic.png";
-import arenaImg from "../assets/room-modes/arena.png";
-import flexImg from "../assets/room-modes/flex.png";
-import soloqImg from "../assets/room-modes/soloq.png";
+import normalImg from "../assets/room-modes/lol/classic.png";
+import aramImg from "../assets/room-modes/lol/aram.png";
+import classicImg from "../assets/room-modes/lol/classic.png";
+import arenaImg from "../assets/room-modes/lol/arena.png";
+import flexImg from "../assets/room-modes/lol/flex.png";
+import soloqImg from "../assets/room-modes/lol/soloq.png";
 
 /* =====================================================
    ELOS

@@ -20,7 +20,7 @@ import configuracoesIcon from "../assets/sidebar/configuracoes.png";
 
 import owLogo from "../assets/icon/ow icon.png";
 import cs2Logo from "../assets/icon/cs icon.png";
-import valorantLogo from "../assets/games-icon/valoranticon.png";
+import valorantLogo from "../assets/games-icon/valorant icon.png";
 import fortniteLogo from "../assets/icon/fortinite icon.png";
 import rocketLogo from "../assets/icon/rocket icon.png";
 import dotaLogo from "../assets/icon/dota icon.png";
