@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./Login.css";
 
+import { supabase } from "../supabase";
+
 import hero from "../assets/hero.png";
 import logo from "../assets/logo.png";
 
@@ -11,6 +13,7 @@ import twitch from "../assets/twitch.png";
 import emailIcon from "../assets/email.png";
 import userIcon from "../assets/user.png";
 import lockIcon from "../assets/lock.png";
+
 
 function Login({ onLogin }) {
 
@@ -48,7 +51,7 @@ function Login({ onLogin }) {
 
 
   // =====================================================
-  // LOGIN
+  // LOGIN COM SUPABASE
   // =====================================================
 
   const fazerLogin = async (e) => {
@@ -67,54 +70,63 @@ function Login({ onLogin }) {
 
       setCarregando(true);
 
-      const resposta = await fetch(
-        "http://localhost:3000/auth/login",
-        {
-          method: "POST",
+      // Login usando Supabase Auth
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: senha
+      });
 
-          headers: {
-            "Content-Type": "application/json"
-          },
 
-          body: JSON.stringify({
-            email,
-            senha
-          })
-        }
-      );
+      // Se o Supabase retornar erro
+      if (error) {
 
-      const dados = await resposta.json();
+        console.error("Erro no login:", error);
 
-      if (!resposta.ok) {
         setErro(
-          dados.mensagem || "Email ou senha incorretos."
+          "Email ou senha incorretos."
         );
+
         return;
       }
 
-      localStorage.setItem(
-        "token",
-        dados.token
-      );
 
+      // Verifica se o usuário realmente foi encontrado
+      if (!data.user) {
+
+        setErro(
+          "Não foi possível realizar o login."
+        );
+
+        return;
+      }
+
+
+      // Guarda os dados básicos do usuário
       localStorage.setItem(
         "usuario",
-        JSON.stringify(dados.usuario)
+        JSON.stringify(data.user)
       );
 
-      // Pequena pausa para a transição ficar visível
-      setMensagem("Login realizado com sucesso!");
 
+      setMensagem(
+        "Login realizado com sucesso!"
+      );
+
+
+      // Vai para o sistema
       setTimeout(() => {
+
         onLogin();
+
       }, 500);
+
 
     } catch (erro) {
 
       console.error(erro);
 
       setErro(
-        "Não foi possível conectar ao servidor."
+        "Não foi possível conectar ao Supabase."
       );
 
     } finally {
@@ -126,7 +138,7 @@ function Login({ onLogin }) {
 
 
   // =====================================================
-  // CADASTRO
+  // CADASTRO COM SUPABASE
   // =====================================================
 
   const fazerCadastro = async (e) => {
@@ -136,60 +148,81 @@ function Login({ onLogin }) {
     setErro("");
     setMensagem("");
 
+
     if (!usuario || !email || !senha) {
-      setErro("Preencha todos os campos.");
+
+      setErro(
+        "Preencha todos os campos."
+      );
+
       return;
     }
 
+
     if (senha.length < 6) {
-      setErro("A senha precisa ter pelo menos 6 caracteres.");
+
+      setErro(
+        "A senha precisa ter pelo menos 6 caracteres."
+      );
+
       return;
     }
+
 
     try {
 
       setCarregando(true);
 
-      const resposta = await fetch(
-        "http://localhost:3000/auth/cadastro",
-        {
-          method: "POST",
 
-          headers: {
-            "Content-Type": "application/json"
-          },
+      // Cria o usuário no Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
 
-          body: JSON.stringify({
-            nome: usuario,
-            email,
-            senha
-          })
+        email: email,
+
+        password: senha,
+
+        options: {
+          data: {
+            nome: usuario
+          }
         }
-      );
 
-      const dados = await resposta.json();
+      });
 
-      if (!resposta.ok) {
+
+      // Se houver erro
+      if (error) {
+
+        console.error("Erro no cadastro:", error);
 
         setErro(
-          dados.mensagem || "Não foi possível cadastrar."
+          error.message || "Não foi possível cadastrar."
         );
 
         return;
       }
 
-      // Cadastro deu certo
+
+      console.log(
+        "Usuário criado:",
+        data.user
+      );
+
+
+      // =================================================
+      // CADASTRO REALIZADO
+      // =================================================
 
       setMensagem(
         "Cadastro realizado! Agora faça login."
       );
 
-      // Limpa senha
 
+      // Limpa senha
       setSenha("");
 
-      // Depois de um tempinho volta para login
 
+      // Depois volta para Login
       setTimeout(() => {
 
         setModoCadastro(false);
@@ -198,12 +231,13 @@ function Login({ onLogin }) {
 
       }, 1000);
 
+
     } catch (erro) {
 
       console.error(erro);
 
       setErro(
-        "Não foi possível conectar ao servidor."
+        "Não foi possível conectar ao Supabase."
       );
 
     } finally {
@@ -283,6 +317,7 @@ function Login({ onLogin }) {
             />
           </button>
 
+
           <button
             className="social-button google"
             type="button"
@@ -292,6 +327,7 @@ function Login({ onLogin }) {
               alt="Google"
             />
           </button>
+
 
           <button
             className="social-button twitch"
@@ -402,6 +438,7 @@ function Login({ onLogin }) {
                   ? "new-password"
                   : "current-password"
               }
+
             />
 
           </div>
@@ -493,5 +530,6 @@ function Login({ onLogin }) {
     </div>
   );
 }
+
 
 export default Login;

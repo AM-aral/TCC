@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import "./Rooms.css";
+import "./fortRoom.css";
 
 import logo from "../assets/logo.png";
 
@@ -18,34 +18,39 @@ import configuracoesIcon from "../assets/sidebar/configuracoes.png";
 ===================================================== */
 
 import owLogo from "../assets/icon/ow icon.png";
-import cs2Logo from "../assets/icon/cs icon.png";
+import csLogo from "../assets/icon/cs icon.png";
 import valorantLogo from "../assets/icon/val icon.png";
-import fortniteLogo from "../assets/icon/fortinite icon.png";
+
+// ÍCONE DA NAVBAR — permanece na pasta icon
+import fortniteIcon from "../assets/icon/fortinite icon.png";
+
 import rocketLogo from "../assets/icon/rocket icon.png";
 import dotaLogo from "../assets/icon/dota icon.png";
 import rivalsLogo from "../assets/icon/marvel icon.png";
 import lolLogo from "../assets/icon/lol icon.png";
 
 /* =====================================================
-   LOGO GRANDE
+   LOGO GRANDE / ÍCONE DA SALA
 ===================================================== */
 
-import lolBigLogo from "../assets/LOGAO/lol-big.png";
+import fortniteBigLogo from "../assets/games-icon/forticon.png";
 
 /* =====================================================
    FUNDO
 ===================================================== */
 
-import lolBackground from "../assets/rooms-bg.png";
+import fortBackground from "../assets/rooms-bg.png";
 
 
-function Rooms({
+function FortRoom({
   game,
   onHome,
   onCreateRoom,
   onProfile,
   onHistory,
-  onFeedbacks
+  onFeedbacks,
+  onSettings,
+  onSelectGame
 }) {
 
   const [menuAberto, setMenuAberto] = useState(null);
@@ -68,9 +73,11 @@ function Rooms({
   ===================================================== */
 
   function abrirMenu(tipo) {
+
     setMenuAberto(
       menuAberto === tipo ? null : tipo
     );
+
   }
 
 
@@ -86,33 +93,34 @@ function Rooms({
     });
 
     setMenuAberto(null);
+
   }
 
 
   return (
 
     <div
-      className="rooms-page"
+      className="fort-room-page"
       style={{
-        backgroundImage: `url(${lolBackground})`
+        backgroundImage: `url(${fortBackground})`
       }}
     >
 
-      <div className="rooms-background-overlay"></div>
+      <div className="fort-room-background-overlay"></div>
 
 
       {/* =====================================================
           SIDEBAR
       ===================================================== */}
 
-      <aside className="rooms-sidebar">
+      <aside className="fort-room-sidebar">
 
-        <nav className="rooms-sidebar-menu">
+        <nav className="fort-room-sidebar-menu">
 
           {/* HOME */}
 
           <button
-            className="rooms-sidebar-item rooms-sidebar-active"
+            className="fort-room-sidebar-item fort-room-sidebar-active"
             onClick={onHome}
             type="button"
           >
@@ -128,7 +136,7 @@ function Rooms({
           {/* PERFIL */}
 
           <button
-            className="rooms-sidebar-item"
+            className="fort-room-sidebar-item"
             type="button"
             onClick={onProfile}
           >
@@ -144,7 +152,7 @@ function Rooms({
           {/* HISTÓRICO */}
 
           <button
-            className="rooms-sidebar-item"
+            className="fort-room-sidebar-item"
             type="button"
             onClick={onHistory}
           >
@@ -160,13 +168,13 @@ function Rooms({
           {/* FEEDBACKS */}
 
           <button
-            className="rooms-sidebar-item"
+            className="fort-room-sidebar-item"
             type="button"
             onClick={onFeedbacks}
             title="Feedbacks"
           >
 
-            <span className="rooms-feedback-star">
+            <span className="fort-room-feedback-star">
               ★
             </span>
 
@@ -176,8 +184,9 @@ function Rooms({
           {/* CONFIGURAÇÕES */}
 
           <button
-            className="rooms-sidebar-item"
+            className="fort-room-sidebar-item"
             type="button"
+            onClick={onSettings}
             title="Configurações"
           >
 
@@ -197,18 +206,18 @@ function Rooms({
           CONTEÚDO
       ===================================================== */}
 
-      <div className="rooms-content">
+      <div className="fort-room-content">
 
 
         {/* =====================================================
             NAVBAR
         ===================================================== */}
 
-        <header className="rooms-navbar">
+        <header className="fort-room-navbar">
 
           {/* LOGO */}
 
-          <div className="rooms-navbar-logo">
+          <div className="fort-room-navbar-logo">
 
             <img
               src={logo}
@@ -220,12 +229,15 @@ function Rooms({
 
           {/* JOGOS */}
 
-          <div className="rooms-games-navbar">
+          <div className="fort-room-games-navbar">
 
 
             {/* OVERWATCH */}
 
-            <div className="rooms-navbar-game">
+            <div
+              className="fort-room-navbar-game"
+              onClick={() => onSelectGame("Overwatch")}
+            >
 
               <img
                 src={owLogo}
@@ -241,10 +253,13 @@ function Rooms({
 
             {/* CS2 */}
 
-            <div className="rooms-navbar-game">
+            <div
+              className="fort-room-navbar-game"
+              onClick={() => onSelectGame("Counter-Strike 2")}
+            >
 
               <img
-                src={cs2Logo}
+                src={csLogo}
                 alt="Counter-Strike 2"
               />
 
@@ -257,7 +272,10 @@ function Rooms({
 
             {/* VALORANT */}
 
-            <div className="rooms-navbar-game">
+            <div
+              className="fort-room-navbar-game"
+              onClick={() => onSelectGame("Valorant")}
+            >
 
               <img
                 src={valorantLogo}
@@ -273,10 +291,13 @@ function Rooms({
 
             {/* FORTNITE */}
 
-            <div className="rooms-navbar-game">
+            <div
+              className="fort-room-navbar-game fort-room-navbar-active"
+              onClick={() => onSelectGame("Fortnite")}
+            >
 
               <img
-                src={fortniteLogo}
+                src={fortniteIcon}
                 alt="Fortnite"
               />
 
@@ -289,7 +310,10 @@ function Rooms({
 
             {/* ROCKET LEAGUE */}
 
-            <div className="rooms-navbar-game">
+            <div
+              className="fort-room-navbar-game"
+              onClick={() => onSelectGame("Rocket League")}
+            >
 
               <img
                 src={rocketLogo}
@@ -305,7 +329,10 @@ function Rooms({
 
             {/* DOTA 2 */}
 
-            <div className="rooms-navbar-game">
+            <div
+              className="fort-room-navbar-game"
+              onClick={() => onSelectGame("Dota 2")}
+            >
 
               <img
                 src={dotaLogo}
@@ -321,7 +348,10 @@ function Rooms({
 
             {/* MARVEL RIVALS */}
 
-            <div className="rooms-navbar-game">
+            <div
+              className="fort-room-navbar-game"
+              onClick={() => onSelectGame("Marvel Rivals")}
+            >
 
               <img
                 src={rivalsLogo}
@@ -337,7 +367,10 @@ function Rooms({
 
             {/* LEAGUE OF LEGENDS */}
 
-            <div className="rooms-navbar-game rooms-navbar-active">
+            <div
+              className="fort-room-navbar-game"
+              onClick={() => onSelectGame("League of Legends")}
+            >
 
               <img
                 src={lolLogo}
@@ -359,14 +392,14 @@ function Rooms({
             ÁREA PRINCIPAL
         ===================================================== */}
 
-        <main className="rooms-main">
+        <main className="fort-room-main">
 
 
           {/* =====================================================
               PESQUISA DO TOPO
           ===================================================== */}
 
-          <div className="top-search">
+          <div className="fort-top-search">
 
             <input
               type="text"
@@ -379,12 +412,12 @@ function Rooms({
               JOGO SELECIONADO
           ===================================================== */}
 
-          <div className="selected-game">
+          <div className="fort-selected-game">
 
             <img
-              src={lolBigLogo}
-              alt="League of Legends"
-              className="selected-game-logo"
+              src={fortniteBigLogo}
+              alt="Fortnite"
+              className="fort-selected-game-logo"
             />
 
           </div>
@@ -394,12 +427,12 @@ function Rooms({
               FILTROS
           ===================================================== */}
 
-          <div className="filters">
+          <div className="fort-filters">
 
 
             {/* BUSCAR */}
 
-            <div className="search-box">
+            <div className="fort-search-box">
 
               <span>
                 ⌕
@@ -417,10 +450,10 @@ function Rooms({
                 GÊNERO
             ================================================= */}
 
-            <div className="filter-dropdown">
+            <div className="fort-filter-dropdown">
 
               <button
-                className="filter-button"
+                className="fort-filter-button"
                 onClick={() => abrirMenu("genero")}
                 type="button"
               >
@@ -442,7 +475,7 @@ function Rooms({
 
               {menuAberto === "genero" && (
 
-                <div className="dropdown-menu">
+                <div className="fort-dropdown-menu">
 
                   <button
                     onClick={() =>
@@ -488,10 +521,10 @@ function Rooms({
                 JOGADORES
             ================================================= */}
 
-            <div className="filter-dropdown">
+            <div className="fort-filter-dropdown">
 
               <button
-                className="filter-button"
+                className="fort-filter-button"
                 onClick={() => abrirMenu("jogadores")}
                 type="button"
               >
@@ -513,7 +546,7 @@ function Rooms({
 
               {menuAberto === "jogadores" && (
 
-                <div className="dropdown-menu">
+                <div className="fort-dropdown-menu">
 
                   <button
                     onClick={() =>
@@ -548,17 +581,6 @@ function Rooms({
                     3 jogadores
                   </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "jogadores",
-                        "4 jogadores"
-                      )
-                    }
-                  >
-                    4 jogadores
-                  </button>
-
                 </div>
 
               )}
@@ -570,10 +592,10 @@ function Rooms({
                 ELO
             ================================================= */}
 
-            <div className="filter-dropdown">
+            <div className="fort-filter-dropdown">
 
               <button
-                className="filter-button"
+                className="fort-filter-button"
                 onClick={() => abrirMenu("elo")}
                 type="button"
               >
@@ -595,15 +617,7 @@ function Rooms({
 
               {menuAberto === "elo" && (
 
-                <div className="dropdown-menu">
-
-                  <button
-                    onClick={() =>
-                      selecionarFiltro("elo", "Ferro")
-                    }
-                  >
-                    Ferro
-                  </button>
+                <div className="fort-dropdown-menu">
 
                   <button
                     onClick={() =>
@@ -647,32 +661,32 @@ function Rooms({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Mestre")
+                      selecionarFiltro("elo", "Elite")
                     }
                   >
-                    Mestre
+                    Elite
                   </button>
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Grão-Mestre"
+                        "Campeão"
                       )
                     }
                   >
-                    Grão-Mestre
+                    Campeão
                   </button>
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Desafiante"
+                        "Surreal"
                       )
                     }
                   >
-                    Desafiante
+                    Surreal
                   </button>
 
                 </div>
@@ -686,10 +700,10 @@ function Rooms({
                 MODO
             ================================================= */}
 
-            <div className="filter-dropdown">
+            <div className="fort-filter-dropdown">
 
               <button
-                className="filter-button"
+                className="fort-filter-button"
                 onClick={() => abrirMenu("modo")}
                 type="button"
               >
@@ -711,50 +725,61 @@ function Rooms({
 
               {menuAberto === "modo" && (
 
-                <div className="dropdown-menu">
+                <div className="fort-dropdown-menu">
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Ranked Soloqueue"
+                        "Battle Royale"
                       )
                     }
                   >
-                    Ranked Soloqueue
+                    Battle Royale
                   </button>
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Ranked Flex"
+                        "Zero Build"
                       )
                     }
                   >
-                    Ranked Flex
+                    Zero Build
                   </button>
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "ARAM"
+                        "Reload"
                       )
                     }
                   >
-                    ARAM
+                    Reload
                   </button>
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Normal"
+                        "Ranqueada"
                       )
                     }
                   >
-                    Normal
+                    Ranqueada
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "modo",
+                        "Casual"
+                      )
+                    }
+                  >
+                    Casual
                   </button>
 
                 </div>
@@ -769,7 +794,7 @@ function Rooms({
             ================================================= */}
 
             <button
-              className="create-room"
+              className="fort-create-room"
               onClick={onCreateRoom}
               type="button"
             >
@@ -791,14 +816,14 @@ function Rooms({
               SALA
           ===================================================== */}
 
-          <div className="room-card">
+          <div className="fort-room-card">
 
 
             {/* PERFIL DA SALA */}
 
-            <div className="room-profile">
+            <div className="fort-room-profile">
 
-              <div className="profile-photo">
+              <div className="fort-profile-photo">
 
                 <span>
                   👤
@@ -807,41 +832,41 @@ function Rooms({
               </div>
 
 
-              <div className="room-details">
+              <div className="fort-room-details">
 
                 <h2>
-                  Ranked Soloqueue
+                  Battle Royale - Squad
                 </h2>
 
 
-                <div className="room-tags">
+                <div className="fort-room-tags">
 
-                  <span className="rank-tag">
-                    🏆 Silver/Gold/Platina
+                  <span className="fort-rank-tag">
+                    🏆 Elite/Campeão
                   </span>
 
 
-                  <span className="mode-tag">
+                  <span className="fort-mode-tag">
 
                     <img
-                      src={lolLogo}
+                      src={fortniteBigLogo}
                       alt=""
                     />
 
-                    Ranked Soloqueue
+                    Battle Royale
 
                   </span>
 
                 </div>
 
 
-                <div className="gender-options">
+                <div className="fort-gender-options">
 
-                  <span className="male">
+                  <span className="fort-male">
                     ♂
                   </span>
 
-                  <span className="female">
+                  <span className="fort-female">
                     ♀
                   </span>
 
@@ -849,7 +874,7 @@ function Rooms({
 
 
                 <p>
-                  Procuro por um duo focado na vitória e na resenha
+                  Procuro squad pra farmar vitórias e subir de elo.
                 </p>
 
               </div>
@@ -859,10 +884,10 @@ function Rooms({
 
             {/* MEMBROS */}
 
-            <div className="room-members">
+            <div className="fort-room-members">
 
               <strong>
-                1/2
+                1/4
               </strong>
 
               <span>
@@ -875,7 +900,7 @@ function Rooms({
             {/* ENTRAR */}
 
             <button
-              className="join-button"
+              className="fort-join-button"
               type="button"
             >
               ENTRA NA SALA
@@ -891,4 +916,4 @@ function Rooms({
   );
 }
 
-export default Rooms;
+export default FortRoom;

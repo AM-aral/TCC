@@ -1,3 +1,4 @@
+
 import logo from "../assets/logo.png";
 
 // SIDEBAR
@@ -127,6 +128,7 @@ export default function Profile({
   onHome,
   onHistory,
   onFeedbacks,
+  onSettings,
   onGameSelect,
 }) {
 
@@ -136,11 +138,9 @@ export default function Profile({
       {/* ==================================================
           NAVBAR
       ================================================== */}
-
       <header className="profile-navbar">
 
         {/* LOGO */}
-
         <div className="profile-navbar-logo">
 
           <img
@@ -151,11 +151,9 @@ export default function Profile({
         </div>
 
         {/* JOGOS */}
-
         <div className="profile-games-navbar">
 
           {/* OVERWATCH */}
-
           <div
             className="profile-navbar-game"
             onClick={() =>
@@ -175,7 +173,6 @@ export default function Profile({
           </div>
 
           {/* CS2 */}
-
           <div
             className="profile-navbar-game"
             onClick={() =>
@@ -195,7 +192,6 @@ export default function Profile({
           </div>
 
           {/* VALORANT */}
-
           <div
             className="profile-navbar-game"
             onClick={() =>
@@ -215,7 +211,6 @@ export default function Profile({
           </div>
 
           {/* FORTNITE */}
-
           <div
             className="profile-navbar-game"
             onClick={() =>
@@ -235,7 +230,6 @@ export default function Profile({
           </div>
 
           {/* ROCKET LEAGUE */}
-
           <div
             className="profile-navbar-game"
             onClick={() =>
@@ -255,7 +249,6 @@ export default function Profile({
           </div>
 
           {/* DOTA 2 */}
-
           <div
             className="profile-navbar-game"
             onClick={() =>
@@ -275,7 +268,6 @@ export default function Profile({
           </div>
 
           {/* MARVEL RIVALS */}
-
           <div
             className="profile-navbar-game"
             onClick={() =>
@@ -295,7 +287,6 @@ export default function Profile({
           </div>
 
           {/* LEAGUE OF LEGENDS */}
-
           <div
             className="profile-navbar-game profile-navbar-active"
             onClick={() =>
@@ -321,13 +312,11 @@ export default function Profile({
       {/* ==================================================
           SIDEBAR
       ================================================== */}
-
       <aside className="profile-sidebar">
 
         <div className="profile-sidebar-menu">
 
           {/* HOME */}
-
           <button
             className="profile-sidebar-item"
             onClick={onHome}
@@ -343,7 +332,6 @@ export default function Profile({
           </button>
 
           {/* PERFIL */}
-
           <button
             className="profile-sidebar-item profile-sidebar-active"
             title="Perfil"
@@ -358,7 +346,6 @@ export default function Profile({
           </button>
 
           {/* HISTÓRICO */}
-
           <button
             className="profile-sidebar-item"
             onClick={onHistory}
@@ -374,7 +361,6 @@ export default function Profile({
           </button>
 
           {/* FEEDBACKS */}
-
           <button
             className="profile-sidebar-item"
             type="button"
@@ -389,9 +375,9 @@ export default function Profile({
           </button>
 
           {/* CONFIGURAÇÕES */}
-
           <button
             className="profile-sidebar-item"
+            onClick={onSettings}
             title="Configurações"
             type="button"
           >
@@ -410,17 +396,14 @@ export default function Profile({
       {/* ==================================================
           CONTEÚDO
       ================================================== */}
-
       <main className="profile-main">
 
         {/* =================================================
             BANNER
         ================================================= */}
-
         <section className="profile-header-card">
 
           {/* BANNER */}
-
           <img
             src={profileBanner}
             className="profile-banner-background"
@@ -428,15 +411,12 @@ export default function Profile({
           />
 
           {/* ESCURECIMENTO */}
-
           <div className="profile-banner-dark"></div>
 
           {/* INFORMAÇÕES */}
-
           <div className="profile-user-area">
 
             {/* FOTO */}
-
             <div className="profile-avatar-wrapper">
 
               <img
@@ -450,7 +430,6 @@ export default function Profile({
             </div>
 
             {/* TEXTOS */}
-
             <div className="profile-user-text">
 
               <h1>
@@ -466,7 +445,6 @@ export default function Profile({
               </p>
 
               {/* TAGS */}
-
               <div className="profile-user-tags">
 
                 <span>
@@ -492,11 +470,9 @@ export default function Profile({
         {/* =================================================
             MEUS JOGOS
         ================================================= */}
-
         <section className="profile-games-section">
 
           {/* TÍTULO */}
-
           <div className="profile-section-header">
 
             <h2>
@@ -510,7 +486,6 @@ export default function Profile({
           </div>
 
           {/* CARDS */}
-
           <div className="profile-games-grid">
 
             {games.map((game) => (
@@ -521,7 +496,6 @@ export default function Profile({
               >
 
                 {/* IMAGEM */}
-
                 <div className="profile-game-cover">
 
                   <img
@@ -531,11 +505,9 @@ export default function Profile({
                   />
 
                   {/* GRADIENTE */}
-
                   <div className="profile-game-gradient"></div>
 
                   {/* NOME */}
-
                   <h3
                     className={`profile-game-title profile-game-title-${game.id}`}
                   >
@@ -543,7 +515,6 @@ export default function Profile({
                   </h3>
 
                   {/* SETA */}
-
                   <button
                     className="profile-game-arrow"
                     type="button"
@@ -552,7 +523,6 @@ export default function Profile({
                   </button>
 
                   {/* ELO */}
-
                   <div className="profile-game-rank">
 
                     {game.rankImage && (
@@ -582,11 +552,9 @@ export default function Profile({
                 </div>
 
                 {/* RODAPÉ */}
-
                 <div className="profile-game-footer">
 
                   {/* FUNÇÃO PRINCIPAL */}
-
                   <div className="profile-game-role">
 
                     <img
@@ -609,7 +577,6 @@ export default function Profile({
                   </div>
 
                   {/* FUNÇÃO SECUNDÁRIA */}
-
                   <div className="profile-game-role">
 
                     <img
@@ -644,11 +611,9 @@ export default function Profile({
         {/* =================================================
             PARTE INFERIOR
         ================================================= */}
-
         <section className="profile-bottom-grid">
 
           {/* SOBRE MIM */}
-
           <div className="profile-bottom-card">
 
             <h2>
@@ -663,7 +628,6 @@ export default function Profile({
           </div>
 
           {/* PREFERÊNCIAS */}
-
           <div className="profile-bottom-card">
 
             <h2>
@@ -713,7 +677,6 @@ export default function Profile({
           </div>
 
           {/* ATIVIDADES */}
-
           <div className="profile-bottom-card">
 
             <h2>

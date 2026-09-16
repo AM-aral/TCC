@@ -1,13 +1,88 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "./supabase";
+
+console.log("Supabase:", supabase);
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Rooms from "./pages/Rooms";
-import CreateRoom from "./pages/CreateRoom";
+
+// =====================================================
+// ROOMS
+// =====================================================
+
+import LolRooms from "./pages/lolRooms";
+import ValRoom from "./pages/valRoom";
+import CSRoom from "./pages/csRoom";
+import DotaRooms from "./pages/dotaRoom";
+import OverRoom from "./pages/overRoom";
+import FortRoom from "./pages/fortRoom";
+import RocketRoom from "./pages/rocketRoom";
+import MarvelRoom from "./pages/marvelRoom";
+import WildRoom from "./pages/wildRoom";
+import DbdRoom from "./pages/dbdRoom";
+import PaladinsRoom from "./pages/paladinsRoom";
+import SeaRoom from "./pages/seaRoom";
+import TeamRoom from "./pages/teamRoom";
+import BrawlRoom from "./pages/brawlRoom";
+import WarzoneRoom from "./pages/warzoneRoom";
+import R6Room from "./pages/r6Room";
+
+// =====================================================
+// CREATE ROOM
+// =====================================================
+//
+// ⚠️ Por enquanto só o CreateRoom do LoL está pronto de verdade.
+// Os outros arquivos xxxCreateRoom.jsx existem na pasta mas ainda
+// estão vazios/incompletos (sem "export default"), e importar um
+// arquivo desses quebra o site inteiro (foi o erro que você teve
+// com o brawlCreateRoom.jsx).
+//
+// Conforme for terminando cada CreateRoom, faça 2 coisas aqui:
+//   1) adicione o import dele junto com os de baixo
+//   2) troque o "null" correspondente no GAME_COMPONENTS pelo
+//      componente importado
+//
+// Exemplo pra quando terminar o da Dota:
+//   import DotaCreateRoom from "./pages/dotaCreateRoom";
+//   ... e no mapa: "Dota 2": { Room: DotaRooms, CreateRoom: DotaCreateRoom },
+
+import LolCreateRoom from "./pages/lolCreateRoom";
+
+// =====================================================
+// OUTRAS PÁGINAS
+// =====================================================
+
 import Profile from "./pages/Profile";
 import History from "./pages/History";
 import Feedbacks from "./pages/Feedbacks";
 import Settings from "./pages/Settings";
+
+
+// =====================================================
+// MAPA DE JOGOS -> COMPONENTES
+// A chave (key) TEM que ser exatamente igual ao "name"
+// que aparece no array `games` do Home.jsx e nas chamadas
+// onSelectGame("...") dentro das navbars das Rooms.
+// =====================================================
+
+const GAME_COMPONENTS = {
+    "League of Legends": { Room: LolRooms, CreateRoom: LolCreateRoom },
+    "Valorant": { Room: ValRoom, CreateRoom: null },
+    "Counter-Strike 2": { Room: CSRoom, CreateRoom: null },
+    "Dota 2": { Room: DotaRooms, CreateRoom: null },
+    "League of Legends Wild Rift": { Room: WildRoom, CreateRoom: null },
+    "Overwatch": { Room: OverRoom, CreateRoom: null },
+    "Marvel Rivals": { Room: MarvelRoom, CreateRoom: null },
+    "Dead By Daylight": { Room: DbdRoom, CreateRoom: null },
+    "Fortnite": { Room: FortRoom, CreateRoom: null },
+    "Paladins": { Room: PaladinsRoom, CreateRoom: null },
+    "Rocket League": { Room: RocketRoom, CreateRoom: null },
+    "Sea of Thieves": { Room: SeaRoom, CreateRoom: null },
+    "Team Fortress 2": { Room: TeamRoom, CreateRoom: null },
+    "Brawlhalla": { Room: BrawlRoom, CreateRoom: null },
+    "Warzone": { Room: WarzoneRoom, CreateRoom: null },
+    "Rainbow Six Siege": { Room: R6Room, CreateRoom: null },
+};
 
 
 function App() {
@@ -16,9 +91,31 @@ function App() {
     // ESTADOS
     // =====================================================
 
-    const [pagina, setPagina] = useState("login");
+    const [pagina, setPagina] = useState("home");
 
     const [jogoSelecionado, setJogoSelecionado] = useState(null);
+
+
+    // =====================================================
+    // TESTE SUPABASE
+    // =====================================================
+
+    useEffect(() => {
+
+        async function testarSupabase() {
+
+            const { data, error } = await supabase
+                .from("jogos")
+                .select("*")
+                .limit(1);
+
+            console.log("Dados do Supabase:", data);
+            console.log("Erro do Supabase:", error);
+        }
+
+        testarSupabase();
+
+    }, []);
 
 
     // =====================================================
@@ -26,7 +123,9 @@ function App() {
     // =====================================================
 
     const entrarNoSite = () => {
+
         setPagina("home");
+
     };
 
 
@@ -34,7 +133,29 @@ function App() {
     // LOGOUT
     // =====================================================
 
-    const sairDaConta = () => {
+    const sairDaConta = async () => {
+
+        try {
+
+            const { error } = await supabase.auth.signOut();
+
+            if (error) {
+
+                console.error(
+                    "Erro ao sair do Supabase:",
+                    error
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao fazer logout:",
+                error
+            );
+
+        }
 
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
@@ -42,31 +163,72 @@ function App() {
         setJogoSelecionado(null);
 
         setPagina("login");
+
     };
 
 
     // =====================================================
     // SELECIONAR JOGO
+    // O Home.jsx manda o OBJETO inteiro { name, image, logo, color }.
+    // As navbars das Rooms mandam só uma STRING ("Valorant" etc).
+    // Por isso guardamos o valor como veio e resolvemos o nome
+    // na hora de renderizar (função obterNomeJogo).
     // =====================================================
 
     const selecionarJogo = (game) => {
 
         console.log("Jogo selecionado:", game);
 
-        // Guarda o jogo selecionado
         setJogoSelecionado(game);
 
-        // Vai para a tela de salas
         setPagina("rooms");
+
     };
 
 
+    function obterNomeJogo(jogo) {
+
+        return typeof jogo === "string" ? jogo : jogo?.name;
+
+    }
+
+
     // =====================================================
-    // FEEDBACKS
+    // NAVEGAÇÃO
     // =====================================================
 
+    const irParaHome = () => {
+
+        setPagina("home");
+
+    };
+
+
+    const irParaPerfil = () => {
+
+        setPagina("profile");
+
+    };
+
+
+    const irParaHistorico = () => {
+
+        setPagina("history");
+
+    };
+
+
     const irParaFeedbacks = () => {
+
         setPagina("feedbacks");
+
+    };
+
+
+    const irParaConfiguracoes = () => {
+
+        setPagina("settings");
+
     };
 
 
@@ -81,6 +243,7 @@ function App() {
                 onLogin={entrarNoSite}
             />
         );
+
     }
 
 
@@ -95,16 +258,17 @@ function App() {
 
                 onSelectGame={selecionarJogo}
 
-                onProfile={() => setPagina("profile")}
+                onProfile={irParaPerfil}
 
-                onHistory={() => setPagina("history")}
+                onHistory={irParaHistorico}
 
                 onFeedbacks={irParaFeedbacks}
 
-                onSettings={() => setPagina("settings")}
+                onSettings={irParaConfiguracoes}
 
             />
         );
+
     }
 
 
@@ -114,32 +278,38 @@ function App() {
 
     if (pagina === "rooms") {
 
+        const nomeJogo = obterNomeJogo(jogoSelecionado);
+
+        const config = GAME_COMPONENTS[nomeJogo];
+
+        // Se o jogo não estiver no mapa (ou não tiver Room ainda),
+        // cai no LolRooms como fallback só pra não quebrar a tela.
+        const RoomComponent = config?.Room ?? LolRooms;
+
         return (
-            <Rooms
+            <RoomComponent
 
-                game={jogoSelecionado}
+                game={nomeJogo}
 
-                onHome={() => setPagina("home")}
+                onHome={irParaHome}
 
-                onCreateRoom={() => setPagina("create-room")}
+                onCreateRoom={() =>
+                    setPagina("create-room")
+                }
 
-                onProfile={() => setPagina("profile")}
+                onProfile={irParaPerfil}
 
-                onHistory={() => setPagina("history")}
+                onHistory={irParaHistorico}
 
                 onFeedbacks={irParaFeedbacks}
 
-                onSettings={() => setPagina("settings")}
+                onSettings={irParaConfiguracoes}
 
-                /*
-                 * IMPORTANTE:
-                 * Permite trocar de jogo pela navbar
-                 * da página Rooms.
-                 */
                 onSelectGame={selecionarJogo}
 
             />
         );
+
     }
 
 
@@ -149,44 +319,40 @@ function App() {
 
     if (pagina === "create-room") {
 
+        const nomeJogo = obterNomeJogo(jogoSelecionado);
+
+        const config = GAME_COMPONENTS[nomeJogo];
+
+        const CreateRoomComponent = config?.CreateRoom ?? LolCreateRoom;
+
         return (
-            <CreateRoom
+            <CreateRoomComponent
 
-                game={jogoSelecionado}
+                game={nomeJogo}
 
-                /*
-                 * Voltar para as salas
-                 */
-                onBack={() => setPagina("rooms")}
+                // Voltar para as salas
+                onBack={() =>
+                    setPagina("rooms")
+                }
 
-                /*
-                 * Perfil
-                 */
-                onProfile={() => setPagina("profile")}
+                // Perfil
+                onProfile={irParaPerfil}
 
-                /*
-                 * Histórico
-                 */
-                onHistory={() => setPagina("history")}
+                // Histórico
+                onHistory={irParaHistorico}
 
-                /*
-                 * Feedbacks
-                 */
+                // Feedbacks
                 onFeedbacks={irParaFeedbacks}
 
-                /*
-                 * Configurações
-                 */
-                onSettings={() => setPagina("settings")}
+                // Configurações
+                onSettings={irParaConfiguracoes}
 
-                /*
-                 * IMPORTANTE:
-                 * Permite trocar o jogo pela navbar.
-                 */
+                // Trocar jogo pela navbar
                 onGameSelect={selecionarJogo}
 
             />
         );
+
     }
 
 
@@ -199,20 +365,21 @@ function App() {
         return (
             <Profile
 
-                onHome={() => setPagina("home")}
+                onHome={irParaHome}
 
-                onProfile={() => setPagina("profile")}
+                onProfile={irParaPerfil}
 
-                onHistory={() => setPagina("history")}
+                onHistory={irParaHistorico}
 
                 onFeedbacks={irParaFeedbacks}
 
-                onSettings={() => setPagina("settings")}
+                onSettings={irParaConfiguracoes}
 
-                onSelectGame={selecionarJogo}
+                onGameSelect={selecionarJogo}
 
             />
         );
+
     }
 
 
@@ -225,25 +392,21 @@ function App() {
         return (
             <History
 
-                onHome={() => setPagina("home")}
+                onHome={irParaHome}
 
-                onProfile={() => setPagina("profile")}
+                onProfile={irParaPerfil}
 
-                onHistory={() => setPagina("history")}
+                onHistory={irParaHistorico}
 
                 onFeedbacks={irParaFeedbacks}
 
-                onSettings={() => setPagina("settings")}
+                onSettings={irParaConfiguracoes}
 
-                /*
-                 * IMPORTANTE:
-                 * É isso que faz o LoL da navbar
-                 * ir para Rooms.
-                 */
                 onGameSelect={selecionarJogo}
 
             />
         );
+
     }
 
 
@@ -256,20 +419,21 @@ function App() {
         return (
             <Feedbacks
 
-                onHome={() => setPagina("home")}
+                onHome={irParaHome}
 
-                onProfile={() => setPagina("profile")}
+                onProfile={irParaPerfil}
 
-                onHistory={() => setPagina("history")}
+                onHistory={irParaHistorico}
 
                 onFeedbacks={irParaFeedbacks}
 
-                onSettings={() => setPagina("settings")}
+                onSettings={irParaConfiguracoes}
 
                 onSelectGame={selecionarJogo}
 
             />
         );
+
     }
 
 
@@ -282,15 +446,15 @@ function App() {
         return (
             <Settings
 
-                onHome={() => setPagina("home")}
+                onHome={irParaHome}
 
-                onProfile={() => setPagina("profile")}
+                onProfile={irParaPerfil}
 
-                onHistory={() => setPagina("history")}
+                onHistory={irParaHistorico}
 
                 onFeedbacks={irParaFeedbacks}
 
-                onSettings={() => setPagina("settings")}
+                onSettings={irParaConfiguracoes}
 
                 onSelectGame={selecionarJogo}
 
@@ -298,6 +462,7 @@ function App() {
 
             />
         );
+
     }
 
 
@@ -310,6 +475,7 @@ function App() {
             onLogin={entrarNoSite}
         />
     );
+
 }
 
 

@@ -1,0 +1,1290 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =====================================================
+   PÁGINA
+===================================================== */
+
+.team-room-page {
+  width: 100%;
+  min-height: 100vh;
+
+  position: relative;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  color: white;
+}
+
+
+/* =====================================================
+   FUNDO
+===================================================== */
+
+.team-room-background-overlay {
+  position: fixed;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30, 0, 65, 0.35) 0%,
+      rgba(35, 0, 75, 0.62) 50%,
+      rgba(25, 0, 55, 0.90) 100%
+    );
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.team-room-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 76px;
+
+  background: rgba(36, 0, 68, 0.98);
+
+  border-right:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  z-index: 200;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.team-room-sidebar-menu {
+  width: 100%;
+
+  margin-top: 92px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.team-room-sidebar-item {
+  width: 52px;
+  height: 52px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.team-room-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  transform: scale(1.04);
+}
+
+
+.team-room-sidebar-item img {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.70;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.team-room-sidebar-item:hover img {
+  opacity: 1;
+
+  transform: scale(1.04);
+}
+
+
+.team-room-sidebar-active {
+  background: rgba(147, 71, 218, 0.32);
+
+  box-shadow:
+    inset 3px 0 0 #b86cff;
+}
+
+
+.team-room-sidebar-active img {
+  opacity: 1;
+}
+
+
+.team-room-feedback-star {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+
+/* =====================================================
+   CONTEÚDO
+===================================================== */
+
+.team-room-content {
+  width: calc(100% - 76px);
+
+  min-height: 100vh;
+
+  margin-left: 76px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.team-room-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 76px;
+  right: 0;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #69379a,
+      #63318f
+    );
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.20);
+
+  z-index: 100;
+
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   LOGO NAVBAR
+===================================================== */
+
+.team-room-navbar-logo {
+  width: 115px;
+  height: 70px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.team-room-navbar-logo img {
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+/* =====================================================
+   JOGOS
+===================================================== */
+
+.team-room-games-navbar {
+  flex: 1;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  min-width: 0;
+}
+
+
+.team-room-navbar-game {
+  flex: 1;
+
+  min-width: 95px;
+  max-width: 180px;
+
+  height: 70px;
+
+  padding: 4px 8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 2px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.team-room-navbar-game:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  color: white;
+}
+
+
+.team-room-navbar-game img {
+  width: 31px;
+  height: 31px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.78;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.team-room-navbar-game:hover img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+
+.team-room-navbar-active {
+  background: rgba(255, 255, 255, 0.13);
+
+  color: white;
+
+  box-shadow:
+    inset 0 -3px 0 white;
+}
+
+
+.team-room-navbar-active img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+
+/* =====================================================
+   ÁREA PRINCIPAL
+===================================================== */
+
+.team-room-main {
+  width: 100%;
+
+  min-height: 100vh;
+
+  padding: 98px 7vw 80px;
+
+  position: relative;
+
+  z-index: 1;
+
+  overflow: visible;
+
+  isolation: isolate;
+}
+
+
+/* =====================================================
+   PESQUISA
+===================================================== */
+
+.team-room-top-search {
+  width: 46%;
+
+  min-width: 280px;
+
+  max-width: 555px;
+
+  height: 43px;
+
+  margin: 0 auto 10px;
+
+  border-radius: 11px;
+
+  background: rgba(240, 240, 245, 0.92);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.18);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+.team-room-top-search input {
+  width: 100%;
+  height: 100%;
+
+  padding: 0 15px;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: #333;
+
+  font-size: 14px;
+}
+
+
+.team-room-top-search input::placeholder {
+  color: #777;
+}
+
+
+/* =====================================================
+   LOGO DO JOGO
+===================================================== */
+
+.team-room-selected-game {
+  width: 100%;
+
+  height: 150px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+}
+
+
+.team-room-selected-game-logo {
+  width: 340px;
+  height: 120px;
+
+  object-fit: contain;
+
+  display: block;
+
+  filter:
+    drop-shadow(
+      0 6px 14px rgba(0, 0, 0, 0.40)
+    );
+}
+
+
+/* =====================================================
+   FILTROS
+===================================================== */
+
+.team-room-filters {
+  width: 100%;
+
+  min-height: 66px;
+
+  padding: 9px;
+
+  border:
+    1px solid rgba(215, 171, 255, 0.90);
+
+  border-radius: 9px;
+
+  background:
+    rgba(41, 0, 77, 0.62);
+
+  backdrop-filter: blur(8px);
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  position: relative;
+
+  z-index: 20;
+
+  overflow: visible;
+}
+
+
+/* =====================================================
+   BUSCA
+===================================================== */
+
+.team-room-search-box {
+  width: 240px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+
+  border:
+    1px solid #bd88ff;
+
+  border-radius: 6px;
+
+  background:
+    rgba(45, 0, 84, 0.45);
+
+  position: relative;
+}
+
+
+.team-room-search-box span {
+  font-size: 22px;
+
+  color: #c89cff;
+
+  line-height: 1;
+}
+
+
+.team-room-search-box input {
+  width: 100%;
+
+  margin-left: 8px;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: white;
+
+  font-size: 14px;
+}
+
+
+.team-room-search-box input::placeholder {
+  color: #d0b5e5;
+}
+
+
+/* =====================================================
+   DROPDOWN
+===================================================== */
+
+.team-room-filter-dropdown {
+  position: relative;
+
+  z-index: 30;
+
+  flex-shrink: 0;
+}
+
+
+.team-room-filter-dropdown:has(.team-room-dropdown-menu) {
+  z-index: 200;
+}
+
+
+/* =====================================================
+   BOTÃO FILTRO
+===================================================== */
+
+.team-room-filter-button {
+  height: 38px;
+
+  min-width: 145px;
+
+  padding: 0 12px;
+
+  border:
+    1px solid #bd88ff;
+
+  border-radius: 6px;
+
+  background:
+    rgba(50, 0, 89, 0.38);
+
+  color: #d7b3f7;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 7px;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  position: relative;
+
+  transition:
+    background 0.2s ease;
+}
+
+
+.team-room-filter-button:hover {
+  background:
+    rgba(110, 34, 173, 0.42);
+}
+
+
+.team-room-filter-button b {
+  font-size: 18px;
+
+  font-weight: 400;
+}
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+.team-room-dropdown-menu {
+  position: absolute;
+
+  top: calc(100% + 7px);
+
+  left: 0;
+
+  min-width: 100%;
+
+  width: max-content;
+
+  max-height: 320px;
+
+  overflow-y: auto;
+
+  padding: 7px;
+
+  background: #3c1260;
+
+  border:
+    1px solid #c78cff;
+
+  border-radius: 8px;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.50);
+
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+
+  overflow-x: hidden;
+}
+
+
+.team-room-dropdown-menu button {
+  width: 100%;
+
+  min-width: 145px;
+
+  padding: 10px 12px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: white;
+
+  text-align: left;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.15s ease;
+}
+
+
+.team-room-dropdown-menu button:hover {
+  background: #6c21a8;
+}
+
+
+/* =====================================================
+   CRIAR SALA
+===================================================== */
+
+.team-room-create-room {
+  margin-left: auto;
+
+  height: 46px;
+
+  padding: 0 28px;
+
+  border:
+    1px solid #d9b1ff;
+
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6514df,
+      #7b21f3
+    );
+
+  color: white;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  position: relative;
+}
+
+
+.team-room-create-room:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 18px rgba(110, 21, 228, 0.40);
+}
+
+
+.team-room-create-room strong {
+  font-size: 27px;
+
+  font-weight: 400;
+}
+
+
+/* =====================================================
+   ROOM CARD
+===================================================== */
+
+.team-room-room-card {
+  width: 100%;
+
+  min-height: 165px;
+
+  margin-top: 25px;
+
+  padding: 22px 26px;
+
+  border:
+    1px solid rgba(213, 168, 255, 0.90);
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(46, 0, 82, 0.82) 10%,
+      rgba(72, 13, 110, 0.48) 100%
+    );
+
+  backdrop-filter: blur(8px);
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  align-items: center;
+
+  gap: 24px;
+
+  position: relative;
+
+  z-index: 1;
+}
+
+
+/* =====================================================
+   PERFIL
+===================================================== */
+
+.team-room-room-profile {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  flex: 1;
+}
+
+
+.team-room-profile-photo {
+  width: 82px;
+  height: 82px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  border:
+    2px solid #983eff;
+
+  background: #4a2860;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.team-room-profile-photo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+
+/* =====================================================
+   DETALHES
+===================================================== */
+
+.team-room-room-details {
+  min-width: 0;
+}
+
+
+.team-room-room-details h2 {
+  margin: 0 0 9px;
+
+  font-size: 28px;
+
+  font-weight: 400;
+}
+
+
+/* =====================================================
+   TAGS
+===================================================== */
+
+.team-room-room-tags {
+  display: flex;
+
+  gap: 9px;
+
+  flex-wrap: wrap;
+}
+
+
+.team-room-room-tags span {
+  min-height: 29px;
+
+  padding: 5px 10px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  border-radius: 6px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+.team-room-rank-tag {
+  background: #6517dc;
+
+  color: #ffe500;
+}
+
+
+.team-room-mode-tag {
+  background: #7423bb;
+
+  color: #dfc7f9;
+}
+
+
+.team-room-mode-tag img {
+  width: 27px;
+  height: 27px;
+
+  object-fit: contain;
+}
+
+
+/* =====================================================
+   GÊNERO
+===================================================== */
+
+.team-room-gender-options {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 7px;
+}
+
+
+.team-room-gender-options span {
+  width: 52px;
+  height: 23px;
+
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+}
+
+
+.team-room-gender-options .team-room-male {
+  background: #34a9c7;
+}
+
+
+.team-room-gender-options .team-room-female {
+  background: #d25abf;
+}
+
+
+.team-room-room-details p {
+  margin: 6px 4px 10px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   MEMBROS
+===================================================== */
+
+.team-room-room-members {
+  width: 125px;
+
+  min-height: 80px;
+
+  padding-left: 20px;
+
+  border-left:
+    1px solid rgba(255, 255, 255, 0.70);
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+
+.team-room-room-members strong {
+  font-size: 23px;
+}
+
+
+.team-room-room-members span {
+  margin-top: 4px;
+
+  font-size: 10px;
+
+  text-align: center;
+
+  color: #eee;
+}
+
+
+/* =====================================================
+   ENTRAR
+===================================================== */
+
+.team-room-join-button {
+  width: 250px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid #dbb8ff;
+
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6814df,
+      #771ef0
+    );
+
+  color: white;
+
+  font-size: 20px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  position: relative;
+}
+
+
+.team-room-join-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 18px rgba(110, 21, 228, 0.40);
+}
+
+
+/* =====================================================
+   RESPONSIVO - 1200px
+===================================================== */
+
+@media (max-width: 1200px) {
+
+  .team-room-navbar-game {
+    min-width: 80px;
+
+    font-size: 9px;
+  }
+
+  .team-room-navbar-game img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .team-room-main {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+
+  .team-room-filters {
+    flex-wrap: wrap;
+  }
+
+  .team-room-create-room {
+    margin-left: 0;
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVO - 900px
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .team-room-sidebar {
+    width: 65px;
+  }
+
+  .team-room-sidebar-menu {
+    margin-top: 82px;
+  }
+
+  .team-room-content {
+    width: calc(100% - 65px);
+
+    margin-left: 65px;
+  }
+
+  .team-room-navbar {
+    left: 65px;
+  }
+
+  .team-room-navbar-logo {
+    width: 85px;
+  }
+
+  .team-room-games-navbar {
+    overflow-x: auto;
+
+    justify-content: flex-start;
+  }
+
+  .team-room-navbar-game {
+    flex: 0 0 100px;
+
+    min-width: 100px;
+  }
+
+  .team-room-room-card {
+    flex-wrap: wrap;
+  }
+
+  .team-room-room-members {
+    width: 100%;
+
+    border-left: 0;
+
+    border-top:
+      1px solid rgba(255, 255, 255, 0.25);
+
+    padding: 15px 0 0;
+  }
+
+  .team-room-join-button {
+    width: 100%;
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVO - 650px
+===================================================== */
+
+@media (max-width: 650px) {
+
+  .team-room-sidebar {
+    width: 58px;
+  }
+
+  .team-room-sidebar-menu {
+    margin-top: 72px;
+
+    gap: 7px;
+  }
+
+  .team-room-sidebar-item {
+    width: 45px;
+    height: 45px;
+  }
+
+  .team-room-sidebar-item img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .team-room-feedback-star {
+    width: 26px;
+    height: 26px;
+
+    font-size: 22px;
+  }
+
+  .team-room-content {
+    width: calc(100% - 58px);
+
+    margin-left: 58px;
+  }
+
+  .team-room-navbar {
+    left: 58px;
+
+    height: 60px;
+  }
+
+  .team-room-navbar-logo {
+    display: none;
+  }
+
+  .team-room-games-navbar {
+    height: 60px;
+
+    overflow-x: auto;
+  }
+
+  .team-room-navbar-game {
+    height: 60px;
+
+    flex: 0 0 90px;
+
+    min-width: 90px;
+
+    font-size: 9px;
+  }
+
+  .team-room-navbar-game img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .team-room-main {
+    padding: 80px 15px 60px;
+  }
+
+  .team-room-top-search {
+    width: 100%;
+
+    min-width: 0;
+  }
+
+  .team-room-selected-game-logo {
+    width: 280px;
+  }
+
+  .team-room-room-profile {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVO - 450px
+===================================================== */
+
+@media (max-width: 450px) {
+
+  .team-room-navbar-game {
+    flex-basis: 82px;
+
+    min-width: 82px;
+
+    font-size: 8px;
+  }
+
+  .team-room-navbar-game img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .team-room-main {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .team-room-filters {
+    gap: 8px;
+  }
+
+  .team-room-search-box {
+    width: 100%;
+  }
+
+  .team-room-filter-dropdown {
+    width: 100%;
+  }
+
+  .team-room-filter-button {
+    width: 100%;
+  }
+
+  .team-room-create-room {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+  .team-room-room-card {
+    padding: 18px 15px;
+
+    border-radius: 17px;
+  }
+
+  .team-room-room-details h2 {
+    font-size: 23px;
+  }
+}

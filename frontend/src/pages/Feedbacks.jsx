@@ -150,7 +150,9 @@ export default function Feedbacks({
   onProfile,
   onHistory,
   onGameSelect,
+  onSettings,
 }) {
+
   const [aba, setAba] = useState("recebidos");
 
   const lista =
@@ -165,11 +167,13 @@ export default function Feedbacks({
         backgroundImage: `url(${roomsBackground})`,
       }}
     >
+
       {/* ==================================================
           OVERLAY
       ================================================== */}
 
       <div className="feedbacks-overlay"></div>
+
 
       {/* ==================================================
           NAVBAR
@@ -180,11 +184,14 @@ export default function Feedbacks({
         {/* LOGO */}
 
         <div className="feedbacks-navbar-logo">
+
           <img
             src={logo}
             alt="Logo"
           />
+
         </div>
+
 
         {/* JOGOS */}
 
@@ -196,6 +203,7 @@ export default function Feedbacks({
             className="feedbacks-navbar-game"
             onClick={() => onGameSelect("Overwatch")}
           >
+
             <img
               src={owLogo}
               alt="Overwatch"
@@ -204,7 +212,9 @@ export default function Feedbacks({
             <span>
               OVERWATCH
             </span>
+
           </div>
+
 
           {/* CS2 */}
 
@@ -212,6 +222,7 @@ export default function Feedbacks({
             className="feedbacks-navbar-game"
             onClick={() => onGameSelect("Counter-Strike 2")}
           >
+
             <img
               src={cs2Logo}
               alt="CS2"
@@ -220,7 +231,9 @@ export default function Feedbacks({
             <span>
               CS2
             </span>
+
           </div>
+
 
           {/* VALORANT */}
 
@@ -228,6 +241,7 @@ export default function Feedbacks({
             className="feedbacks-navbar-game"
             onClick={() => onGameSelect("Valorant")}
           >
+
             <img
               src={valorantLogo}
               alt="Valorant"
@@ -236,7 +250,9 @@ export default function Feedbacks({
             <span>
               VALORANT
             </span>
+
           </div>
+
 
           {/* FORTNITE */}
 
@@ -244,6 +260,7 @@ export default function Feedbacks({
             className="feedbacks-navbar-game"
             onClick={() => onGameSelect("Fortnite")}
           >
+
             <img
               src={fortniteLogo}
               alt="Fortnite"
@@ -252,7 +269,9 @@ export default function Feedbacks({
             <span>
               FORTNITE
             </span>
+
           </div>
+
 
           {/* ROCKET LEAGUE */}
 
@@ -260,6 +279,7 @@ export default function Feedbacks({
             className="feedbacks-navbar-game"
             onClick={() => onGameSelect("Rocket League")}
           >
+
             <img
               src={rocketLogo}
               alt="Rocket League"
@@ -268,7 +288,9 @@ export default function Feedbacks({
             <span>
               ROCKET LEAGUE
             </span>
+
           </div>
+
 
           {/* DOTA 2 */}
 
@@ -276,6 +298,7 @@ export default function Feedbacks({
             className="feedbacks-navbar-game"
             onClick={() => onGameSelect("Dota 2")}
           >
+
             <img
               src={dotaLogo}
               alt="Dota 2"
@@ -284,7 +307,9 @@ export default function Feedbacks({
             <span>
               DOTA 2
             </span>
+
           </div>
+
 
           {/* MARVEL RIVALS */}
 
@@ -292,6 +317,7 @@ export default function Feedbacks({
             className="feedbacks-navbar-game"
             onClick={() => onGameSelect("Marvel Rivals")}
           >
+
             <img
               src={rivalsLogo}
               alt="Marvel Rivals"
@@ -300,7 +326,9 @@ export default function Feedbacks({
             <span>
               MARVEL RIVALS
             </span>
+
           </div>
+
 
           {/* LEAGUE OF LEGENDS */}
 
@@ -308,6 +336,7 @@ export default function Feedbacks({
             className="feedbacks-navbar-game"
             onClick={() => onGameSelect("League of Legends")}
           >
+
             <img
               src={lolLogo}
               alt="League of Legends"
@@ -316,10 +345,13 @@ export default function Feedbacks({
             <span>
               LEAGUE OF LEGENDS
             </span>
+
           </div>
 
         </div>
+
       </header>
+
 
       {/* ==================================================
           SIDEBAR
@@ -337,11 +369,14 @@ export default function Feedbacks({
             title="Home"
             type="button"
           >
+
             <img
               src={homeIcon}
               alt="Home"
             />
+
           </button>
+
 
           {/* PERFIL */}
 
@@ -351,11 +386,14 @@ export default function Feedbacks({
             title="Perfil"
             type="button"
           >
+
             <img
               src={perfilIcon}
               alt="Perfil"
             />
+
           </button>
+
 
           {/* HISTÓRICO */}
 
@@ -365,11 +403,14 @@ export default function Feedbacks({
             title="Histórico"
             type="button"
           >
+
             <img
               src={historicoIcon}
               alt="Histórico"
             />
+
           </button>
+
 
           {/* FEEDBACKS */}
 
@@ -378,26 +419,34 @@ export default function Feedbacks({
             title="Feedbacks"
             type="button"
           >
+
             <span className="feedbacks-feedback-star">
               ★
             </span>
+
           </button>
+
 
           {/* CONFIGURAÇÕES */}
 
           <button
             className="feedbacks-sidebar-item"
+            onClick={onSettings}
             title="Configurações"
             type="button"
           >
+
             <img
               src={configuracoesIcon}
               alt="Configurações"
             />
+
           </button>
 
         </div>
+
       </aside>
+
 
       {/* ==================================================
           CONTEÚDO
@@ -428,6 +477,7 @@ export default function Feedbacks({
 
           </div>
 
+
           <div className="feedbacks-average">
 
             <strong>
@@ -443,6 +493,7 @@ export default function Feedbacks({
           </div>
 
         </header>
+
 
         {/* ==================================================
             RESUMO
@@ -472,6 +523,7 @@ export default function Feedbacks({
 
           </div>
 
+
           {/* RECEBIDOS */}
 
           <div className="feedback-summary-card">
@@ -493,6 +545,7 @@ export default function Feedbacks({
             </div>
 
           </div>
+
 
           {/* ENVIADOS */}
 
@@ -518,6 +571,7 @@ export default function Feedbacks({
 
         </section>
 
+
         {/* ==================================================
             ABAS
         ================================================== */}
@@ -538,6 +592,7 @@ export default function Feedbacks({
             Feedbacks recebidos
           </button>
 
+
           <button
             type="button"
             className={
@@ -553,6 +608,7 @@ export default function Feedbacks({
           </button>
 
         </div>
+
 
         {/* ==================================================
             LISTA DE FEEDBACKS
@@ -573,6 +629,7 @@ export default function Feedbacks({
                 nome={feedback.nome}
               />
 
+
               <div className="feedback-card-main">
 
                 {/* TOPO */}
@@ -591,11 +648,13 @@ export default function Feedbacks({
 
                   </div>
 
+
                   <div className="feedback-date">
                     {feedback.data}
                   </div>
 
                 </div>
+
 
                 {/* META */}
 
@@ -612,11 +671,13 @@ export default function Feedbacks({
 
                   </span>
 
+
                   <Stars
                     nota={feedback.nota}
                   />
 
                 </div>
+
 
                 {/* COMENTÁRIO */}
 

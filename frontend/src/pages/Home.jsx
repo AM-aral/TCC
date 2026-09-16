@@ -40,6 +40,13 @@ import warzoneLogo from "../assets/games-icon/warzone icon.png";
 
 function Home({ onSelectGame }) {
 
+  // =====================================================
+  // IMPORTANTE: o "name" de cada jogo abaixo tem que ser
+  // EXATAMENTE igual à chave usada no GAME_COMPONENTS
+  // do App.jsx (e às strings usadas nas navbars das Rooms,
+  // tipo onSelectGame("Dota 2")). Se mudar aqui, muda lá também.
+  // =====================================================
+
   const games = [
 
     {
@@ -57,7 +64,7 @@ function Home({ onSelectGame }) {
     },
 
     {
-      name: "Counter Strike 2",
+      name: "Counter-Strike 2",
       image: cs2Image,
       logo: cs2Logo,
       color: "cs2"

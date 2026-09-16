@@ -1,3 +1,4 @@
+
 import "./Settings.css";
 
 // LOGO
@@ -26,6 +27,7 @@ function Settings({
     onLogout,
     onSelectGame
 }) {
+
     const jogos = [
         { nome: "Overwatch", imagem: owIcon },
         { nome: "Counter Strike 2", imagem: csIcon },
@@ -48,33 +50,57 @@ function Settings({
 
                 <div className="settings-sidebar-menu">
 
+                    {/* HOME */}
+
                     <button
                         className="settings-sidebar-item"
                         onClick={onHome}
                         title="Início"
+                        type="button"
                     >
-                        <img src={homeIcon} alt="Início" />
+                        <img
+                            src={homeIcon}
+                            alt="Início"
+                        />
                     </button>
+
+
+                    {/* PERFIL */}
 
                     <button
                         className="settings-sidebar-item"
                         onClick={onProfile}
                         title="Perfil"
+                        type="button"
                     >
-                        <img src={perfilIcon} alt="Perfil" />
+                        <img
+                            src={perfilIcon}
+                            alt="Perfil"
+                        />
                     </button>
+
+
+                    {/* HISTÓRICO */}
 
                     <button
                         className="settings-sidebar-item"
                         onClick={onHistory}
                         title="Histórico"
+                        type="button"
                     >
-                        <img src={historicoIcon} alt="Histórico" />
+                        <img
+                            src={historicoIcon}
+                            alt="Histórico"
+                        />
                     </button>
+
+
+                    {/* CONFIGURAÇÕES */}
 
                     <button
                         className="settings-sidebar-item active"
                         title="Configurações"
+                        type="button"
                     >
                         <img
                             src={configuracoesIcon}
@@ -93,28 +119,45 @@ function Settings({
 
             <nav className="settings-navbar">
 
+                {/* LOGO */}
+
                 <div className="settings-navbar-logo">
-                    <img src={logo} alt="LFGP" />
+
+                    <img
+                        src={logo}
+                        alt="LFGP"
+                    />
+
                 </div>
+
+
+                {/* JOGOS */}
 
                 <div className="settings-games">
 
                     {jogos.map((jogo) => (
+
                         <button
                             key={jogo.nome}
                             className="settings-game-button"
                             title={jogo.nome}
+                            type="button"
                             onClick={() => {
+
                                 if (onSelectGame) {
                                     onSelectGame(jogo);
                                 }
+
                             }}
                         >
+
                             <img
                                 src={jogo.imagem}
                                 alt={jogo.nome}
                             />
+
                         </button>
+
                     ))}
 
                 </div>
@@ -129,27 +172,40 @@ function Settings({
             <main className="settings-content">
 
                 <div className="settings-header">
-                    <h1>Configurações</h1>
+
+                    <h1>
+                        Configurações
+                    </h1>
+
                     <p>
                         Gerencie as configurações da sua conta.
                     </p>
+
                 </div>
 
+
+                {/* SAIR DA CONTA */}
 
                 <section className="settings-card">
 
                     <div className="settings-card-info">
-                        <h2>Sair da conta</h2>
+
+                        <h2>
+                            Sair da conta
+                        </h2>
 
                         <p>
                             Encerre sua sessão atual e volte para a tela
                             de login.
                         </p>
+
                     </div>
+
 
                     <button
                         className="settings-logout-button"
                         onClick={onLogout}
+                        type="button"
                     >
                         Sair da conta
                     </button>
@@ -162,4 +218,4 @@ function Settings({
     );
 }
 
-export default Settings;    
+export default Settings;
