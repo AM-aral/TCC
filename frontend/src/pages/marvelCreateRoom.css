@@ -1,0 +1,1552 @@
+/* =========================================================
+    RESET
+  ========================================================= */
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+
+  /* =========================================================
+    PÁGINA
+  ========================================================= */
+
+  .create-room-page {
+    min-height: 100vh;
+    width: 100%;
+
+    position: relative;
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+    color: white;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+
+  /* =========================================================
+    OVERLAY
+  ========================================================= */
+
+  .create-room-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(30, 0, 65, 0.35) 0%,
+        rgba(35, 0, 75, 0.62) 50%,
+        rgba(25, 0, 55, 0.90) 100%
+      );
+
+    z-index: 0;
+
+    pointer-events: none;
+  }
+
+
+  /* =========================================================
+    SIDEBAR
+    PADRÃO DO PROFILE
+  ========================================================= */
+
+  .create-sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 76px;
+
+    background: rgba(36, 0, 68, 0.98);
+
+    border-right:
+      1px solid rgba(255, 255, 255, 0.06);
+
+    z-index: 200;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  .create-sidebar-menu {
+    width: 100%;
+
+    margin-top: 92px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 12px;
+  }
+
+
+  .create-sidebar-item {
+    width: 52px;
+    height: 52px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+
+
+  .create-sidebar-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+
+    transform: scale(1.04);
+  }
+
+
+  .create-sidebar-item img {
+    width: 30px;
+    height: 30px;
+
+    object-fit: contain;
+
+    display: block;
+
+    opacity: 0.70;
+
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+
+  .create-sidebar-item:hover img {
+    opacity: 1;
+
+    transform: scale(1.04);
+  }
+
+
+  .create-feedback-star {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-size: 25px;
+
+    line-height: 1;
+  }
+
+
+  /* =========================================================
+    ÁREA AO LADO DA SIDEBAR
+  ========================================================= */
+
+  .create-room-content {
+    width: calc(100% - 76px);
+
+    min-height: 100vh;
+
+    margin-left: 76px;
+
+    position: relative;
+
+    z-index: 2;
+  }
+
+
+  /* =========================================================
+    NAVBAR
+    PADRÃO DO PROFILE
+  ========================================================= */
+
+  .create-navbar {
+    position: fixed;
+
+    top: 0;
+    left: 76px;
+    right: 0;
+
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+
+    background:
+      linear-gradient(
+        90deg,
+        #69379a,
+        #63318f
+      );
+
+    border-bottom:
+      1px solid rgba(255, 255, 255, 0.10);
+
+    box-shadow:
+      0 5px 18px rgba(0, 0, 0, 0.20);
+
+    z-index: 100;
+
+    overflow: hidden;
+  }
+
+
+  /* =========================================================
+    LOGO
+  ========================================================= */
+
+  .create-navbar-logo {
+    width: 115px;
+    height: 70px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .create-navbar-logo img {
+    width: 58px;
+    height: 58px;
+
+    object-fit: contain;
+
+    display: block;
+  }
+
+
+  /* =========================================================
+    JOGOS DA NAVBAR
+  ========================================================= */
+
+  .create-games-navbar {
+    flex: 1;
+
+    height: 70px;
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+
+  .create-navbar-game {
+    flex: 1;
+
+    min-width: 95px;
+    max-width: 180px;
+
+    height: 70px;
+
+    padding: 4px 8px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 2px;
+
+    color: rgba(255, 255, 255, 0.72);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+
+  .create-navbar-game:hover {
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+  }
+
+
+  .create-navbar-game img {
+    width: 31px;
+    height: 31px;
+
+    object-fit: contain;
+
+    display: block;
+
+    opacity: 0.78;
+
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+
+  .create-navbar-game:hover img {
+    opacity: 1;
+
+    transform: scale(1.08);
+  }
+
+
+  .create-navbar-active {
+    background: rgba(255, 255, 255, 0.13);
+
+    color: white;
+
+    box-shadow:
+      inset 0 -3px 0 white;
+  }
+
+
+  .create-navbar-active img {
+    opacity: 1;
+
+    transform: scale(1.08);
+  }
+
+
+  /* =========================================================
+    ÁREA PRINCIPAL
+  ========================================================= */
+
+  .create-room-main {
+    width: min(1380px, 94%);
+
+    margin: 0 auto;
+
+    padding-top: 98px;
+    padding-bottom: 50px;
+
+    position: relative;
+
+    z-index: 2;
+  }
+
+
+  /* =========================================================
+    BOTÃO VOLTAR
+  ========================================================= */
+
+  .create-room-top {
+    width: 100%;
+
+    display: flex;
+    justify-content: flex-end;
+
+    margin-bottom: 5px;
+  }
+
+
+  .back-button {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    background: rgba(20, 12, 25, 0.75);
+
+    color: white;
+
+    padding: 10px 18px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+  }
+
+
+  .back-button:hover {
+    background: rgba(84, 33, 111, 0.9);
+
+    border-color: rgba(202, 130, 255, 0.5);
+
+    transform: translateY(-1px);
+  }
+
+
+  /* =========================================================
+    LOGO GRANDE DO JOGO
+  ========================================================= */
+
+  .create-game-header {
+    height: 155px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 10px;
+  }
+
+
+  .create-game-logo {
+    width: 350px;
+
+    max-width: 80%;
+    max-height: 125px;
+
+    object-fit: contain;
+
+    filter:
+      drop-shadow(0 0 18px rgba(0, 0, 0, 0.75));
+  }
+
+
+  /* =========================================================
+    SEÇÕES
+  ========================================================= */
+
+  .create-section {
+    width: 100%;
+
+    margin: 0 auto 28px;
+  }
+
+
+  .section-title {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 14px;
+  }
+
+
+  .section-title span {
+    flex: 1;
+
+    height: 1px;
+
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+
+  .section-title p {
+    margin: 0;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    white-space: nowrap;
+  }
+
+
+  /* =========================================================
+    MODOS DE JOGO
+  ========================================================= */
+
+  .game-modes {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: repeat(6, 1fr);
+
+    gap: 18px;
+  }
+
+
+  .mode-card {
+    border: none;
+
+    background: transparent;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    min-width: 0;
+  }
+
+
+  .mode-image {
+    position: relative;
+
+    height: 165px;
+
+    overflow: hidden;
+
+    border-radius: 9px;
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+
+    background: rgba(0, 0, 0, 0.3);
+
+    transition: 0.2s ease;
+  }
+
+
+  .mode-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition: 0.25s ease;
+  }
+
+
+  .mode-image-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+      linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.55),
+        transparent 60%
+      );
+
+    pointer-events: none;
+  }
+
+
+  .mode-card:hover .mode-image {
+    transform: translateY(-2px);
+
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+
+  .mode-card:hover .mode-image img {
+    transform: scale(1.04);
+  }
+
+
+  /* =========================================================
+    NOME DO MODO
+  ========================================================= */
+
+  .mode-name {
+    margin-top: -1px;
+
+    height: 29px;
+
+    background: white;
+
+    color: #151015;
+
+    clip-path:
+      polygon(
+        5% 0,
+        100% 0,
+        95% 100%,
+        0 100%
+      );
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 0.3px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    transition: 0.2s;
+  }
+
+
+  .mode-card.selected .mode-name {
+    background: #54216f;
+
+    color: white;
+
+    box-shadow:
+      0 0 12px rgba(185, 106, 255, 0.4);
+  }
+
+
+  .mode-card.selected .mode-image {
+    border-color: #a85ed1;
+
+    box-shadow:
+      0 0 15px rgba(142, 63, 181, 0.4);
+  }
+
+
+  /* =========================================================
+    CARDS DE MODO — COR + ÍCONE SVG
+    (mesmo padrão visual usado no Rocket League)
+  ========================================================= */
+
+  .marvel-mode-image {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background-image:
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+  }
+
+
+  .marvel-mode-icon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    filter:
+      drop-shadow(0 4px 10px rgba(0, 0, 0, 0.55));
+
+    transition: transform 0.25s ease;
+
+    z-index: 1;
+  }
+
+
+  .marvel-mode-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+
+  .mode-card:hover .marvel-mode-icon {
+    transform: scale(1.12);
+  }
+
+
+  /* CORES POR MODO */
+
+  /* CLASSIFICATÓRIA — vermelho */
+
+  .mode-classificatoria {
+    background-color: #380c0c;
+
+    background-image:
+      radial-gradient(
+        circle at 50% 35%,
+        rgba(220, 70, 70, 0.35),
+        rgba(56, 12, 12, 0.2) 70%
+      ),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+  }
+
+  .mode-classificatoria .marvel-mode-icon {
+    color: #ff8f8f;
+  }
+
+
+  /* PARTIDA RÁPIDA — azul */
+
+  .mode-partida-rapida {
+    background-color: #0c1e38;
+
+    background-image:
+      radial-gradient(
+        circle at 50% 35%,
+        rgba(70, 140, 220, 0.35),
+        rgba(12, 30, 56, 0.2) 70%
+      ),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+  }
+
+  .mode-partida-rapida .marvel-mode-icon {
+    color: #7fb8ff;
+  }
+
+
+  /* PERSONALIZADA — roxo */
+
+  .mode-personalizada {
+    background-color: #1e0c38;
+
+    background-image:
+      radial-gradient(
+        circle at 50% 35%,
+        rgba(168, 94, 209, 0.35),
+        rgba(30, 12, 56, 0.2) 70%
+      ),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+  }
+
+  .mode-personalizada .marvel-mode-icon {
+    color: #c77dff;
+  }
+
+
+  /* TREINO — verde */
+
+  .mode-treino {
+    background-color: #0c3820;
+
+    background-image:
+      radial-gradient(
+        circle at 50% 35%,
+        rgba(70, 220, 140, 0.32),
+        rgba(12, 56, 32, 0.2) 70%
+      ),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+  }
+
+  .mode-treino .marvel-mode-icon {
+    color: #7dffb0;
+  }
+
+
+  /* DOOM MATCH — laranja escuro (vilão) */
+
+  .mode-doom-match {
+    background-color: #2a0c08;
+
+    background-image:
+      radial-gradient(
+        circle at 50% 35%,
+        rgba(230, 110, 60, 0.35),
+        rgba(42, 12, 8, 0.2) 70%
+      ),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+  }
+
+  .mode-doom-match .marvel-mode-icon {
+    color: #ff8f5c;
+  }
+
+
+  /* EVENTO — dourado */
+
+  .mode-evento {
+    background-color: #3a3008;
+
+    background-image:
+      radial-gradient(
+        circle at 50% 35%,
+        rgba(230, 195, 60, 0.35),
+        rgba(58, 48, 8, 0.2) 70%
+      ),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+  }
+
+  .mode-evento .marvel-mode-icon {
+    color: #ffe066;
+  }
+
+
+  /* selecionado: reforça o glow da cor do próprio modo */
+
+  .mode-card.selected .mode-classificatoria {
+    box-shadow: inset 0 0 25px rgba(230, 90, 90, 0.35);
+  }
+
+  .mode-card.selected .mode-partida-rapida {
+    box-shadow: inset 0 0 25px rgba(90, 150, 240, 0.35);
+  }
+
+  .mode-card.selected .mode-personalizada {
+    box-shadow: inset 0 0 25px rgba(180, 100, 220, 0.35);
+  }
+
+  .mode-card.selected .mode-treino {
+    box-shadow: inset 0 0 25px rgba(90, 230, 160, 0.35);
+  }
+
+  .mode-card.selected .mode-doom-match {
+    box-shadow: inset 0 0 25px rgba(230, 130, 80, 0.35);
+  }
+
+  .mode-card.selected .mode-evento {
+    box-shadow: inset 0 0 25px rgba(230, 200, 70, 0.35);
+  }
+
+
+  /* =========================================================
+    TAMANHO DA EQUIPE
+  ========================================================= */
+
+  .team-size {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+  }
+
+
+  .team-button {
+    width: 155px;
+    height: 38px;
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: white;
+
+    clip-path:
+      polygon(
+        5% 0,
+        100% 0,
+        95% 100%,
+        0 100%
+      );
+
+    font-size: 12px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+  }
+
+
+  .team-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+
+  .team-button.selected {
+    background: white;
+
+    color: #24152a;
+
+    box-shadow:
+      0 0 12px rgba(255, 255, 255, 0.2);
+  }
+
+
+  /* =========================================================
+    ELOS
+  ========================================================= */
+
+  .rank-selection {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 82px;
+
+    padding: 10px 28px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 45px;
+
+    border-radius: 10px;
+
+    background: rgba(15, 8, 20, 0.55);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    transition: 0.25s ease;
+  }
+
+
+  .rank-item {
+    width: 80px;
+    height: 65px;
+
+    border: none;
+
+    background: transparent;
+
+    padding: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+  }
+
+
+  .rank-placeholder {
+    width: 70px;
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    transition: 0.2s ease;
+  }
+
+
+  .rank-icon {
+    width: 76px;
+    height: 76px;
+
+    object-fit: contain;
+
+    transition: 0.2s ease;
+  }
+
+
+  .rank-item:hover .rank-icon {
+    transform: scale(1.12);
+  }
+
+
+  .rank-item.selected .rank-placeholder {
+    transform: scale(1.08);
+
+    background: transparent;
+
+    box-shadow: none;
+  }
+
+
+  .rank-item.selected .rank-icon {
+    transform: scale(1.12);
+
+    filter:
+      drop-shadow(0 0 5px rgba(210, 150, 255, 0.65))
+      drop-shadow(0 0 12px rgba(170, 90, 230, 0.35));
+  }
+
+
+  .rank-selection.disabled {
+    opacity: 0.35;
+
+    filter: grayscale(1);
+
+    pointer-events: none;
+  }
+
+
+  .rank-disabled-message {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px;
+
+    background: rgba(15, 8, 20, 0.72);
+
+    color: white;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 0.5px;
+
+    text-align: center;
+
+    pointer-events: none;
+  }
+
+
+  /* =========================================================
+    FUNÇÃO (VANGUARDA, DUELISTA, ESTRATEGISTA)
+  ========================================================= */
+
+  .function-selection {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 14px;
+  }
+
+
+  .function-button {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: white;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    letter-spacing: 0.4px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+  }
+
+
+  .function-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+
+  .function-button.selected {
+    background: #54216f;
+
+    color: white;
+
+    border-color: #a85ed1;
+
+    box-shadow:
+      0 0 12px rgba(185, 106, 255, 0.35);
+  }
+
+
+  .function-icon {
+    width: 24px;
+    height: 24px;
+
+    object-fit: contain;
+  }
+
+
+  /* =========================================================
+    GÊNERO
+  ========================================================= */
+
+  .gender-selection {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+  }
+
+
+  .gender-button {
+    width: 155px;
+    height: 42px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: white;
+
+    clip-path:
+      polygon(
+        5% 0,
+        100% 0,
+        95% 100%,
+        0 100%
+      );
+
+    font-size: 12px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+  }
+
+
+  .gender-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+
+  .gender-button.selected {
+    background: #54216f;
+
+    color: white;
+
+    box-shadow:
+      0 0 12px rgba(185, 106, 255, 0.35);
+  }
+
+
+  /* =========================================================
+    DETALHES DA SALA
+  ========================================================= */
+
+  .room-details-form {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 40px;
+  }
+
+
+  .detail-box {
+    height: 125px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+  }
+
+
+  .detail-box label {
+    color: white;
+
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+
+  .detail-box input,
+  .detail-box textarea {
+    width: 100%;
+
+    flex: 1;
+
+    resize: none;
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+
+    border-radius: 8px;
+
+    background: rgba(10, 7, 13, 0.65);
+
+    color: white;
+
+    outline: none;
+
+    padding: 13px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+  }
+
+
+  .detail-box input:focus,
+  .detail-box textarea:focus {
+    border-color: rgba(184, 99, 230, 0.7);
+
+    box-shadow:
+      0 0 10px rgba(154, 69, 194, 0.18);
+  }
+
+
+  .detail-box input::placeholder,
+  .detail-box textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+
+  /* =========================================================
+    BOTÕES FINAIS
+  ========================================================= */
+
+  .create-actions {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 35px;
+  }
+
+
+  .create-button,
+  .cancel-button {
+    width: 225px;
+    height: 56px;
+
+    border: none;
+
+    clip-path:
+      polygon(
+        5% 0,
+        100% 0,
+        95% 100%,
+        0 100%
+      );
+
+    font-size: 13px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+  }
+
+
+  .create-button {
+    background: #54216f;
+
+    color: white;
+
+    box-shadow:
+      0 0 18px rgba(135, 53, 180, 0.3);
+  }
+
+
+  .create-button:hover {
+    background: #6c2b8e;
+
+    transform: translateY(-2px);
+  }
+
+
+  .cancel-button {
+    background: white;
+
+    color: #24152a;
+  }
+
+
+  .cancel-button:hover {
+    background: #e9e9e9;
+
+    transform: translateY(-2px);
+  }
+
+
+  /* =========================================================
+    RESPONSIVO - 1200px
+  ========================================================= */
+
+  @media (max-width: 1200px) {
+
+    .create-navbar-game {
+      min-width: 80px;
+
+      font-size: 9px;
+    }
+
+    .create-navbar-game img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .game-modes {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .mode-image {
+      height: 155px;
+    }
+
+    .rank-selection {
+      gap: 8px;
+
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
+
+  /* =========================================================
+    RESPONSIVO - 900px
+  ========================================================= */
+
+  @media (max-width: 900px) {
+
+    .create-sidebar {
+      width: 65px;
+    }
+
+    .create-sidebar-menu {
+      margin-top: 82px;
+    }
+
+    .create-room-content {
+      width: calc(100% - 65px);
+
+      margin-left: 65px;
+    }
+
+    .create-navbar {
+      left: 65px;
+    }
+
+    .create-navbar-logo {
+      width: 85px;
+    }
+
+    .create-games-navbar {
+      overflow-x: auto;
+
+      justify-content: flex-start;
+    }
+
+    .create-navbar-game {
+      flex: 0 0 100px;
+
+      min-width: 100px;
+    }
+
+    .game-modes {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .room-details-form {
+      grid-template-columns: 1fr;
+
+      gap: 20px;
+    }
+
+    .rank-selection {
+      flex-wrap: wrap;
+
+      padding: 15px;
+    }
+  }
+
+
+  /* =========================================================
+    RESPONSIVO - 650px
+  ========================================================= */
+
+  @media (max-width: 650px) {
+
+    .create-sidebar {
+      width: 58px;
+    }
+
+    .create-sidebar-menu {
+      margin-top: 72px;
+
+      gap: 7px;
+    }
+
+    .create-sidebar-item {
+      width: 45px;
+      height: 45px;
+    }
+
+    .create-sidebar-item img {
+      width: 26px;
+      height: 26px;
+    }
+
+    .create-feedback-star {
+      width: 26px;
+      height: 26px;
+
+      font-size: 22px;
+    }
+
+    .create-room-content {
+      width: calc(100% - 58px);
+
+      margin-left: 58px;
+    }
+
+    .create-navbar {
+      left: 58px;
+
+      height: 60px;
+    }
+
+    .create-navbar-logo {
+      display: none;
+    }
+
+    .create-games-navbar {
+      height: 60px;
+
+      overflow-x: auto;
+    }
+
+    .create-navbar-game {
+      height: 60px;
+
+      flex: 0 0 90px;
+
+      min-width: 90px;
+
+      font-size: 9px;
+    }
+
+    .create-navbar-game img {
+      width: 26px;
+      height: 26px;
+    }
+
+    .create-room-main {
+      width: 92%;
+
+      padding-top: 80px;
+      padding-bottom: 35px;
+    }
+
+    .game-modes {
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 10px;
+    }
+
+    .mode-image {
+      height: 125px;
+    }
+
+    .marvel-mode-icon {
+      width: 56px;
+      height: 56px;
+    }
+
+    .team-button,
+    .gender-button {
+      width: 135px;
+    }
+
+    .create-button,
+    .cancel-button {
+      width: 170px;
+    }
+
+    .create-actions {
+      flex-wrap: wrap;
+    }
+  }
+
+
+  /* =========================================================
+    RESPONSIVO - 450px
+  ========================================================= */
+
+  @media (max-width: 450px) {
+
+    .create-navbar-game {
+      flex-basis: 82px;
+
+      min-width: 82px;
+
+      font-size: 8px;
+    }
+
+    .create-navbar-game img {
+      width: 25px;
+      height: 25px;
+    }
+  }

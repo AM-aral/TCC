@@ -1,46 +1,1256 @@
 /* =========================================================
-   VALORANT CREATE ROOM
-   Reaproveita 100% do CSS base já usado no Brawlhalla
-   (create-room-page, sidebar, navbar, botões, form, etc.)
-   e só adiciona o que é específico do Valorant.
+   RESET
 ========================================================= */
 
-@import "./brawlCreateRoom.css";
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   PÁGINA
+========================================================= */
+
+.val-create-room-page {
+  min-height: 100vh;
+  width: 100%;
+
+  position: relative;
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+
+  color: white;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.val-create-room-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30, 0, 65, 0.35) 0%,
+      rgba(35, 0, 75, 0.62) 50%,
+      rgba(25, 0, 55, 0.90) 100%
+    );
+
+  z-index: 0;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.val-create-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 76px;
+
+  background: rgba(36, 0, 68, 0.98);
+
+  border-right:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  z-index: 200;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.val-create-sidebar-menu {
+  width: 100%;
+
+  margin-top: 92px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.val-create-sidebar-item {
+  width: 52px;
+  height: 52px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.val-create-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  transform: scale(1.04);
+}
+
+
+.val-create-sidebar-item img {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.70;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.val-create-sidebar-item:hover img {
+  opacity: 1;
+
+  transform: scale(1.04);
+}
+
+
+.val-create-feedback-star {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   ÁREA AO LADO DA SIDEBAR
+========================================================= */
+
+.val-create-room-content {
+  width: calc(100% - 76px);
+
+  min-height: 100vh;
+
+  margin-left: 76px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.val-create-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 76px;
+  right: 0;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #69379a,
+      #63318f
+    );
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.20);
+
+  z-index: 100;
+
+  overflow: hidden;
+}
+
+
+.val-create-navbar-logo {
+  width: 115px;
+  height: 70px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.val-create-navbar-logo img {
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+.val-create-games-navbar {
+  flex: 1;
+
+  height: 70px;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+
+.val-create-navbar-game {
+  flex: 1;
+
+  min-width: 95px;
+  max-width: 180px;
+
+  height: 70px;
+
+  padding: 4px 8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 2px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.val-create-navbar-game:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  color: white;
+}
+
+
+.val-create-navbar-game img {
+  width: 31px;
+  height: 31px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.78;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.val-create-navbar-game:hover img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+
+.val-create-navbar-active {
+  background: rgba(255, 255, 255, 0.13);
+
+  color: white;
+
+  box-shadow:
+    inset 0 -3px 0 white;
+}
+
+
+.val-create-navbar-active img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+
+/* =========================================================
+   ÁREA PRINCIPAL
+========================================================= */
+
+.val-create-room-main {
+  width: min(1380px, 94%);
+
+  margin: 0 auto;
+
+  padding-top: 98px;
+  padding-bottom: 50px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =========================================================
+   BOTÃO VOLTAR
+========================================================= */
+
+.val-create-room-top {
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+
+  margin-bottom: 5px;
+}
+
+
+.val-back-button {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  background: rgba(20, 12, 25, 0.75);
+
+  color: white;
+
+  padding: 10px 18px;
+
+  border-radius: 7px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.val-back-button:hover {
+  background: rgba(84, 33, 111, 0.9);
+
+  border-color: rgba(202, 130, 255, 0.5);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   LOGO GRANDE DO JOGO
+========================================================= */
+
+.val-create-game-header {
+  height: 155px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+
+.val-create-game-logo {
+  width: 350px;
+
+  max-width: 80%;
+  max-height: 125px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 18px rgba(0, 0, 0, 0.75));
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.val-create-section {
+  width: 100%;
+
+  margin: 0 auto 28px;
+}
+
+
+.val-section-title {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 14px;
+}
+
+
+.val-section-title span {
+  flex: 1;
+
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.16);
+}
+
+
+.val-section-title p {
+  margin: 0;
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   MODOS DE JOGO (base em imagem/mapa, padrão genérico)
+========================================================= */
+
+.val-game-modes {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 18px;
+}
+
+
+.val-mode-card {
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  cursor: pointer;
+
+  min-width: 0;
+}
+
+
+.val-mode-image {
+  position: relative;
+
+  height: 165px;
+
+  overflow: hidden;
+
+  border-radius: 9px;
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+
+  background: rgba(0, 0, 0, 0.3);
+
+  transition: 0.2s ease;
+}
+
+
+.val-mode-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  transition: 0.25s ease;
+}
+
+
+.val-mode-image-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.55),
+      transparent 60%
+    );
+
+  pointer-events: none;
+}
+
+
+.val-mode-card:hover .val-mode-image {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+
+.val-mode-card:hover .val-mode-image img {
+  transform: scale(1.04);
+}
+
+
+.val-mode-name {
+  margin-top: -1px;
+
+  height: 29px;
+
+  background: white;
+
+  color: #151015;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  letter-spacing: 0.3px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  transition: 0.2s;
+}
+
+
+.val-mode-card.val-selected .val-mode-name {
+  background: #54216f;
+
+  color: white;
+
+  box-shadow:
+    0 0 12px rgba(185, 106, 255, 0.4);
+}
+
+
+.val-mode-card.val-selected .val-mode-image {
+  border-color: #a85ed1;
+
+  box-shadow:
+    0 0 15px rgba(142, 63, 181, 0.4);
+}
 
 
 /* =========================================================
    MODOS DO VALORANT
-   (5 modos: Competitivo, Não-Classificatória, Deathmatch,
-   Spike Rush, Escaramuça) — usam imagem real em vez de
-   ícone SVG, já que cada modo tem seu próprio "card" visual.
+   Grid centralizado, com largura máxima por card,
+   independente de ter 4 ou 5 modos.
 ========================================================= */
 
-.game-modes.valorant-modes {
-  grid-template-columns: repeat(5, 1fr);
+.val-game-modes.val-modes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
+  justify-content: center;
+  gap: 16px;
 }
 
 
 @media (max-width: 1200px) {
 
-  .game-modes.valorant-modes {
-    grid-template-columns: repeat(3, 1fr);
+  .val-game-modes.val-modes {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 200px));
   }
 }
 
 
 @media (max-width: 900px) {
 
-  .game-modes.valorant-modes {
-    grid-template-columns: repeat(2, 1fr);
+  .val-game-modes.val-modes {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 180px));
   }
 }
 
 
 @media (max-width: 650px) {
 
-  .game-modes.valorant-modes {
+  .val-game-modes.val-modes {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+    gap: 10px;
+  }
+}
+
+
+/* =========================================================
+   ELOS
+========================================================= */
+
+.val-rank-selection {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 82px;
+
+  padding: 10px 28px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 75px;
+
+  border-radius: 10px;
+
+  background: rgba(15, 8, 20, 0.55);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  transition: 0.25s ease;
+}
+
+
+.val-rank-item {
+  width: 42px;
+  height: 32px;
+
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.val-rank-placeholder {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  transition: 0.2s ease;
+}
+
+
+.val-rank-icon {
+  width: 60px;
+  height: 60px;
+
+  object-fit: contain;
+
+  transition: 0.2s ease;
+}
+
+
+.val-rank-item:hover .val-rank-icon {
+  transform: scale(1.12);
+}
+
+
+.val-rank-item.val-selected .val-rank-placeholder {
+  transform: scale(1.08);
+
+  background: transparent;
+
+  box-shadow: none;
+}
+
+
+.val-rank-item.val-selected .val-rank-icon {
+  transform: scale(1.12);
+
+  filter:
+    drop-shadow(0 0 5px rgba(210, 150, 255, 0.65))
+    drop-shadow(0 0 12px rgba(170, 90, 230, 0.35));
+}
+
+
+.val-rank-selection.val-disabled {
+  opacity: 0.35;
+
+  filter: grayscale(1);
+
+  pointer-events: none;
+}
+
+
+.val-rank-disabled-message {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+
+  background: rgba(15, 8, 20, 0.72);
+
+  color: white;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  letter-spacing: 0.5px;
+
+  text-align: center;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   FUNÇÃO (Duelista, Controlador, Iniciador, Sentinela)
+========================================================= */
+
+.val-function-selection {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.val-function-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.val-function-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.val-function-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.val-function-button.val-selected {
+  background: #ff4655;
+  border-color: #ff4655;
+  color: #fff;
+}
+
+
+/* =========================================================
+   GÊNERO
+========================================================= */
+
+.val-gender-selection {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+}
+
+
+.val-gender-button {
+  width: 155px;
+  height: 42px;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  background: rgba(255, 255, 255, 0.06);
+
+  color: white;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  font-size: 12px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.val-gender-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+
+.val-gender-button.val-selected {
+  background: #54216f;
+
+  color: white;
+
+  box-shadow:
+    0 0 12px rgba(185, 106, 255, 0.35);
+}
+
+
+/* =========================================================
+   DETALHES DA SALA
+========================================================= */
+
+.val-room-details-form {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 40px;
+}
+
+
+.val-detail-box {
+  height: 125px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.val-detail-box label {
+  color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+
+.val-detail-box input,
+.val-detail-box textarea {
+  width: 100%;
+
+  flex: 1;
+
+  resize: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+
+  border-radius: 8px;
+
+  background: rgba(10, 7, 13, 0.65);
+
+  color: white;
+
+  outline: none;
+
+  padding: 13px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  transition: 0.2s ease;
+}
+
+
+.val-detail-box input:focus,
+.val-detail-box textarea:focus {
+  border-color: rgba(184, 99, 230, 0.7);
+
+  box-shadow:
+    0 0 10px rgba(154, 69, 194, 0.18);
+}
+
+
+.val-detail-box input::placeholder,
+.val-detail-box textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* =========================================================
+   BOTÕES FINAIS
+========================================================= */
+
+.val-create-actions {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 35px;
+}
+
+
+.val-create-button,
+.val-cancel-button {
+  width: 225px;
+  height: 56px;
+
+  border: none;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  font-size: 13px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.val-create-button {
+  background: #54216f;
+
+  color: white;
+
+  box-shadow:
+    0 0 18px rgba(135, 53, 180, 0.3);
+}
+
+
+.val-create-button:hover {
+  background: #6c2b8e;
+
+  transform: translateY(-2px);
+}
+
+
+.val-cancel-button {
+  background: white;
+
+  color: #24152a;
+}
+
+
+.val-cancel-button:hover {
+  background: #e9e9e9;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   RESPONSIVO - 1200px
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .val-create-navbar-game {
+    min-width: 80px;
+
+    font-size: 9px;
+  }
+
+  .val-create-navbar-game img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .val-game-modes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .val-mode-image {
+    height: 155px;
+  }
+
+  .val-rank-selection {
+    gap: 8px;
+
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVO - 900px
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .val-create-sidebar {
+    width: 65px;
+  }
+
+  .val-create-sidebar-menu {
+    margin-top: 82px;
+  }
+
+  .val-create-room-content {
+    width: calc(100% - 65px);
+
+    margin-left: 65px;
+  }
+
+  .val-create-navbar {
+    left: 65px;
+  }
+
+  .val-create-navbar-logo {
+    width: 85px;
+  }
+
+  .val-create-games-navbar {
+    overflow-x: auto;
+
+    justify-content: flex-start;
+  }
+
+  .val-create-navbar-game {
+    flex: 0 0 100px;
+
+    min-width: 100px;
+  }
+
+  .val-game-modes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .val-room-details-form {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .val-rank-selection {
+    flex-wrap: wrap;
+
+    padding: 15px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVO - 650px
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .val-create-sidebar {
+    width: 58px;
+  }
+
+  .val-create-sidebar-menu {
+    margin-top: 72px;
+
+    gap: 7px;
+  }
+
+  .val-create-sidebar-item {
+    width: 45px;
+    height: 45px;
+  }
+
+  .val-create-sidebar-item img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .val-create-feedback-star {
+    width: 26px;
+    height: 26px;
+
+    font-size: 22px;
+  }
+
+  .val-create-room-content {
+    width: calc(100% - 58px);
+
+    margin-left: 58px;
+  }
+
+  .val-create-navbar {
+    left: 58px;
+
+    height: 60px;
+  }
+
+  .val-create-navbar-logo {
+    display: none;
+  }
+
+  .val-create-games-navbar {
+    height: 60px;
+
+    overflow-x: auto;
+  }
+
+  .val-create-navbar-game {
+    height: 60px;
+
+    flex: 0 0 90px;
+
+    min-width: 90px;
+
+    font-size: 9px;
+  }
+
+  .val-create-navbar-game img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .val-create-room-main {
+    width: 92%;
+
+    padding-top: 80px;
+    padding-bottom: 35px;
+  }
+
+  .val-game-modes {
     grid-template-columns: repeat(2, 1fr);
 
     gap: 10px;
+  }
+
+  .val-mode-image {
+    height: 125px;
+  }
+
+  .val-gender-button {
+    width: 135px;
+  }
+
+  .val-create-button,
+  .val-cancel-button {
+    width: 170px;
+  }
+
+  .val-create-actions {
+    flex-wrap: wrap;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVO - 450px
+========================================================= */
+
+@media (max-width: 450px) {
+
+  .val-create-navbar-game {
+    flex-basis: 82px;
+
+    min-width: 82px;
+
+    font-size: 8px;
+  }
+
+  .val-create-navbar-game img {
+    width: 25px;
+    height: 25px;
   }
 }

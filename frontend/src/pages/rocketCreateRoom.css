@@ -1,0 +1,282 @@
+/* =========================================================
+   ROCKET LEAGUE CREATE ROOM
+   Reaproveita 100% do CSS base já usado no Brawlhalla/Valorant
+   (create-room-page, sidebar, navbar, botões, form, etc.)
+   e só adiciona o que é específico do Rocket League.
+========================================================= */
+
+@import "./brawlCreateRoom.css";
+
+
+/* =========================================================
+   MODOS DO ROCKET LEAGUE
+   (4 modos: Ranked Duelo, Ranked Dupla,
+   Ranked Padrão e Casual)
+========================================================= */
+
+.game-modes.rocket-modes {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+
+/* =========================================================
+   CARDS DE MODO — COR + ÍCONE SVG
+   (mesmo padrão visual usado no Brawlhalla)
+========================================================= */
+
+.rocket-mode-image {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+
+.rocket-mode-icon {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  filter:
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.55));
+
+  transition: transform 0.25s ease;
+
+  z-index: 1;
+}
+
+
+.rocket-mode-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+
+.mode-card:hover .rocket-mode-icon {
+  transform: scale(1.12);
+}
+
+
+/* =========================================================
+   CORES POR MODO
+========================================================= */
+
+/* RANKED DUELO — laranja (cor de marca do RL) */
+
+.mode-1v1 {
+  background-color: #3a2408;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(230, 140, 60, 0.35),
+      rgba(58, 36, 8, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.mode-1v1 .rocket-mode-icon {
+  color: #ffb066;
+}
+
+
+/* RANKED DUPLA — azul */
+
+.mode-2v2 {
+  background-color: #0c1e38;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(70, 140, 220, 0.35),
+      rgba(12, 30, 56, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.mode-2v2 .rocket-mode-icon {
+  color: #7fb8ff;
+}
+
+
+/* RANKED PADRÃO — roxo */
+
+.mode-3v3 {
+  background-color: #1e0c38;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(168, 94, 209, 0.35),
+      rgba(30, 12, 56, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.mode-3v3 .rocket-mode-icon {
+  color: #c77dff;
+}
+
+
+/* CASUAL — verde */
+
+.mode-casual {
+  background-color: #0c3820;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(70, 220, 140, 0.32),
+      rgba(12, 56, 32, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.mode-casual .rocket-mode-icon {
+  color: #7dffb0;
+}
+
+
+/* selecionado: reforça o glow da cor do próprio modo */
+
+.mode-card.selected .mode-1v1 {
+  box-shadow: inset 0 0 25px rgba(230, 150, 70, 0.35);
+}
+
+.mode-card.selected .mode-2v2 {
+  box-shadow: inset 0 0 25px rgba(90, 150, 240, 0.35);
+}
+
+.mode-card.selected .mode-3v3 {
+  box-shadow: inset 0 0 25px rgba(180, 100, 220, 0.35);
+}
+
+.mode-card.selected .mode-casual {
+  box-shadow: inset 0 0 25px rgba(90, 230, 160, 0.35);
+}
+
+
+/* =========================================================
+   ELO
+   8 elos — ícones um pouco menores que o padrão
+   pra ficar mais equilibrado visualmente.
+========================================================= */
+
+.rank-item {
+  width: 62px;
+  height: 52px;
+}
+
+
+.rank-placeholder {
+  width: 54px;
+  height: 40px;
+}
+
+
+.rank-icon {
+  width: 56px;
+  height: 56px;
+}
+
+
+.rank-selection {
+  gap: 30px;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .game-modes.rocket-modes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 900px) {
+
+  .game-modes.rocket-modes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rank-selection {
+    gap: 16px;
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .game-modes.rocket-modes {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+  }
+
+  .rocket-mode-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .rank-item {
+    width: 48px;
+    height: 40px;
+  }
+
+  .rank-placeholder {
+    width: 40px;
+    height: 32px;
+  }
+
+  .rank-icon {
+    width: 42px;
+    height: 42px;
+  }
+}

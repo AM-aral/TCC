@@ -31,26 +31,28 @@ import R6Room from "./pages/r6Room";
 // CREATE ROOM
 // =====================================================
 //
-// ⚠️ Por enquanto só o CreateRoom do LoL, Brawlhalla, Valorant e
-// Fortnite estão prontos de verdade. Os outros arquivos
-// xxxCreateRoom.jsx existem na pasta mas ainda estão
-// vazios/incompletos (sem "export default"), e importar um
-// arquivo desses quebra o site inteiro (foi o erro que você
-// teve com o brawlCreateRoom.jsx antes de terminá-lo).
-//
-// Conforme for terminando cada CreateRoom, faça 2 coisas aqui:
+// ✅ Agora todos os CreateRoom estão prontos e importados.
+// Conforme criar um jogo novo no futuro, faça 2 coisas aqui:
 //   1) adicione o import dele junto com os de baixo
 //   2) troque o "null" correspondente no GAME_COMPONENTS pelo
 //      componente importado
-//
-// Exemplo pra quando terminar o da Dota:
-//   import DotaCreateRoom from "./pages/dotaCreateRoom";
-//   ... e no mapa: "Dota 2": { Room: DotaRooms, CreateRoom: DotaCreateRoom },
 
 import LolCreateRoom from "./pages/lolCreateRoom";
 import BrawlCreateRoom from "./pages/brawlCreateRoom";
 import ValorantCreateRoom from "./pages/valCreateRoom";
 import FortniteCreateRoom from "./pages/fortCreateRoom";
+import TeamCreateRoom from "./pages/teamCreateRoom";
+import RocketCreateRoom from "./pages/rocketCreateRoom";
+import OverCreateRoom from "./pages/overCreateRoom";
+import CSCreateRoom from "./pages/csCreateRoom";
+import MarvelCreateRoom from "./pages/marvelCreateRoom";
+import DotaCreateRoom from "./pages/dotaCreateRoom";
+import WildCreateRoom from "./pages/wildCreateRoom";
+import DbdCreateRoom from "./pages/dbdCreateRoom";
+import PaladinsCreateRoom from "./pages/paladinsCreateRoom";
+import SeaCreateRoom from "./pages/seaCreateRoom";
+import WarzoneCreateRoom from "./pages/warzoneCreateRoom";
+import R6CreateRoom from "./pages/r6CreateRoom";
 
 // =====================================================
 // OUTRAS PÁGINAS
@@ -72,20 +74,20 @@ import Settings from "./pages/Settings";
 const GAME_COMPONENTS = {
     "League of Legends": { Room: LolRooms, CreateRoom: LolCreateRoom },
     "Valorant": { Room: ValRoom, CreateRoom: ValorantCreateRoom },
-    "Counter-Strike 2": { Room: CSRoom, CreateRoom: null },
-    "Dota 2": { Room: DotaRooms, CreateRoom: null },
-    "League of Legends Wild Rift": { Room: WildRoom, CreateRoom: null },
-    "Overwatch": { Room: OverRoom, CreateRoom: null },
-    "Marvel Rivals": { Room: MarvelRoom, CreateRoom: null },
-    "Dead By Daylight": { Room: DbdRoom, CreateRoom: null },
+    "Counter-Strike 2": { Room: CSRoom, CreateRoom: CSCreateRoom },
+    "Dota 2": { Room: DotaRooms, CreateRoom: DotaCreateRoom },
+    "League of Legends Wild Rift": { Room: WildRoom, CreateRoom: WildCreateRoom },
+    "Overwatch": { Room: OverRoom, CreateRoom: OverCreateRoom },
+    "Marvel Rivals": { Room: MarvelRoom, CreateRoom: MarvelCreateRoom },
+    "Dead By Daylight": { Room: DbdRoom, CreateRoom: DbdCreateRoom },
     "Fortnite": { Room: FortRoom, CreateRoom: FortniteCreateRoom },
-    "Paladins": { Room: PaladinsRoom, CreateRoom: null },
-    "Rocket League": { Room: RocketRoom, CreateRoom: null },
-    "Sea of Thieves": { Room: SeaRoom, CreateRoom: null },
-    "Team Fortress 2": { Room: TeamRoom, CreateRoom: null },
+    "Paladins": { Room: PaladinsRoom, CreateRoom: PaladinsCreateRoom },
+    "Rocket League": { Room: RocketRoom, CreateRoom: RocketCreateRoom },
+    "Sea of Thieves": { Room: SeaRoom, CreateRoom: SeaCreateRoom },
+    "Team Fortress 2": { Room: TeamRoom, CreateRoom: TeamCreateRoom },
     "Brawlhalla": { Room: BrawlRoom, CreateRoom: BrawlCreateRoom },
-    "Warzone": { Room: WarzoneRoom, CreateRoom: null },
-    "Rainbow Six Siege": { Room: R6Room, CreateRoom: null },
+    "Warzone": { Room: WarzoneRoom, CreateRoom: WarzoneCreateRoom },
+    "Rainbow Six Siege": { Room: R6Room, CreateRoom: R6CreateRoom },
 };
 
 

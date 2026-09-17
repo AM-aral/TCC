@@ -23,7 +23,7 @@ body {
    PÁGINA
 ========================================================= */
 
-.create-room-page {
+.brawl-create-room-page {
   min-height: 100vh;
   width: 100%;
 
@@ -45,7 +45,7 @@ body {
    OVERLAY
 ========================================================= */
 
-.create-room-overlay {
+.brawl-create-room-overlay {
   position: fixed;
 
   inset: 0;
@@ -69,7 +69,7 @@ body {
    PADRÃO DO PROFILE
 ========================================================= */
 
-.create-sidebar {
+.brawl-create-sidebar {
   position: fixed;
 
   top: 0;
@@ -91,7 +91,7 @@ body {
 }
 
 
-.create-sidebar-menu {
+.brawl-create-sidebar-menu {
   width: 100%;
 
   margin-top: 92px;
@@ -104,7 +104,7 @@ body {
 }
 
 
-.create-sidebar-item {
+.brawl-create-sidebar-item {
   width: 52px;
   height: 52px;
 
@@ -129,14 +129,14 @@ body {
 }
 
 
-.create-sidebar-item:hover {
+.brawl-create-sidebar-item:hover {
   background: rgba(255, 255, 255, 0.08);
 
   transform: scale(1.04);
 }
 
 
-.create-sidebar-item img {
+.brawl-create-sidebar-item img {
   width: 30px;
   height: 30px;
 
@@ -152,14 +152,14 @@ body {
 }
 
 
-.create-sidebar-item:hover img {
+.brawl-create-sidebar-item:hover img {
   opacity: 1;
 
   transform: scale(1.04);
 }
 
 
-.create-feedback-star {
+.brawl-create-feedback-star {
   width: 30px;
   height: 30px;
 
@@ -179,7 +179,7 @@ body {
    ÁREA AO LADO DA SIDEBAR
 ========================================================= */
 
-.create-room-content {
+.brawl-create-room-content {
   width: calc(100% - 76px);
 
   min-height: 100vh;
@@ -197,7 +197,7 @@ body {
    PADRÃO DO PROFILE
 ========================================================= */
 
-.create-navbar {
+.brawl-create-navbar {
   position: fixed;
 
   top: 0;
@@ -232,7 +232,7 @@ body {
    LOGO
 ========================================================= */
 
-.create-navbar-logo {
+.brawl-create-navbar-logo {
   width: 115px;
   height: 70px;
 
@@ -244,7 +244,7 @@ body {
 }
 
 
-.create-navbar-logo img {
+.brawl-create-navbar-logo img {
   width: 58px;
   height: 58px;
 
@@ -258,7 +258,7 @@ body {
    JOGOS DA NAVBAR
 ========================================================= */
 
-.create-games-navbar {
+.brawl-create-games-navbar {
   flex: 1;
 
   height: 70px;
@@ -271,7 +271,7 @@ body {
 }
 
 
-.create-navbar-game {
+.brawl-create-navbar-game {
   flex: 1;
 
   min-width: 95px;
@@ -305,14 +305,14 @@ body {
 }
 
 
-.create-navbar-game:hover {
+.brawl-create-navbar-game:hover {
   background: rgba(255, 255, 255, 0.08);
 
   color: white;
 }
 
 
-.create-navbar-game img {
+.brawl-create-navbar-game img {
   width: 31px;
   height: 31px;
 
@@ -328,14 +328,14 @@ body {
 }
 
 
-.create-navbar-game:hover img {
+.brawl-create-navbar-game:hover img {
   opacity: 1;
 
   transform: scale(1.08);
 }
 
 
-.create-navbar-active {
+.brawl-create-navbar-active {
   background: rgba(255, 255, 255, 0.13);
 
   color: white;
@@ -345,7 +345,7 @@ body {
 }
 
 
-.create-navbar-active img {
+.brawl-create-navbar-active img {
   opacity: 1;
 
   transform: scale(1.08);
@@ -356,7 +356,7 @@ body {
    ÁREA PRINCIPAL
 ========================================================= */
 
-.create-room-main {
+.brawl-create-room-main {
   width: min(1380px, 94%);
 
   margin: 0 auto;
@@ -374,7 +374,7 @@ body {
    BOTÃO VOLTAR
 ========================================================= */
 
-.create-room-top {
+.brawl-create-room-top {
   width: 100%;
 
   display: flex;
@@ -384,7 +384,7 @@ body {
 }
 
 
-.back-button {
+.brawl-back-button {
   border: 1px solid rgba(255, 255, 255, 0.18);
 
   background: rgba(20, 12, 25, 0.75);
@@ -404,7 +404,7 @@ body {
 }
 
 
-.back-button:hover {
+.brawl-back-button:hover {
   background: rgba(84, 33, 111, 0.9);
 
   border-color: rgba(202, 130, 255, 0.5);
@@ -417,7 +417,7 @@ body {
    LOGO GRANDE DO BRAWLHALLA
 ========================================================= */
 
-.create-game-header {
+.brawl-create-game-header {
   height: 155px;
 
   display: flex;
@@ -428,7 +428,7 @@ body {
 }
 
 
-.create-game-logo {
+.brawl-create-game-logo {
   width: 350px;
 
   max-width: 80%;
@@ -445,14 +445,14 @@ body {
    SEÇÕES
 ========================================================= */
 
-.create-section {
+.brawl-create-section {
   width: 100%;
 
   margin: 0 auto 28px;
 }
 
 
-.section-title {
+.brawl-section-title {
   width: 100%;
 
   display: flex;
@@ -464,7 +464,7 @@ body {
 }
 
 
-.section-title span {
+.brawl-section-title span {
   flex: 1;
 
   height: 1px;
@@ -473,7 +473,7 @@ body {
 }
 
 
-.section-title p {
+.brawl-section-title p {
   margin: 0;
 
   color: white;
@@ -491,7 +491,7 @@ body {
    MODOS DE JOGO
 ========================================================= */
 
-.game-modes {
+.brawl-game-modes {
   width: 100%;
 
   display: grid;
@@ -505,12 +505,12 @@ body {
 /* O Brawlhalla tem só 4 modos principais, então a grade
    fica mais enxuta */
 
-.game-modes.brawl-modes {
+.brawl-game-modes.brawl-modes {
   grid-template-columns: repeat(4, 1fr);
 }
 
 
-.mode-card {
+.brawl-mode-card {
   border: none;
 
   background: transparent;
@@ -523,7 +523,7 @@ body {
 }
 
 
-.mode-image {
+.brawl-mode-image {
   position: relative;
 
   height: 165px;
@@ -540,7 +540,7 @@ body {
 }
 
 
-.mode-image img {
+.brawl-mode-image img {
   width: 100%;
   height: 100%;
 
@@ -552,7 +552,7 @@ body {
 }
 
 
-.mode-image-overlay {
+.brawl-mode-image-overlay {
   position: absolute;
 
   inset: 0;
@@ -568,14 +568,14 @@ body {
 }
 
 
-.mode-card:hover .mode-image {
+.brawl-mode-card:hover .brawl-mode-image {
   transform: translateY(-2px);
 
   border-color: rgba(255, 255, 255, 0.35);
 }
 
 
-.mode-card:hover .mode-image img {
+.brawl-mode-card:hover .brawl-mode-image img {
   transform: scale(1.04);
 }
 
@@ -586,7 +586,7 @@ body {
    "mapa" fixo por modo)
 ========================================================= */
 
-.brawl-mode-image {
+.brawl-mode-icon-wrap {
   display: flex;
 
   align-items: center;
@@ -634,7 +634,7 @@ body {
 }
 
 
-.mode-card:hover .brawl-mode-icon {
+.brawl-mode-card:hover .brawl-mode-icon {
   transform: scale(1.12);
 }
 
@@ -643,7 +643,7 @@ body {
    CORES POR MODO
 ========================================================= */
 
-.mode-1v1 {
+.brawl-mode-1v1 {
   background-color: #3a1010;
 
   background-image:
@@ -661,12 +661,12 @@ body {
     );
 }
 
-.mode-1v1 .brawl-mode-icon {
+.brawl-mode-1v1 .brawl-mode-icon {
   color: #ffb84d;
 }
 
 
-.mode-2v2 {
+.brawl-mode-2v2 {
   background-color: #3a2a08;
 
   background-image:
@@ -684,12 +684,12 @@ body {
     );
 }
 
-.mode-2v2 .brawl-mode-icon {
+.brawl-mode-2v2 .brawl-mode-icon {
   color: #ffd97a;
 }
 
 
-.mode-casual {
+.brawl-mode-casual {
   background-color: #0c2a38;
 
   background-image:
@@ -707,12 +707,12 @@ body {
     );
 }
 
-.mode-casual .brawl-mode-icon {
+.brawl-mode-casual .brawl-mode-icon {
   color: #7fe3ff;
 }
 
 
-.mode-experimental {
+.brawl-mode-experimental {
   background-color: #1e0c38;
 
   background-image:
@@ -730,26 +730,26 @@ body {
     );
 }
 
-.mode-experimental .brawl-mode-icon {
+.brawl-mode-experimental .brawl-mode-icon {
   color: #c77dff;
 }
 
 
 /* selecionado: reforça o glow da cor do próprio modo */
 
-.mode-card.selected .mode-1v1 {
+.brawl-mode-card.brawl-selected .brawl-mode-1v1 {
   box-shadow: inset 0 0 25px rgba(255, 90, 90, 0.35);
 }
 
-.mode-card.selected .mode-2v2 {
+.brawl-mode-card.brawl-selected .brawl-mode-2v2 {
   box-shadow: inset 0 0 25px rgba(255, 200, 80, 0.35);
 }
 
-.mode-card.selected .mode-casual {
+.brawl-mode-card.brawl-selected .brawl-mode-casual {
   box-shadow: inset 0 0 25px rgba(90, 210, 240, 0.35);
 }
 
-.mode-card.selected .mode-experimental {
+.brawl-mode-card.brawl-selected .brawl-mode-experimental {
   box-shadow: inset 0 0 25px rgba(180, 100, 220, 0.35);
 }
 
@@ -758,7 +758,7 @@ body {
    NOME DO MODO
 ========================================================= */
 
-.mode-name {
+.brawl-mode-name {
   margin-top: -1px;
 
   height: 29px;
@@ -795,7 +795,7 @@ body {
 }
 
 
-.mode-card.selected .mode-name {
+.brawl-mode-card.brawl-selected .brawl-mode-name {
   background: #54216f;
 
   color: white;
@@ -805,7 +805,7 @@ body {
 }
 
 
-.mode-card.selected .mode-image {
+.brawl-mode-card.brawl-selected .brawl-mode-image {
   border-color: #a85ed1;
 
   box-shadow:
@@ -818,7 +818,7 @@ body {
    (mantido caso outra sala reaproveite este CSS)
 ========================================================= */
 
-.team-size {
+.brawl-team-size {
   display: flex;
 
   justify-content: center;
@@ -830,7 +830,7 @@ body {
 }
 
 
-.team-button {
+.brawl-team-button {
   width: 155px;
   height: 38px;
 
@@ -857,12 +857,12 @@ body {
 }
 
 
-.team-button:hover {
+.brawl-team-button:hover {
   background: rgba(255, 255, 255, 0.12);
 }
 
 
-.team-button.selected {
+.brawl-team-button.brawl-selected {
   background: white;
 
   color: #24152a;
@@ -876,7 +876,7 @@ body {
    ELOS
 ========================================================= */
 
-.rank-selection {
+.brawl-rank-selection {
   position: relative;
 
   width: 100%;
@@ -892,7 +892,7 @@ body {
 
   flex-wrap: wrap;
 
-  gap: 45px;
+  gap: 75px;
 
   border-radius: 10px;
 
@@ -904,9 +904,9 @@ body {
 }
 
 
-.rank-item {
-  width: 80px;
-  height: 65px;
+.brawl-rank-item {
+  width: 52px;
+  height: 42px;
 
   border: none;
 
@@ -925,8 +925,8 @@ body {
 }
 
 
-.rank-placeholder {
-  width: 70px;
+.brawl-rank-placeholder {
+  width: 44px;
   height: 50px;
 
   display: flex;
@@ -940,9 +940,9 @@ body {
 }
 
 
-.rank-icon {
-  width: 76px;
-  height: 76px;
+.brawl-rank-icon {
+  width: 56px;
+  height: 56px;
 
   object-fit: contain;
 
@@ -950,12 +950,12 @@ body {
 }
 
 
-.rank-item:hover .rank-icon {
+.brawl-rank-item:hover .brawl-rank-icon {
   transform: scale(1.12);
 }
 
 
-.rank-item.selected .rank-placeholder {
+.brawl-rank-item.brawl-selected .brawl-rank-placeholder {
   transform: scale(1.08);
 
   background: transparent;
@@ -964,7 +964,7 @@ body {
 }
 
 
-.rank-item.selected .rank-icon {
+.brawl-rank-item.brawl-selected .brawl-rank-icon {
   transform: scale(1.12);
 
   filter:
@@ -973,7 +973,7 @@ body {
 }
 
 
-.rank-selection.disabled {
+.brawl-rank-selection.brawl-disabled {
   opacity: 0.35;
 
   filter: grayscale(1);
@@ -982,7 +982,7 @@ body {
 }
 
 
-.rank-disabled-message {
+.brawl-rank-disabled-message {
   position: absolute;
 
   inset: 0;
@@ -1015,7 +1015,7 @@ body {
    GÊNERO
 ========================================================= */
 
-.gender-selection {
+.brawl-gender-selection {
   display: flex;
 
   justify-content: center;
@@ -1024,7 +1024,7 @@ body {
 }
 
 
-.gender-button {
+.brawl-gender-button {
   width: 155px;
   height: 42px;
 
@@ -1051,12 +1051,12 @@ body {
 }
 
 
-.gender-button:hover {
+.brawl-gender-button:hover {
   background: rgba(255, 255, 255, 0.12);
 }
 
 
-.gender-button.selected {
+.brawl-gender-button.brawl-selected {
   background: #54216f;
 
   color: white;
@@ -1070,7 +1070,7 @@ body {
    DETALHES DA SALA
 ========================================================= */
 
-.room-details-form {
+.brawl-room-details-form {
   display: grid;
 
   grid-template-columns: 1fr 1fr;
@@ -1079,7 +1079,7 @@ body {
 }
 
 
-.detail-box {
+.brawl-detail-box {
   height: 125px;
 
   display: flex;
@@ -1090,7 +1090,7 @@ body {
 }
 
 
-.detail-box label {
+.brawl-detail-box label {
   color: white;
 
   font-size: 12px;
@@ -1098,8 +1098,8 @@ body {
 }
 
 
-.detail-box input,
-.detail-box textarea {
+.brawl-detail-box input,
+.brawl-detail-box textarea {
   width: 100%;
 
   flex: 1;
@@ -1126,8 +1126,8 @@ body {
 }
 
 
-.detail-box input:focus,
-.detail-box textarea:focus {
+.brawl-detail-box input:focus,
+.brawl-detail-box textarea:focus {
   border-color: rgba(184, 99, 230, 0.7);
 
   box-shadow:
@@ -1135,8 +1135,8 @@ body {
 }
 
 
-.detail-box input::placeholder,
-.detail-box textarea::placeholder {
+.brawl-detail-box input::placeholder,
+.brawl-detail-box textarea::placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
 
@@ -1145,7 +1145,7 @@ body {
    BOTÕES FINAIS
 ========================================================= */
 
-.create-actions {
+.brawl-create-actions {
   display: flex;
 
   justify-content: center;
@@ -1157,8 +1157,8 @@ body {
 }
 
 
-.create-button,
-.cancel-button {
+.brawl-create-button,
+.brawl-cancel-button {
   width: 225px;
   height: 56px;
 
@@ -1181,7 +1181,7 @@ body {
 }
 
 
-.create-button {
+.brawl-create-button {
   background: #54216f;
 
   color: white;
@@ -1191,21 +1191,21 @@ body {
 }
 
 
-.create-button:hover {
+.brawl-create-button:hover {
   background: #6c2b8e;
 
   transform: translateY(-2px);
 }
 
 
-.cancel-button {
+.brawl-cancel-button {
   background: white;
 
   color: #24152a;
 }
 
 
-.cancel-button:hover {
+.brawl-cancel-button:hover {
   background: #e9e9e9;
 
   transform: translateY(-2px);
@@ -1218,30 +1218,30 @@ body {
 
 @media (max-width: 1200px) {
 
-  .create-navbar-game {
+  .brawl-create-navbar-game {
     min-width: 80px;
 
     font-size: 9px;
   }
 
-  .create-navbar-game img {
+  .brawl-create-navbar-game img {
     width: 28px;
     height: 28px;
   }
 
-  .game-modes {
+  .brawl-game-modes {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .game-modes.brawl-modes {
+  .brawl-game-modes.brawl-modes {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .mode-image {
+  .brawl-mode-image {
     height: 155px;
   }
 
-  .rank-selection {
+  .brawl-rank-selection {
     gap: 8px;
 
     padding-left: 15px;
@@ -1256,51 +1256,51 @@ body {
 
 @media (max-width: 900px) {
 
-  .create-sidebar {
+  .brawl-create-sidebar {
     width: 65px;
   }
 
-  .create-sidebar-menu {
+  .brawl-create-sidebar-menu {
     margin-top: 82px;
   }
 
-  .create-room-content {
+  .brawl-create-room-content {
     width: calc(100% - 65px);
 
     margin-left: 65px;
   }
 
-  .create-navbar {
+  .brawl-create-navbar {
     left: 65px;
   }
 
-  .create-navbar-logo {
+  .brawl-create-navbar-logo {
     width: 85px;
   }
 
-  .create-games-navbar {
+  .brawl-create-games-navbar {
     overflow-x: auto;
 
     justify-content: flex-start;
   }
 
-  .create-navbar-game {
+  .brawl-create-navbar-game {
     flex: 0 0 100px;
 
     min-width: 100px;
   }
 
-  .game-modes {
+  .brawl-game-modes {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .room-details-form {
+  .brawl-room-details-form {
     grid-template-columns: 1fr;
 
     gap: 20px;
   }
 
-  .rank-selection {
+  .brawl-rank-selection {
     flex-wrap: wrap;
 
     padding: 15px;
@@ -1314,56 +1314,56 @@ body {
 
 @media (max-width: 650px) {
 
-  .create-sidebar {
+  .brawl-create-sidebar {
     width: 58px;
   }
 
-  .create-sidebar-menu {
+  .brawl-create-sidebar-menu {
     margin-top: 72px;
 
     gap: 7px;
   }
 
-  .create-sidebar-item {
+  .brawl-create-sidebar-item {
     width: 45px;
     height: 45px;
   }
 
-  .create-sidebar-item img {
+  .brawl-create-sidebar-item img {
     width: 26px;
     height: 26px;
   }
 
-  .create-feedback-star {
+  .brawl-create-feedback-star {
     width: 26px;
     height: 26px;
 
     font-size: 22px;
   }
 
-  .create-room-content {
+  .brawl-create-room-content {
     width: calc(100% - 58px);
 
     margin-left: 58px;
   }
 
-  .create-navbar {
+  .brawl-create-navbar {
     left: 58px;
 
     height: 60px;
   }
 
-  .create-navbar-logo {
+  .brawl-create-navbar-logo {
     display: none;
   }
 
-  .create-games-navbar {
+  .brawl-create-games-navbar {
     height: 60px;
 
     overflow-x: auto;
   }
 
-  .create-navbar-game {
+  .brawl-create-navbar-game {
     height: 60px;
 
     flex: 0 0 90px;
@@ -1373,25 +1373,25 @@ body {
     font-size: 9px;
   }
 
-  .create-navbar-game img {
+  .brawl-create-navbar-game img {
     width: 26px;
     height: 26px;
   }
 
-  .create-room-main {
+  .brawl-create-room-main {
     width: 92%;
 
     padding-top: 80px;
     padding-bottom: 35px;
   }
 
-  .game-modes {
+  .brawl-game-modes {
     grid-template-columns: repeat(2, 1fr);
 
     gap: 10px;
   }
 
-  .mode-image {
+  .brawl-mode-image {
     height: 125px;
   }
 
@@ -1400,17 +1400,17 @@ body {
     height: 56px;
   }
 
-  .team-button,
-  .gender-button {
+  .brawl-team-button,
+  .brawl-gender-button {
     width: 135px;
   }
 
-  .create-button,
-  .cancel-button {
+  .brawl-create-button,
+  .brawl-cancel-button {
     width: 170px;
   }
 
-  .create-actions {
+  .brawl-create-actions {
     flex-wrap: wrap;
   }
 }
@@ -1422,7 +1422,7 @@ body {
 
 @media (max-width: 450px) {
 
-  .create-navbar-game {
+  .brawl-create-navbar-game {
     flex-basis: 82px;
 
     min-width: 82px;
@@ -1430,7 +1430,7 @@ body {
     font-size: 8px;
   }
 
-  .create-navbar-game img {
+  .brawl-create-navbar-game img {
     width: 25px;
     height: 25px;
   }

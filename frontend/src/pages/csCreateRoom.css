@@ -636,7 +636,7 @@
     (mesmo padrão visual usado no Rocket League)
   ========================================================= */
 
-  .over-mode-image {
+  .cs-mode-image {
     display: flex;
 
     align-items: center;
@@ -657,7 +657,7 @@
   }
 
 
-  .over-mode-icon {
+  .cs-mode-icon {
     width: 72px;
     height: 72px;
 
@@ -677,43 +677,18 @@
   }
 
 
-  .over-mode-icon svg {
+  .cs-mode-icon svg {
     width: 100%;
     height: 100%;
   }
 
 
-  .mode-card:hover .over-mode-icon {
+  .mode-card:hover .cs-mode-icon {
     transform: scale(1.12);
   }
 
 
   /* CORES POR MODO */
-
-  /* RÁPIDA — azul */
-
-  .mode-rapida {
-    background-color: #0c1e38;
-
-    background-image:
-      radial-gradient(
-        circle at 50% 35%,
-        rgba(70, 140, 220, 0.35),
-        rgba(12, 30, 56, 0.2) 70%
-      ),
-      repeating-linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.05) 0px,
-        rgba(255, 255, 255, 0.05) 2px,
-        transparent 2px,
-        transparent 14px
-      );
-  }
-
-  .mode-rapida .over-mode-icon {
-    color: #7fb8ff;
-  }
-
 
   /* COMPETITIVO — laranja */
 
@@ -735,21 +710,21 @@
       );
   }
 
-  .mode-competitivo .over-mode-icon {
+  .mode-competitivo .cs-mode-icon {
     color: #ffb066;
   }
 
 
-  /* SEM LIMITES — roxo */
+  /* PREMIER — dourado */
 
-  .mode-sem-limites {
-    background-color: #1e0c38;
+  .mode-premier {
+    background-color: #3a3008;
 
     background-image:
       radial-gradient(
         circle at 50% 35%,
-        rgba(168, 94, 209, 0.35),
-        rgba(30, 12, 56, 0.2) 70%
+        rgba(230, 195, 60, 0.35),
+        rgba(58, 48, 8, 0.2) 70%
       ),
       repeating-linear-gradient(
         135deg,
@@ -760,21 +735,21 @@
       );
   }
 
-  .mode-sem-limites .over-mode-icon {
-    color: #c77dff;
+  .mode-premier .cs-mode-icon {
+    color: #ffe066;
   }
 
 
-  /* MISTURA TOTAL — vermelho coral */
+  /* WINGMAN — azul */
 
-  .mode-mistura-total {
-    background-color: #380c14;
+  .mode-wingman {
+    background-color: #0c1e38;
 
     background-image:
       radial-gradient(
         circle at 50% 35%,
-        rgba(230, 80, 110, 0.35),
-        rgba(56, 12, 20, 0.2) 70%
+        rgba(70, 140, 220, 0.35),
+        rgba(12, 30, 56, 0.2) 70%
       ),
       repeating-linear-gradient(
         135deg,
@@ -785,37 +760,12 @@
       );
   }
 
-  .mode-mistura-total .over-mode-icon {
-    color: #ff8fa8;
+  .mode-wingman .cs-mode-icon {
+    color: #7fb8ff;
   }
 
 
-  /* ARCADE — verde */
-
-  .mode-arcade {
-    background-color: #0c3820;
-
-    background-image:
-      radial-gradient(
-        circle at 50% 35%,
-        rgba(70, 220, 140, 0.32),
-        rgba(12, 56, 32, 0.2) 70%
-      ),
-      repeating-linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.05) 0px,
-        rgba(255, 255, 255, 0.05) 2px,
-        transparent 2px,
-        transparent 14px
-      );
-  }
-
-  .mode-arcade .over-mode-icon {
-    color: #7dffb0;
-  }
-
-
-  /* DEATHMATCH — vermelho escuro */
+  /* DEATHMATCH — vermelho */
 
   .mode-deathmatch {
     background-color: #380c0c;
@@ -835,35 +785,85 @@
       );
   }
 
-  .mode-deathmatch .over-mode-icon {
+  .mode-deathmatch .cs-mode-icon {
     color: #ff8f8f;
+  }
+
+
+  /* CASUAL — verde */
+
+  .mode-casual {
+    background-color: #0c3820;
+
+    background-image:
+      radial-gradient(
+        circle at 50% 35%,
+        rgba(70, 220, 140, 0.32),
+        rgba(12, 56, 32, 0.2) 70%
+      ),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+  }
+
+  .mode-casual .cs-mode-icon {
+    color: #7dffb0;
+  }
+
+
+  /* ARMS RACE — roxo */
+
+  .mode-arms-race {
+    background-color: #1e0c38;
+
+    background-image:
+      radial-gradient(
+        circle at 50% 35%,
+        rgba(168, 94, 209, 0.35),
+        rgba(30, 12, 56, 0.2) 70%
+      ),
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+  }
+
+  .mode-arms-race .cs-mode-icon {
+    color: #c77dff;
   }
 
 
   /* selecionado: reforça o glow da cor do próprio modo */
 
-  .mode-card.selected .mode-rapida {
-    box-shadow: inset 0 0 25px rgba(90, 150, 240, 0.35);
-  }
-
   .mode-card.selected .mode-competitivo {
     box-shadow: inset 0 0 25px rgba(230, 150, 70, 0.35);
   }
 
-  .mode-card.selected .mode-sem-limites {
-    box-shadow: inset 0 0 25px rgba(180, 100, 220, 0.35);
+  .mode-card.selected .mode-premier {
+    box-shadow: inset 0 0 25px rgba(230, 200, 70, 0.35);
   }
 
-  .mode-card.selected .mode-mistura-total {
-    box-shadow: inset 0 0 25px rgba(230, 90, 120, 0.35);
-  }
-
-  .mode-card.selected .mode-arcade {
-    box-shadow: inset 0 0 25px rgba(90, 230, 160, 0.35);
+  .mode-card.selected .mode-wingman {
+    box-shadow: inset 0 0 25px rgba(90, 150, 240, 0.35);
   }
 
   .mode-card.selected .mode-deathmatch {
     box-shadow: inset 0 0 25px rgba(230, 90, 90, 0.35);
+  }
+
+  .mode-card.selected .mode-casual {
+    box-shadow: inset 0 0 25px rgba(90, 230, 160, 0.35);
+  }
+
+  .mode-card.selected .mode-arms-race {
+    box-shadow: inset 0 0 25px rgba(180, 100, 220, 0.35);
   }
 
 
@@ -936,14 +936,17 @@
 
     min-height: 82px;
 
-    padding: 10px 28px;
+    padding: 14px 28px;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    gap: 45px;
+    flex-wrap: wrap;
+
+    row-gap: 12px;
+    column-gap: 22px;
 
     border-radius: 10px;
 
@@ -956,8 +959,8 @@
 
 
   .rank-item {
-    width: 40px;
-    height: 45px;
+    width: 80px;
+    height: 65px;
 
     border: none;
 
@@ -977,8 +980,8 @@
 
 
   .rank-placeholder {
-    width: 40px;
-    height: 40px;
+    width: 70px;
+    height: 50px;
 
     display: flex;
 
@@ -992,8 +995,8 @@
 
 
   .rank-icon {
-    width: 46px;
-    height: 36px;
+    width: 76px;
+    height: 76px;
 
     object-fit: contain;
 
@@ -1063,7 +1066,7 @@
 
 
   /* =========================================================
-    FUNÇÃO (TANK, DANO, SUPORTE)
+    FUNÇÃO (AWPER, ENTRY, LURKER, SUPORTE, IGL)
   ========================================================= */
 
   .function-selection {
@@ -1510,7 +1513,7 @@
       height: 125px;
     }
 
-    .over-mode-icon {
+    .cs-mode-icon {
       width: 56px;
       height: 56px;
     }

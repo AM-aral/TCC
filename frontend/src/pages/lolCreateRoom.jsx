@@ -58,6 +58,16 @@ import graoIcon from "../assets/elos/lol/grao.png";
 import desaIcon from "../assets/elos/lol/desafiante.png";
 
 /* =====================================================
+   ÍCONES DE FUNÇÃO
+===================================================== */
+
+import topIcon from "../assets/funcoes/top.png";
+import jungleIcon from "../assets/funcoes/jungle.png";
+import midIcon from "../assets/funcoes/mid.png";
+import adcIcon from "../assets/funcoes/adc.png";
+import suporteIcon from "../assets/funcoes/sup.png";
+
+/* =====================================================
    FUNDO
 ===================================================== */
 
@@ -85,6 +95,8 @@ function CreateRoom({
     const [selectedRank, setSelectedRank] = useState(null);
 
     const [selectedGender, setSelectedGender] = useState("HOMEM");
+
+    const [selectedFunction, setSelectedFunction] = useState(null);
 
 
     /* =====================================================
@@ -215,6 +227,34 @@ function CreateRoom({
         {
             name: "DESAFIANTE",
             image: desaIcon
+        }
+    ];
+
+
+    /* =====================================================
+       FUNÇÕES
+    ===================================================== */
+
+    const functions = [
+        {
+            name: "TOP",
+            image: topIcon
+        },
+        {
+            name: "JUNGLE",
+            image: jungleIcon
+        },
+        {
+            name: "MID",
+            image: midIcon
+        },
+        {
+            name: "ADC",
+            image: adcIcon
+        },
+        {
+            name: "SUPORTE",
+            image: suporteIcon
         }
     ];
 
@@ -685,6 +725,63 @@ function CreateRoom({
                                 </div>
 
                             )}
+
+                        </div>
+
+                    </section>
+
+
+                    {/* =================================================
+                        FUNÇÃO
+                    ================================================= */}
+
+                    <section className="create-section">
+
+                        <div className="section-title">
+
+                            <span></span>
+
+                            <p>
+                                FUNÇÃO
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <div className="function-selection">
+
+                            {functions.map((func) => (
+
+                                <button
+                                    key={func.name}
+                                    type="button"
+                                    className={
+                                        `function-button ${
+                                            selectedFunction === func.name
+                                                ? "selected"
+                                                : ""
+                                        }`
+                                    }
+                                    onClick={() =>
+                                        setSelectedFunction(func.name)
+                                    }
+                                >
+
+                                    <img
+                                        src={func.image}
+                                        alt={func.name}
+                                        className="function-icon"
+                                    />
+
+                                    <span>
+                                        {func.name}
+                                    </span>
+
+                                </button>
+
+                            ))}
 
                         </div>
 

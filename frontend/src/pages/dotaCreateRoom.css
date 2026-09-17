@@ -1,0 +1,1535 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   PÁGINA
+========================================================= */
+
+.dota-create-room-page {
+  min-height: 100vh;
+  width: 100%;
+
+  position: relative;
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+
+  color: white;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.dota-create-room-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30, 0, 65, 0.35) 0%,
+      rgba(35, 0, 75, 0.62) 50%,
+      rgba(25, 0, 55, 0.90) 100%
+    );
+
+  z-index: 0;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   PADRÃO DO PROFILE
+========================================================= */
+
+.dota-create-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 76px;
+
+  background: rgba(36, 0, 68, 0.98);
+
+  border-right:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  z-index: 200;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.dota-create-sidebar-menu {
+  width: 100%;
+
+  margin-top: 92px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.dota-create-sidebar-item {
+  width: 52px;
+  height: 52px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.dota-create-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  transform: scale(1.04);
+}
+
+
+.dota-create-sidebar-item img {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.70;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.dota-create-sidebar-item:hover img {
+  opacity: 1;
+
+  transform: scale(1.04);
+}
+
+
+.dota-create-feedback-star {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   ÁREA AO LADO DA SIDEBAR
+========================================================= */
+
+.dota-create-room-content {
+  width: calc(100% - 76px);
+
+  min-height: 100vh;
+
+  margin-left: 76px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =========================================================
+   NAVBAR
+   PADRÃO DO PROFILE
+========================================================= */
+
+.dota-create-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 76px;
+  right: 0;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #69379a,
+      #63318f
+    );
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.20);
+
+  z-index: 100;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.dota-create-navbar-logo {
+  width: 115px;
+  height: 70px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+
+.dota-create-navbar-logo img {
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+/* =========================================================
+   JOGOS DA NAVBAR
+========================================================= */
+
+.dota-create-games-navbar {
+  flex: 1;
+
+  height: 70px;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+
+.dota-create-navbar-game {
+  flex: 1;
+
+  min-width: 95px;
+  max-width: 180px;
+
+  height: 70px;
+
+  padding: 4px 8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 2px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.dota-create-navbar-game:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  color: white;
+}
+
+
+.dota-create-navbar-game img {
+  width: 31px;
+  height: 31px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.78;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.dota-create-navbar-game:hover img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+
+.dota-create-navbar-active {
+  background: rgba(255, 255, 255, 0.13);
+
+  color: white;
+
+  box-shadow:
+    inset 0 -3px 0 white;
+}
+
+
+.dota-create-navbar-active img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+
+/* =========================================================
+   ÁREA PRINCIPAL
+========================================================= */
+
+.dota-create-room-main {
+  width: min(1380px, 94%);
+
+  margin: 0 auto;
+
+  padding-top: 98px;
+  padding-bottom: 50px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =========================================================
+   BOTÃO VOLTAR
+========================================================= */
+
+.dota-create-room-top {
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+
+  margin-bottom: 5px;
+}
+
+
+.dota-back-button {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  background: rgba(20, 12, 25, 0.75);
+
+  color: white;
+
+  padding: 10px 18px;
+
+  border-radius: 7px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.dota-back-button:hover {
+  background: rgba(84, 33, 111, 0.9);
+
+  border-color: rgba(202, 130, 255, 0.5);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   LOGO GRANDE DO DOTA 2
+========================================================= */
+
+.dota-create-game-header {
+  height: 155px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+
+.dota-create-game-logo {
+  width: 350px;
+
+  max-width: 80%;
+  max-height: 125px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 18px rgba(0, 0, 0, 0.75));
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.dota-create-section {
+  width: 100%;
+
+  margin: 0 auto 28px;
+}
+
+
+.dota-section-title {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 14px;
+}
+
+
+.dota-section-title span {
+  flex: 1;
+
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.16);
+}
+
+
+.dota-section-title p {
+  margin: 0;
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   MODOS DE JOGO
+========================================================= */
+
+.dota-game-modes {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 18px;
+}
+
+
+.dota-mode-card {
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  cursor: pointer;
+
+  min-width: 0;
+}
+
+
+.dota-mode-image {
+  position: relative;
+
+  height: 165px;
+
+  overflow: hidden;
+
+  border-radius: 9px;
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+
+  background: rgba(0, 0, 0, 0.3);
+
+  transition: 0.2s ease;
+}
+
+
+.dota-mode-image-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.55),
+      transparent 60%
+    );
+
+  pointer-events: none;
+}
+
+
+.dota-mode-card:hover .dota-mode-image {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+
+/* =========================================================
+   CARDS DE MODO DO DOTA — COR + ÍCONE SVG
+   (o jogo só tem um mapa, então não faz sentido usar
+   imagem de mapa por modo)
+========================================================= */
+
+.dota-mode-icon-wrap {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+
+.dota-mode-icon {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  filter:
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.55));
+
+  transition: transform 0.25s ease;
+
+  z-index: 1;
+}
+
+
+.dota-mode-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+
+.dota-mode-card:hover .dota-mode-icon {
+  transform: scale(1.12);
+}
+
+
+/* =========================================================
+   CORES POR MODO
+========================================================= */
+
+.dota-mode-ranked {
+  background-color: #3a1010;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(230, 60, 60, 0.35),
+      rgba(58, 16, 16, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.dota-mode-ranked .dota-mode-icon {
+  color: #ff9a6b;
+}
+
+
+.dota-mode-normal {
+  background-color: #0c2438;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(70, 150, 220, 0.32),
+      rgba(12, 36, 56, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.dota-mode-normal .dota-mode-icon {
+  color: #8fd0ff;
+}
+
+
+.dota-mode-turbo {
+  background-color: #3a2208;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(255, 165, 50, 0.34),
+      rgba(58, 34, 8, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.dota-mode-turbo .dota-mode-icon {
+  color: #ffc46b;
+}
+
+
+.dota-mode-captains {
+  background-color: #1e0c38;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(168, 94, 209, 0.35),
+      rgba(30, 12, 56, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.dota-mode-captains .dota-mode-icon {
+  color: #c77dff;
+}
+
+
+.dota-mode-ability {
+  background-color: #0c3024;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(60, 200, 140, 0.32),
+      rgba(12, 48, 36, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.dota-mode-ability .dota-mode-icon {
+  color: #7dffc4;
+}
+
+
+.dota-mode-custom {
+  background-color: #351028;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(230, 90, 160, 0.32),
+      rgba(53, 16, 40, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.dota-mode-custom .dota-mode-icon {
+  color: #ff9ecb;
+}
+
+
+/* selecionado: reforça o glow da cor do próprio modo */
+
+.dota-mode-card.dota-selected .dota-mode-ranked {
+  box-shadow: inset 0 0 25px rgba(255, 90, 90, 0.35);
+}
+
+.dota-mode-card.dota-selected .dota-mode-normal {
+  box-shadow: inset 0 0 25px rgba(90, 170, 240, 0.35);
+}
+
+.dota-mode-card.dota-selected .dota-mode-turbo {
+  box-shadow: inset 0 0 25px rgba(255, 180, 80, 0.35);
+}
+
+.dota-mode-card.dota-selected .dota-mode-captains {
+  box-shadow: inset 0 0 25px rgba(180, 100, 220, 0.35);
+}
+
+.dota-mode-card.dota-selected .dota-mode-ability {
+  box-shadow: inset 0 0 25px rgba(80, 220, 160, 0.35);
+}
+
+.dota-mode-card.dota-selected .dota-mode-custom {
+  box-shadow: inset 0 0 25px rgba(240, 110, 180, 0.35);
+}
+
+
+/* =========================================================
+   NOME DO MODO
+========================================================= */
+
+.dota-mode-name {
+  margin-top: -1px;
+
+  height: 29px;
+
+  background: white;
+
+  color: #151015;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  letter-spacing: 0.3px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  padding: 0 6px;
+
+  transition: 0.2s;
+}
+
+
+.dota-mode-card.dota-selected .dota-mode-name {
+  background: #54216f;
+
+  color: white;
+
+  box-shadow:
+    0 0 12px rgba(185, 106, 255, 0.4);
+}
+
+
+.dota-mode-card.dota-selected .dota-mode-image {
+  border-color: #a85ed1;
+
+  box-shadow:
+    0 0 15px rgba(142, 63, 181, 0.4);
+}
+
+
+/* =========================================================
+   ELOS
+========================================================= */
+
+.dota-rank-selection {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 82px;
+
+  padding: 10px 28px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 55px;
+
+  border-radius: 10px;
+
+  background: rgba(15, 8, 20, 0.55);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  transition: 0.25s ease;
+}
+
+
+.dota-rank-item {
+  width: 52px;
+  height: 42px;
+
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.dota-rank-placeholder {
+  width: 44px;
+  height: 50px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  transition: 0.2s ease;
+}
+
+
+.dota-rank-icon {
+  width: 56px;
+  height: 56px;
+
+  object-fit: contain;
+
+  transition: 0.2s ease;
+}
+
+
+.dota-rank-item:hover .dota-rank-icon {
+  transform: scale(1.12);
+}
+
+
+.dota-rank-item.dota-selected .dota-rank-placeholder {
+  transform: scale(1.08);
+
+  background: transparent;
+
+  box-shadow: none;
+}
+
+
+.dota-rank-item.dota-selected .dota-rank-icon {
+  transform: scale(1.12);
+
+  filter:
+    drop-shadow(0 0 5px rgba(210, 150, 255, 0.65))
+    drop-shadow(0 0 12px rgba(170, 90, 230, 0.35));
+}
+
+
+.dota-rank-selection.dota-disabled {
+  opacity: 0.35;
+
+  filter: grayscale(1);
+
+  pointer-events: none;
+}
+
+
+.dota-rank-disabled-message {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+
+  background: rgba(15, 8, 20, 0.72);
+
+  color: white;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  letter-spacing: 0.5px;
+
+  text-align: center;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   FUNÇÕES / POSIÇÕES
+========================================================= */
+
+.dota-role-selection {
+  width: 100%;
+
+  padding: 16px 20px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 18px;
+
+  border-radius: 10px;
+
+  background: rgba(15, 8, 20, 0.55);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.dota-role-item {
+  width: 132px;
+
+  padding: 12px 8px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  color: rgba(255, 255, 255, 0.8);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 8px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.dota-role-item:hover {
+  background: rgba(255, 255, 255, 0.10);
+
+  border-color: rgba(255, 255, 255, 0.3);
+
+  transform: translateY(-2px);
+}
+
+
+.dota-role-item img {
+  width: 42px;
+  height: 42px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.8;
+
+  transition: 0.2s ease;
+}
+
+
+.dota-role-item:hover img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+
+.dota-role-name {
+  font-size: 11px;
+  font-weight: bold;
+
+  letter-spacing: 0.4px;
+
+  text-align: center;
+
+  white-space: nowrap;
+}
+
+
+.dota-role-item.dota-selected {
+  background: #54216f;
+
+  border-color: #a85ed1;
+
+  color: white;
+
+  box-shadow:
+    0 0 14px rgba(142, 63, 181, 0.45);
+}
+
+
+.dota-role-item.dota-selected img {
+  opacity: 1;
+
+  filter:
+    drop-shadow(0 0 6px rgba(210, 150, 255, 0.6));
+}
+
+
+/* =========================================================
+   GÊNERO
+========================================================= */
+
+.dota-gender-selection {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+}
+
+
+.dota-gender-button {
+  width: 155px;
+  height: 42px;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  background: rgba(255, 255, 255, 0.06);
+
+  color: white;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  font-size: 12px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.dota-gender-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+
+.dota-gender-button.dota-selected {
+  background: #54216f;
+
+  color: white;
+
+  box-shadow:
+    0 0 12px rgba(185, 106, 255, 0.35);
+}
+
+
+/* =========================================================
+   DETALHES DA SALA
+========================================================= */
+
+.dota-room-details-form {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 40px;
+}
+
+
+.dota-detail-box {
+  height: 125px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.dota-detail-box label {
+  color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+
+.dota-detail-box input,
+.dota-detail-box textarea {
+  width: 100%;
+
+  flex: 1;
+
+  resize: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+
+  border-radius: 8px;
+
+  background: rgba(10, 7, 13, 0.65);
+
+  color: white;
+
+  outline: none;
+
+  padding: 13px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  transition: 0.2s ease;
+}
+
+
+.dota-detail-box input:focus,
+.dota-detail-box textarea:focus {
+  border-color: rgba(184, 99, 230, 0.7);
+
+  box-shadow:
+    0 0 10px rgba(154, 69, 194, 0.18);
+}
+
+
+.dota-detail-box input::placeholder,
+.dota-detail-box textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* =========================================================
+   BOTÕES FINAIS
+========================================================= */
+
+.dota-create-actions {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 35px;
+}
+
+
+.dota-create-button,
+.dota-cancel-button {
+  width: 225px;
+  height: 56px;
+
+  border: none;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  font-size: 13px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.dota-create-button {
+  background: #54216f;
+
+  color: white;
+
+  box-shadow:
+    0 0 18px rgba(135, 53, 180, 0.3);
+}
+
+
+.dota-create-button:hover {
+  background: #6c2b8e;
+
+  transform: translateY(-2px);
+}
+
+
+.dota-cancel-button {
+  background: white;
+
+  color: #24152a;
+}
+
+
+.dota-cancel-button:hover {
+  background: #e9e9e9;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   RESPONSIVO - 1200px
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .dota-create-navbar-game {
+    min-width: 80px;
+
+    font-size: 9px;
+  }
+
+  .dota-create-navbar-game img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .dota-game-modes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dota-mode-image {
+    height: 155px;
+  }
+
+  .dota-rank-selection {
+    gap: 8px;
+
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVO - 900px
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .dota-create-sidebar {
+    width: 65px;
+  }
+
+  .dota-create-sidebar-menu {
+    margin-top: 82px;
+  }
+
+  .dota-create-room-content {
+    width: calc(100% - 65px);
+
+    margin-left: 65px;
+  }
+
+  .dota-create-navbar {
+    left: 65px;
+  }
+
+  .dota-create-navbar-logo {
+    width: 85px;
+  }
+
+  .dota-create-games-navbar {
+    overflow-x: auto;
+
+    justify-content: flex-start;
+  }
+
+  .dota-create-navbar-game {
+    flex: 0 0 100px;
+
+    min-width: 100px;
+  }
+
+  .dota-game-modes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dota-room-details-form {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .dota-rank-selection {
+    flex-wrap: wrap;
+
+    padding: 15px;
+  }
+
+  .dota-role-item {
+    width: 118px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVO - 650px
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .dota-create-sidebar {
+    width: 58px;
+  }
+
+  .dota-create-sidebar-menu {
+    margin-top: 72px;
+
+    gap: 7px;
+  }
+
+  .dota-create-sidebar-item {
+    width: 45px;
+    height: 45px;
+  }
+
+  .dota-create-sidebar-item img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .dota-create-feedback-star {
+    width: 26px;
+    height: 26px;
+
+    font-size: 22px;
+  }
+
+  .dota-create-room-content {
+    width: calc(100% - 58px);
+
+    margin-left: 58px;
+  }
+
+  .dota-create-navbar {
+    left: 58px;
+
+    height: 60px;
+  }
+
+  .dota-create-navbar-logo {
+    display: none;
+  }
+
+  .dota-create-games-navbar {
+    height: 60px;
+
+    overflow-x: auto;
+  }
+
+  .dota-create-navbar-game {
+    height: 60px;
+
+    flex: 0 0 90px;
+
+    min-width: 90px;
+
+    font-size: 9px;
+  }
+
+  .dota-create-navbar-game img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .dota-create-room-main {
+    width: 92%;
+
+    padding-top: 80px;
+    padding-bottom: 35px;
+  }
+
+  .dota-game-modes {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+  }
+
+  .dota-mode-image {
+    height: 125px;
+  }
+
+  .dota-mode-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .dota-mode-name {
+    font-size: 11px;
+  }
+
+  .dota-role-selection {
+    gap: 10px;
+
+    padding: 12px;
+  }
+
+  .dota-role-item {
+    width: calc(50% - 6px);
+  }
+
+  .dota-gender-button {
+    width: 135px;
+  }
+
+  .dota-create-button,
+  .dota-cancel-button {
+    width: 170px;
+  }
+
+  .dota-create-actions {
+    flex-wrap: wrap;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVO - 450px
+========================================================= */
+
+@media (max-width: 450px) {
+
+  .dota-create-navbar-game {
+    flex-basis: 82px;
+
+    min-width: 82px;
+
+    font-size: 8px;
+  }
+
+  .dota-create-navbar-game img {
+    width: 25px;
+    height: 25px;
+  }
+}

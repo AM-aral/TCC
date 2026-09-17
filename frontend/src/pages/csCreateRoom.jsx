@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./valCreateRoom.css";
+import "./csCreateRoom.css";
 
 import logo from "../assets/logo.png";
 
@@ -13,7 +13,7 @@ import historicoIcon from "../assets/sidebar/historico.png";
 import configuracoesIcon from "../assets/sidebar/configuracoes.png";
 
 /* =====================================================
-   ÍCONES DOS JOGOS (navbar)
+   ÍCONES DOS JOGOS
 ===================================================== */
 
 import owLogo from "../assets/icon/ow icon.png";
@@ -26,53 +26,48 @@ import rivalsLogo from "../assets/icon/marvel icon.png";
 import lolLogo from "../assets/icon/lol icon.png";
 
 /* =====================================================
-   LOGO GRANDE (ícone do Valorant)
+   LOGO GRANDE (ícone do CS2)
+   OBS: a pasta LOGAO não tem cs-big.png, então usamos o
+   mesmo ícone padrão que o Rocket usa (games-icon), que
+   já existe no projeto.
 ===================================================== */
 
-import valorantBigLogo from "../assets/games-icon/valorant icon.png";
+import csBigLogo from "../assets/games-icon/cs2 icon.png";
 
 /* =====================================================
-   IMAGENS DOS MODOS
-   (únicas 4 que existem em assets/room-modes/valorant)
+   ELOS
+   (mostramos só a MELHOR divisão de cada faixa de elo,
+   em vez das 18 imagens separadas — Prata I a IV vira só
+   "Prata", Ouro Nova I a III + Mestre vira só "Ouro Nova",
+   etc. Isso deixa a seção muito mais limpa)
 ===================================================== */
 
-import competitivoImg from "../assets/room-modes/valorant/competitivo.png";
-import freneticoImg from "../assets/room-modes/valorant/frenetico.png";
-import mataMataImg from "../assets/room-modes/valorant/matamata.png";
-import semClassImg from "../assets/room-modes/valorant/sem class.png";
-
-/* =====================================================
-   ELOS DO VALORANT
-   (pegando o ícone "tier 1" de cada rank)
-===================================================== */
-
-import ferroIcon from "../assets/elos/valorant/ferro.png";
-import bronzeIcon from "../assets/elos/valorant/bronze .png";
-import prataIcon from "../assets/elos/valorant/silver.png";
-import ouroIcon from "../assets/elos/valorant/gold.png";
-import platinaIcon from "../assets/elos/valorant/platina 1.png";
-import diamanteIcon from "../assets/elos/valorant/diamante 1.png";
-import ascendenteIcon from "../assets/elos/valorant/ascendente.png";
-import imortalIcon from "../assets/elos/valorant/imortal.png";
-import radianteIcon from "../assets/elos/valorant/radiante.png";
+import semIcon from "../assets/elos/cs/SEM.png";
+import gnmIcon from "../assets/elos/cs/GNM .png";
+import akCruzadaIcon from "../assets/elos/cs/AK CRUZADA.png";
+import xerifeIcon from "../assets/elos/cs/XERIFE.png";
+import aguia2Icon from "../assets/elos/cs/Aguia2.png";
+import supremoIcon from "../assets/elos/cs/Supremo.png";
+import globalIcon from "../assets/elos/cs/Global.png";
 
 /* =====================================================
    ÍCONES DE FUNÇÃO
 ===================================================== */
 
-import duelistaIcon from "../assets/funcoes/duelista.png";
-import controladorIcon from "../assets/funcoes/controlador.png";
-import iniciadorIcon from "../assets/funcoes/iniciador.png";
-import sentinelaIcon from "../assets/funcoes/sentinela.png";
+import awperIcon from "../assets/funcoes/awper.png";
+import entryIcon from "../assets/funcoes/entry.png";
+import lurkerIcon from "../assets/funcoes/lurker.png";
+import supportIcon from "../assets/funcoes/support.png";
+import iglIcon from "../assets/funcoes/leader.png";
 
 /* =====================================================
    FUNDO
 ===================================================== */
 
-import valorantBackground from "../assets/rooms-bg.png";
+import csBackground from "../assets/rooms-bg.png";
 
 
-function ValorantCreateRoom({
+function CreateRoom({
     game,
     onBack,
     onProfile,
@@ -87,6 +82,8 @@ function ValorantCreateRoom({
     ===================================================== */
 
     const [selectedMode, setSelectedMode] = useState("COMPETITIVO");
+
+    const [selectedTeam, setSelectedTeam] = useState("DUO");
 
     const [selectedRank, setSelectedRank] = useState(null);
 
@@ -137,68 +134,123 @@ function ValorantCreateRoom({
 
     /* =====================================================
        MODOS
+       (a pasta assets/room-modes/cs não existe, então os
+       cards usam cor + ícone SVG, igual ao Rocket League)
     ===================================================== */
 
     const modes = [
         {
             name: "COMPETITIVO",
-            image: competitivoImg
+            theme: "mode-competitivo",
+            icon: (
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="14" stroke="currentColor" strokeWidth="3"/>
+                    <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                    <path d="M24 4V12M24 36V44M4 24H12M36 24H44" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                </svg>
+            )
         },
         {
-            name: "NÃO-CLASSIFICATÓRIA",
-            image: semClassImg
+            name: "PREMIER",
+            theme: "mode-premier",
+            icon: (
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 6L28.5 18.5L42 19L31.5 27L35 40L24 32.5L13 40L16.5 27L6 19L19.5 18.5Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/>
+                </svg>
+            )
         },
         {
-            name: "MATA-MATA",
-            image: mataMataImg
+            name: "WINGMAN",
+            theme: "mode-wingman",
+            icon: (
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="17" cy="24" r="6" stroke="currentColor" strokeWidth="3"/>
+                    <circle cx="31" cy="24" r="6" stroke="currentColor" strokeWidth="3"/>
+                    <path d="M6 24H11M23 24H25M37 24H42" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                </svg>
+            )
         },
         {
-            name: "FRENÉTICO",
-            image: freneticoImg
+            name: "DEATHMATCH",
+            theme: "mode-deathmatch",
+            icon: (
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="16" stroke="currentColor" strokeWidth="3"/>
+                    <path d="M17 17L31 31M31 17L17 31" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                </svg>
+            )
+        },
+        {
+            name: "CASUAL",
+            theme: "mode-casual",
+            icon: (
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="6" y="16" width="36" height="20" rx="10" stroke="currentColor" strokeWidth="3"/>
+                    <path d="M15 21V31M10 26H20" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                    <circle cx="32" cy="22" r="2.2" fill="currentColor"/>
+                    <circle cx="37" cy="27" r="2.2" fill="currentColor"/>
+                </svg>
+            )
+        },
+        {
+            name: "ARMS RACE",
+            theme: "mode-arms-race",
+            icon: (
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 40V8M24 8L14 18M24 8L34 18" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M10 40H38" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                </svg>
+            )
         }
     ];
 
 
     /* =====================================================
+       TAMANHO DAS EQUIPES
+    ===================================================== */
+
+    const teams = [
+        "DUO",
+        "TRIO",
+        "GRUPO",
+        "5V5"
+    ];
+
+
+    /* =====================================================
        ELOS
+       (uma única imagem por faixa, usando sempre a divisão
+       mais alta dela como representante)
     ===================================================== */
 
     const ranks = [
         {
-            name: "FERRO",
-            image: ferroIcon
-        },
-        {
-            name: "BRONZE",
-            image: bronzeIcon
-        },
-        {
             name: "PRATA",
-            image: prataIcon
+            image: semIcon
         },
         {
-            name: "OURO",
-            image: ouroIcon
+            name: "OURO NOVA",
+            image: gnmIcon
         },
         {
-            name: "PLATINA",
-            image: platinaIcon
+            name: "MESTRE GUARDIÃO",
+            image: akCruzadaIcon
         },
         {
-            name: "DIAMANTE",
-            image: diamanteIcon
+            name: "GUARDIÃO DISTINTO",
+            image: xerifeIcon
         },
         {
-            name: "ASCENDENTE",
-            image: ascendenteIcon
+            name: "ÁGUIA",
+            image: aguia2Icon
         },
         {
-            name: "IMORTAL",
-            image: imortalIcon
+            name: "SUPREMO",
+            image: supremoIcon
         },
         {
-            name: "RADIANTE",
-            image: radianteIcon
+            name: "GLOBAL ELITE",
+            image: globalIcon
         }
     ];
 
@@ -209,30 +261,35 @@ function ValorantCreateRoom({
 
     const functions = [
         {
-            name: "DUELISTA",
-            image: duelistaIcon
+            name: "AWPER",
+            image: awperIcon
         },
         {
-            name: "CONTROLADOR",
-            image: controladorIcon
+            name: "ENTRY",
+            image: entryIcon
         },
         {
-            name: "INICIADOR",
-            image: iniciadorIcon
+            name: "LURKER",
+            image: lurkerIcon
         },
         {
-            name: "SENTINELA",
-            image: sentinelaIcon
+            name: "SUPORTE",
+            image: supportIcon
+        },
+        {
+            name: "IGL",
+            image: iglIcon
         }
     ];
 
 
     /* =====================================================
        HABILITAÇÃO DO ELO
-       (no Valorant, elo só faz sentido no Competitivo)
     ===================================================== */
 
-    const rankEnabled = selectedMode === "COMPETITIVO";
+    const rankEnabled =
+        selectedMode === "COMPETITIVO" ||
+        selectedMode === "WINGMAN";
 
 
     /* =====================================================
@@ -243,7 +300,10 @@ function ValorantCreateRoom({
 
         setSelectedMode(mode);
 
-        if (mode !== "COMPETITIVO") {
+        if (
+            mode !== "COMPETITIVO" &&
+            mode !== "WINGMAN"
+        ) {
             setSelectedRank(null);
         }
     };
@@ -251,7 +311,7 @@ function ValorantCreateRoom({
 
     /* =====================================================
        TROCAR JOGO PELA NAVBAR
-
+       
        IMPORTANTE:
        Aqui o jogo é enviado para o App.jsx.
     ===================================================== */
@@ -281,28 +341,28 @@ function ValorantCreateRoom({
     return (
 
         <div
-            className="val-create-room-page"
+            className="create-room-page"
             style={{
-                backgroundImage: `url(${valorantBackground})`
+                backgroundImage: `url(${csBackground})`
             }}
         >
 
-            <div className="val-create-room-overlay"></div>
+            <div className="create-room-overlay"></div>
 
 
             {/* =================================================
                 SIDEBAR
             ================================================= */}
 
-            <aside className="val-create-sidebar">
+            <aside className="create-sidebar">
 
-                <nav className="val-create-sidebar-menu">
+                <nav className="create-sidebar-menu">
 
 
                     {/* HOME */}
 
                     <button
-                        className="val-create-sidebar-item"
+                        className="create-sidebar-item"
                         type="button"
                         onClick={onBack}
                         title="Home"
@@ -319,7 +379,7 @@ function ValorantCreateRoom({
                     {/* PERFIL */}
 
                     <button
-                        className="val-create-sidebar-item"
+                        className="create-sidebar-item"
                         type="button"
                         onClick={onProfile}
                         title="Perfil"
@@ -336,7 +396,7 @@ function ValorantCreateRoom({
                     {/* HISTÓRICO */}
 
                     <button
-                        className="val-create-sidebar-item"
+                        className="create-sidebar-item"
                         type="button"
                         onClick={onHistory}
                         title="Histórico"
@@ -353,13 +413,13 @@ function ValorantCreateRoom({
                     {/* FEEDBACKS */}
 
                     <button
-                        className="val-create-sidebar-item"
+                        className="create-sidebar-item"
                         type="button"
                         onClick={onFeedbacks}
                         title="Feedbacks"
                     >
 
-                        <span className="val-create-feedback-star">
+                        <span className="create-feedback-star">
                             ★
                         </span>
 
@@ -369,7 +429,7 @@ function ValorantCreateRoom({
                     {/* CONFIGURAÇÕES */}
 
                     <button
-                        className="val-create-sidebar-item"
+                        className="create-sidebar-item"
                         type="button"
                         onClick={onSettings}
                         title="Configurações"
@@ -391,20 +451,20 @@ function ValorantCreateRoom({
                 CONTEÚDO
             ================================================= */}
 
-            <div className="val-create-room-content">
+            <div className="create-room-content">
 
 
                 {/* =================================================
                     NAVBAR
                 ================================================= */}
 
-                <header className="val-create-navbar">
+                <header className="create-navbar">
 
 
                     {/* LOGO */}
 
                     <div
-                        className="val-create-navbar-logo"
+                        className="create-navbar-logo"
                         onClick={onBack}
                         title="Home"
                     >
@@ -421,16 +481,16 @@ function ValorantCreateRoom({
                         JOGOS
                     ================================================= */}
 
-                    <div className="val-create-games-navbar">
+                    <div className="create-games-navbar">
 
                         {navbarGames.map((item) => (
 
                             <div
                                 key={item.name}
                                 className={
-                                    `val-create-navbar-game ${
+                                    `create-navbar-game ${
                                         game === item.name
-                                            ? "val-create-navbar-active"
+                                            ? "create-navbar-active"
                                             : ""
                                     }`
                                 }
@@ -465,17 +525,17 @@ function ValorantCreateRoom({
                     CRIAÇÃO DA SALA
                 ================================================= */}
 
-                <main className="val-create-room-main">
+                <main className="create-room-main">
 
 
                     {/* =================================================
                         TOPO
                     ================================================= */}
 
-                    <div className="val-create-room-top">
+                    <div className="create-room-top">
 
                         <button
-                            className="val-back-button"
+                            className="back-button"
                             onClick={onBack}
                             type="button"
                         >
@@ -489,12 +549,12 @@ function ValorantCreateRoom({
                         LOGO DO JOGO
                     ================================================= */}
 
-                    <div className="val-create-game-header">
+                    <div className="create-game-header">
 
                         <img
-                            src={valorantBigLogo}
-                            alt="Valorant"
-                            className="val-create-game-logo"
+                            src={csBigLogo}
+                            alt="Counter-Strike 2"
+                            className="create-game-logo"
                         />
 
                     </div>
@@ -504,9 +564,9 @@ function ValorantCreateRoom({
                         MODO DE JOGO
                     ================================================= */}
 
-                    <section className="val-create-section">
+                    <section className="create-section">
 
-                        <div className="val-section-title">
+                        <div className="section-title">
 
                             <span></span>
 
@@ -519,16 +579,16 @@ function ValorantCreateRoom({
                         </div>
 
 
-                        <div className="val-game-modes val-modes">
+                        <div className="game-modes">
 
                             {modes.map((mode) => (
 
                                 <button
                                     key={mode.name}
                                     className={
-                                        `val-mode-card ${
+                                        `mode-card ${
                                             selectedMode === mode.name
-                                                ? "val-selected"
+                                                ? "selected"
                                                 : ""
                                         }`
                                     }
@@ -538,21 +598,73 @@ function ValorantCreateRoom({
                                     type="button"
                                 >
 
-                                    <div className="val-mode-image">
+                                    <div
+                                        className={
+                                            `mode-image cs-mode-image ${mode.theme}`
+                                        }
+                                    >
 
-                                        <img
-                                            src={mode.image}
-                                            alt={mode.name}
-                                        />
+                                        <div className="cs-mode-icon">
+                                            {mode.icon}
+                                        </div>
 
-                                        <div className="val-mode-image-overlay"></div>
+                                        <div className="mode-image-overlay"></div>
 
                                     </div>
 
 
-                                    <div className="val-mode-name">
+                                    <div className="mode-name">
                                         {mode.name}
                                     </div>
+
+                                </button>
+
+                            ))}
+
+                        </div>
+
+                    </section>
+
+
+                    {/* =================================================
+                        TAMANHO DA EQUIPE
+                    ================================================= */}
+
+                    <section className="create-section">
+
+                        <div className="section-title">
+
+                            <span></span>
+
+                            <p>
+                                TAMANHO DA EQUIPE
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <div className="team-size">
+
+                            {teams.map((team) => (
+
+                                <button
+                                    key={team}
+                                    className={
+                                        `team-button ${
+                                            selectedTeam === team
+                                                ? "selected"
+                                                : ""
+                                        }`
+                                    }
+                                    onClick={() =>
+                                        setSelectedTeam(team)
+                                    }
+                                    type="button"
+                                >
+
+                                    {team}
 
                                 </button>
 
@@ -567,9 +679,9 @@ function ValorantCreateRoom({
                         ELO
                     ================================================= */}
 
-                    <section className="val-create-section">
+                    <section className="create-section">
 
-                        <div className="val-section-title">
+                        <div className="section-title">
 
                             <span></span>
 
@@ -584,9 +696,9 @@ function ValorantCreateRoom({
 
                         <div
                             className={
-                                `val-rank-selection ${
+                                `rank-selection ${
                                     !rankEnabled
-                                        ? "val-disabled"
+                                        ? "disabled"
                                         : ""
                                 }`
                             }
@@ -597,9 +709,9 @@ function ValorantCreateRoom({
                                 <button
                                     key={rank.name}
                                     className={
-                                        `val-rank-item ${
+                                        `rank-item ${
                                             selectedRank === rank.name
-                                                ? "val-selected"
+                                                ? "selected"
                                                 : ""
                                         }`
                                     }
@@ -613,14 +725,15 @@ function ValorantCreateRoom({
 
                                     }}
                                     type="button"
+                                    title={rank.name}
                                 >
 
-                                    <div className="val-rank-placeholder">
+                                    <div className="rank-placeholder">
 
                                         <img
                                             src={rank.image}
                                             alt={rank.name}
-                                            className="val-rank-icon"
+                                            className="rank-icon"
                                         />
 
                                     </div>
@@ -632,10 +745,10 @@ function ValorantCreateRoom({
 
                             {!rankEnabled && (
 
-                                <div className="val-rank-disabled-message">
+                                <div className="rank-disabled-message">
 
                                     ELO DISPONÍVEL APENAS PARA
-                                    O MODO COMPETITIVO
+                                    COMPETITIVO E WINGMAN
 
                                 </div>
 
@@ -647,12 +760,69 @@ function ValorantCreateRoom({
 
 
                     {/* =================================================
+                        FUNÇÃO
+                    ================================================= */}
+
+                    <section className="create-section">
+
+                        <div className="section-title">
+
+                            <span></span>
+
+                            <p>
+                                FUNÇÃO
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <div className="function-selection">
+
+                            {functions.map((func) => (
+
+                                <button
+                                    key={func.name}
+                                    type="button"
+                                    className={
+                                        `function-button ${
+                                            selectedFunction === func.name
+                                                ? "selected"
+                                                : ""
+                                        }`
+                                    }
+                                    onClick={() =>
+                                        setSelectedFunction(func.name)
+                                    }
+                                >
+
+                                    <img
+                                        src={func.image}
+                                        alt={func.name}
+                                        className="function-icon"
+                                    />
+
+                                    <span>
+                                        {func.name}
+                                    </span>
+
+                                </button>
+
+                            ))}
+
+                        </div>
+
+                    </section>
+
+
+                    {/* =================================================
                         GÊNERO
                     ================================================= */}
 
-                    <section className="val-create-section">
+                    <section className="create-section">
 
-                        <div className="val-section-title">
+                        <div className="section-title">
 
                             <span></span>
 
@@ -665,14 +835,14 @@ function ValorantCreateRoom({
                         </div>
 
 
-                        <div className="val-gender-selection">
+                        <div className="gender-selection">
 
                             <button
                                 type="button"
                                 className={
-                                    `val-gender-button ${
+                                    `gender-button male ${
                                         selectedGender === "HOMEM"
-                                            ? "val-selected"
+                                            ? "selected"
                                             : ""
                                     }`
                                 }
@@ -689,9 +859,9 @@ function ValorantCreateRoom({
                             <button
                                 type="button"
                                 className={
-                                    `val-gender-button ${
+                                    `gender-button female ${
                                         selectedGender === "MULHER"
-                                            ? "val-selected"
+                                            ? "selected"
                                             : ""
                                     }`
                                 }
@@ -710,69 +880,12 @@ function ValorantCreateRoom({
 
 
                     {/* =================================================
-                        FUNÇÃO
-                    ================================================= */}
-
-                    <section className="val-create-section">
-
-                        <div className="val-section-title">
-
-                            <span></span>
-
-                            <p>
-                                FUNÇÃO
-                            </p>
-
-                            <span></span>
-
-                        </div>
-
-
-                        <div className="val-function-selection">
-
-                            {functions.map((func) => (
-
-                                <button
-                                    key={func.name}
-                                    type="button"
-                                    className={
-                                        `val-function-button ${
-                                            selectedFunction === func.name
-                                                ? "val-selected"
-                                                : ""
-                                        }`
-                                    }
-                                    onClick={() =>
-                                        setSelectedFunction(func.name)
-                                    }
-                                >
-
-                                    <img
-                                        src={func.image}
-                                        alt={func.name}
-                                        className="val-function-icon"
-                                    />
-
-                                    <span>
-                                        {func.name}
-                                    </span>
-
-                                </button>
-
-                            ))}
-
-                        </div>
-
-                    </section>
-
-
-                    {/* =================================================
                         DETALHES
                     ================================================= */}
 
-                    <section className="val-create-section">
+                    <section className="create-section">
 
-                        <div className="val-section-title">
+                        <div className="section-title">
 
                             <span></span>
 
@@ -785,9 +898,9 @@ function ValorantCreateRoom({
                         </div>
 
 
-                        <div className="val-room-details-form">
+                        <div className="room-details-form">
 
-                            <div className="val-detail-box">
+                            <div className="detail-box">
 
                                 <label>
                                     Nome da sala
@@ -801,7 +914,7 @@ function ValorantCreateRoom({
                             </div>
 
 
-                            <div className="val-detail-box">
+                            <div className="detail-box">
 
                                 <label>
                                     Descrição
@@ -822,10 +935,10 @@ function ValorantCreateRoom({
                         BOTÕES
                     ================================================= */}
 
-                    <div className="val-create-actions">
+                    <div className="create-actions">
 
                         <button
-                            className="val-create-button"
+                            className="create-button"
                             type="button"
                         >
                             CRIAR SALA
@@ -833,7 +946,7 @@ function ValorantCreateRoom({
 
 
                         <button
-                            className="val-cancel-button"
+                            className="cancel-button"
                             onClick={onBack}
                             type="button"
                         >
@@ -851,4 +964,4 @@ function ValorantCreateRoom({
 }
 
 
-export default ValorantCreateRoom;
+export default CreateRoom;

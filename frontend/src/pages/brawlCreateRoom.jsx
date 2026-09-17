@@ -120,7 +120,7 @@ function BrawlCreateRoom({
     const modes = [
         {
             name: "RANKED 1V1",
-            theme: "mode-1v1",
+            theme: "brawl-mode-1v1",
             icon: (
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6 42L20 28M42 6L28 20" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round"/>
@@ -131,7 +131,7 @@ function BrawlCreateRoom({
         },
         {
             name: "RANKED 2V2",
-            theme: "mode-2v2",
+            theme: "brawl-mode-2v2",
             icon: (
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 6L22 10V22L15 26L8 22V10L15 6Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/>
@@ -142,7 +142,7 @@ function BrawlCreateRoom({
         },
         {
             name: "CASUAL",
-            theme: "mode-casual",
+            theme: "brawl-mode-casual",
             icon: (
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="6" y="16" width="36" height="20" rx="10" stroke="currentColor" strokeWidth="3"/>
@@ -154,7 +154,7 @@ function BrawlCreateRoom({
         },
         {
             name: "EXPERIMENTAL",
-            theme: "mode-experimental",
+            theme: "brawl-mode-experimental",
             icon: (
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M19 6H29" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
@@ -261,28 +261,28 @@ function BrawlCreateRoom({
     return (
 
         <div
-            className="create-room-page"
+            className="brawl-create-room-page"
             style={{
                 backgroundImage: `url(${brawlBackground})`
             }}
         >
 
-            <div className="create-room-overlay"></div>
+            <div className="brawl-create-room-overlay"></div>
 
 
             {/* =================================================
                 SIDEBAR
             ================================================= */}
 
-            <aside className="create-sidebar">
+            <aside className="brawl-create-sidebar">
 
-                <nav className="create-sidebar-menu">
+                <nav className="brawl-create-sidebar-menu">
 
 
                     {/* HOME */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="brawl-create-sidebar-item"
                         type="button"
                         onClick={onBack}
                         title="Home"
@@ -299,7 +299,7 @@ function BrawlCreateRoom({
                     {/* PERFIL */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="brawl-create-sidebar-item"
                         type="button"
                         onClick={onProfile}
                         title="Perfil"
@@ -316,7 +316,7 @@ function BrawlCreateRoom({
                     {/* HISTÓRICO */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="brawl-create-sidebar-item"
                         type="button"
                         onClick={onHistory}
                         title="Histórico"
@@ -333,13 +333,13 @@ function BrawlCreateRoom({
                     {/* FEEDBACKS */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="brawl-create-sidebar-item"
                         type="button"
                         onClick={onFeedbacks}
                         title="Feedbacks"
                     >
 
-                        <span className="create-feedback-star">
+                        <span className="brawl-create-feedback-star">
                             ★
                         </span>
 
@@ -349,7 +349,7 @@ function BrawlCreateRoom({
                     {/* CONFIGURAÇÕES */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="brawl-create-sidebar-item"
                         type="button"
                         onClick={onSettings}
                         title="Configurações"
@@ -371,20 +371,20 @@ function BrawlCreateRoom({
                 CONTEÚDO
             ================================================= */}
 
-            <div className="create-room-content">
+            <div className="brawl-create-room-content">
 
 
                 {/* =================================================
                     NAVBAR
                 ================================================= */}
 
-                <header className="create-navbar">
+                <header className="brawl-create-navbar">
 
 
                     {/* LOGO */}
 
                     <div
-                        className="create-navbar-logo"
+                        className="brawl-create-navbar-logo"
                         onClick={onBack}
                         title="Home"
                     >
@@ -401,16 +401,16 @@ function BrawlCreateRoom({
                         JOGOS
                     ================================================= */}
 
-                    <div className="create-games-navbar">
+                    <div className="brawl-create-games-navbar">
 
                         {navbarGames.map((item) => (
 
                             <div
                                 key={item.name}
                                 className={
-                                    `create-navbar-game ${
+                                    `brawl-create-navbar-game ${
                                         game === item.name
-                                            ? "create-navbar-active"
+                                            ? "brawl-create-navbar-active"
                                             : ""
                                     }`
                                 }
@@ -445,17 +445,17 @@ function BrawlCreateRoom({
                     CRIAÇÃO DA SALA
                 ================================================= */}
 
-                <main className="create-room-main">
+                <main className="brawl-create-room-main">
 
 
                     {/* =================================================
                         TOPO
                     ================================================= */}
 
-                    <div className="create-room-top">
+                    <div className="brawl-create-room-top">
 
                         <button
-                            className="back-button"
+                            className="brawl-back-button"
                             onClick={onBack}
                             type="button"
                         >
@@ -469,12 +469,12 @@ function BrawlCreateRoom({
                         LOGO DO JOGO
                     ================================================= */}
 
-                    <div className="create-game-header">
+                    <div className="brawl-create-game-header">
 
                         <img
                             src={brawlBigLogo}
                             alt="Brawlhalla"
-                            className="create-game-logo"
+                            className="brawl-create-game-logo"
                         />
 
                     </div>
@@ -484,9 +484,9 @@ function BrawlCreateRoom({
                         MODO DE JOGO
                     ================================================= */}
 
-                    <section className="create-section">
+                    <section className="brawl-create-section">
 
-                        <div className="section-title">
+                        <div className="brawl-section-title">
 
                             <span></span>
 
@@ -499,16 +499,16 @@ function BrawlCreateRoom({
                         </div>
 
 
-                        <div className="game-modes brawl-modes">
+                        <div className="brawl-game-modes brawl-modes">
 
                             {modes.map((mode) => (
 
                                 <button
                                     key={mode.name}
                                     className={
-                                        `mode-card ${
+                                        `brawl-mode-card ${
                                             selectedMode === mode.name
-                                                ? "selected"
+                                                ? "brawl-selected"
                                                 : ""
                                         }`
                                     }
@@ -520,7 +520,7 @@ function BrawlCreateRoom({
 
                                     <div
                                         className={
-                                            `mode-image brawl-mode-image ${mode.theme}`
+                                            `brawl-mode-image brawl-mode-icon-wrap ${mode.theme}`
                                         }
                                     >
 
@@ -528,12 +528,12 @@ function BrawlCreateRoom({
                                             {mode.icon}
                                         </div>
 
-                                        <div className="mode-image-overlay"></div>
+                                        <div className="brawl-mode-image-overlay"></div>
 
                                     </div>
 
 
-                                    <div className="mode-name">
+                                    <div className="brawl-mode-name">
                                         {mode.name}
                                     </div>
 
@@ -550,9 +550,9 @@ function BrawlCreateRoom({
                         ELO
                     ================================================= */}
 
-                    <section className="create-section">
+                    <section className="brawl-create-section">
 
-                        <div className="section-title">
+                        <div className="brawl-section-title">
 
                             <span></span>
 
@@ -567,9 +567,9 @@ function BrawlCreateRoom({
 
                         <div
                             className={
-                                `rank-selection ${
+                                `brawl-rank-selection ${
                                     !rankEnabled
-                                        ? "disabled"
+                                        ? "brawl-disabled"
                                         : ""
                                 }`
                             }
@@ -580,9 +580,9 @@ function BrawlCreateRoom({
                                 <button
                                     key={rank.name}
                                     className={
-                                        `rank-item ${
+                                        `brawl-rank-item ${
                                             selectedRank === rank.name
-                                                ? "selected"
+                                                ? "brawl-selected"
                                                 : ""
                                         }`
                                     }
@@ -598,12 +598,12 @@ function BrawlCreateRoom({
                                     type="button"
                                 >
 
-                                    <div className="rank-placeholder">
+                                    <div className="brawl-rank-placeholder">
 
                                         <img
                                             src={rank.image}
                                             alt={rank.name}
-                                            className="rank-icon"
+                                            className="brawl-rank-icon"
                                         />
 
                                     </div>
@@ -615,7 +615,7 @@ function BrawlCreateRoom({
 
                             {!rankEnabled && (
 
-                                <div className="rank-disabled-message">
+                                <div className="brawl-rank-disabled-message">
 
                                     ELO DISPONÍVEL APENAS PARA
                                     RANKED 1V1 E RANKED 2V2
@@ -633,9 +633,9 @@ function BrawlCreateRoom({
                         GÊNERO
                     ================================================= */}
 
-                    <section className="create-section">
+                    <section className="brawl-create-section">
 
-                        <div className="section-title">
+                        <div className="brawl-section-title">
 
                             <span></span>
 
@@ -648,14 +648,14 @@ function BrawlCreateRoom({
                         </div>
 
 
-                        <div className="gender-selection">
+                        <div className="brawl-gender-selection">
 
                             <button
                                 type="button"
                                 className={
-                                    `gender-button male ${
+                                    `brawl-gender-button ${
                                         selectedGender === "HOMEM"
-                                            ? "selected"
+                                            ? "brawl-selected"
                                             : ""
                                     }`
                                 }
@@ -672,9 +672,9 @@ function BrawlCreateRoom({
                             <button
                                 type="button"
                                 className={
-                                    `gender-button female ${
+                                    `brawl-gender-button ${
                                         selectedGender === "MULHER"
-                                            ? "selected"
+                                            ? "brawl-selected"
                                             : ""
                                     }`
                                 }
@@ -696,9 +696,9 @@ function BrawlCreateRoom({
                         DETALHES
                     ================================================= */}
 
-                    <section className="create-section">
+                    <section className="brawl-create-section">
 
-                        <div className="section-title">
+                        <div className="brawl-section-title">
 
                             <span></span>
 
@@ -711,9 +711,9 @@ function BrawlCreateRoom({
                         </div>
 
 
-                        <div className="room-details-form">
+                        <div className="brawl-room-details-form">
 
-                            <div className="detail-box">
+                            <div className="brawl-detail-box">
 
                                 <label>
                                     Nome da sala
@@ -727,7 +727,7 @@ function BrawlCreateRoom({
                             </div>
 
 
-                            <div className="detail-box">
+                            <div className="brawl-detail-box">
 
                                 <label>
                                     Descrição
@@ -748,10 +748,10 @@ function BrawlCreateRoom({
                         BOTÕES
                     ================================================= */}
 
-                    <div className="create-actions">
+                    <div className="brawl-create-actions">
 
                         <button
-                            className="create-button"
+                            className="brawl-create-button"
                             type="button"
                         >
                             CRIAR SALA
@@ -759,7 +759,7 @@ function BrawlCreateRoom({
 
 
                         <button
-                            className="cancel-button"
+                            className="brawl-cancel-button"
                             onClick={onBack}
                             type="button"
                         >

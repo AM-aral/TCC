@@ -121,7 +121,7 @@ function FortniteCreateRoom({
     const modes = [
         {
             name: "BATTLE ROYALE",
-            theme: "mode-br",
+            theme: "fort-mode-br",
             icon: (
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M24 4L40 11V22C40 32 33 39 24 44C15 39 8 32 8 22V11L24 4Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/>
@@ -131,7 +131,7 @@ function FortniteCreateRoom({
         },
         {
             name: "ZERO BUILD",
-            theme: "mode-zb",
+            theme: "fort-mode-zb",
             icon: (
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 24L24 10L40 24" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -142,7 +142,7 @@ function FortniteCreateRoom({
         },
         {
             name: "RANKED",
-            theme: "mode-ranked",
+            theme: "fort-mode-ranked",
             icon: (
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M14 8H34V20C34 28 30 33 24 35C18 33 14 28 14 20V8Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/>
@@ -154,7 +154,7 @@ function FortniteCreateRoom({
         },
         {
             name: "TEAM RUMBLE",
-            theme: "mode-rumble",
+            theme: "fort-mode-rumble",
             icon: (
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="16" cy="14" r="5" stroke="currentColor" strokeWidth="3"/>
@@ -166,7 +166,7 @@ function FortniteCreateRoom({
         },
         {
             name: "RELOAD",
-            theme: "mode-reload",
+            theme: "fort-mode-reload",
             icon: (
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M40 24C40 15.2 32.8 8 24 8C17 8 11 12.4 8.6 18.6" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
@@ -273,28 +273,28 @@ function FortniteCreateRoom({
     return (
 
         <div
-            className="create-room-page"
+            className="fort-create-room-page"
             style={{
                 backgroundImage: `url(${fortniteBackground})`
             }}
         >
 
-            <div className="create-room-overlay"></div>
+            <div className="fort-create-room-overlay"></div>
 
 
             {/* =================================================
                 SIDEBAR
             ================================================= */}
 
-            <aside className="create-sidebar">
+            <aside className="fort-create-sidebar">
 
-                <nav className="create-sidebar-menu">
+                <nav className="fort-create-sidebar-menu">
 
 
                     {/* HOME */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="fort-create-sidebar-item"
                         type="button"
                         onClick={onBack}
                         title="Home"
@@ -311,7 +311,7 @@ function FortniteCreateRoom({
                     {/* PERFIL */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="fort-create-sidebar-item"
                         type="button"
                         onClick={onProfile}
                         title="Perfil"
@@ -328,7 +328,7 @@ function FortniteCreateRoom({
                     {/* HISTÓRICO */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="fort-create-sidebar-item"
                         type="button"
                         onClick={onHistory}
                         title="Histórico"
@@ -345,13 +345,13 @@ function FortniteCreateRoom({
                     {/* FEEDBACKS */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="fort-create-sidebar-item"
                         type="button"
                         onClick={onFeedbacks}
                         title="Feedbacks"
                     >
 
-                        <span className="create-feedback-star">
+                        <span className="fort-create-feedback-star">
                             ★
                         </span>
 
@@ -361,7 +361,7 @@ function FortniteCreateRoom({
                     {/* CONFIGURAÇÕES */}
 
                     <button
-                        className="create-sidebar-item"
+                        className="fort-create-sidebar-item"
                         type="button"
                         onClick={onSettings}
                         title="Configurações"
@@ -383,20 +383,20 @@ function FortniteCreateRoom({
                 CONTEÚDO
             ================================================= */}
 
-            <div className="create-room-content">
+            <div className="fort-create-room-content">
 
 
                 {/* =================================================
                     NAVBAR
                 ================================================= */}
 
-                <header className="create-navbar">
+                <header className="fort-create-navbar">
 
 
                     {/* LOGO */}
 
                     <div
-                        className="create-navbar-logo"
+                        className="fort-create-navbar-logo"
                         onClick={onBack}
                         title="Home"
                     >
@@ -413,16 +413,16 @@ function FortniteCreateRoom({
                         JOGOS
                     ================================================= */}
 
-                    <div className="create-games-navbar">
+                    <div className="fort-create-games-navbar">
 
                         {navbarGames.map((item) => (
 
                             <div
                                 key={item.name}
                                 className={
-                                    `create-navbar-game ${
+                                    `fort-create-navbar-game ${
                                         game === item.name
-                                            ? "create-navbar-active"
+                                            ? "fort-create-navbar-active"
                                             : ""
                                     }`
                                 }
@@ -457,17 +457,17 @@ function FortniteCreateRoom({
                     CRIAÇÃO DA SALA
                 ================================================= */}
 
-                <main className="create-room-main">
+                <main className="fort-create-room-main">
 
 
                     {/* =================================================
                         TOPO
                     ================================================= */}
 
-                    <div className="create-room-top">
+                    <div className="fort-create-room-top">
 
                         <button
-                            className="back-button"
+                            className="fort-back-button"
                             onClick={onBack}
                             type="button"
                         >
@@ -481,12 +481,12 @@ function FortniteCreateRoom({
                         LOGO DO JOGO
                     ================================================= */}
 
-                    <div className="create-game-header">
+                    <div className="fort-create-game-header">
 
                         <img
                             src={fortniteBigLogo}
                             alt="Fortnite"
-                            className="create-game-logo"
+                            className="fort-create-game-logo"
                         />
 
                     </div>
@@ -496,9 +496,9 @@ function FortniteCreateRoom({
                         MODO DE JOGO
                     ================================================= */}
 
-                    <section className="create-section">
+                    <section className="fort-create-section">
 
-                        <div className="section-title">
+                        <div className="fort-section-title">
 
                             <span></span>
 
@@ -511,16 +511,16 @@ function FortniteCreateRoom({
                         </div>
 
 
-                        <div className="game-modes fortnite-modes">
+                        <div className="fort-game-modes fort-modes">
 
                             {modes.map((mode) => (
 
                                 <button
                                     key={mode.name}
                                     className={
-                                        `mode-card ${
+                                        `fort-mode-card ${
                                             selectedMode === mode.name
-                                                ? "selected"
+                                                ? "fort-selected"
                                                 : ""
                                         }`
                                     }
@@ -532,20 +532,20 @@ function FortniteCreateRoom({
 
                                     <div
                                         className={
-                                            `mode-image fortnite-mode-image ${mode.theme}`
+                                            `fort-mode-image fort-mode-icon-wrap ${mode.theme}`
                                         }
                                     >
 
-                                        <div className="fortnite-mode-icon">
+                                        <div className="fort-mode-icon">
                                             {mode.icon}
                                         </div>
 
-                                        <div className="mode-image-overlay"></div>
+                                        <div className="fort-mode-image-overlay"></div>
 
                                     </div>
 
 
-                                    <div className="mode-name">
+                                    <div className="fort-mode-name">
                                         {mode.name}
                                     </div>
 
@@ -562,9 +562,9 @@ function FortniteCreateRoom({
                         ELO
                     ================================================= */}
 
-                    <section className="create-section">
+                    <section className="fort-create-section">
 
-                        <div className="section-title">
+                        <div className="fort-section-title">
 
                             <span></span>
 
@@ -579,9 +579,9 @@ function FortniteCreateRoom({
 
                         <div
                             className={
-                                `rank-selection ${
+                                `fort-rank-selection ${
                                     !rankEnabled
-                                        ? "disabled"
+                                        ? "fort-disabled"
                                         : ""
                                 }`
                             }
@@ -592,9 +592,9 @@ function FortniteCreateRoom({
                                 <button
                                     key={rank.name}
                                     className={
-                                        `rank-item ${
+                                        `fort-rank-item ${
                                             selectedRank === rank.name
-                                                ? "selected"
+                                                ? "fort-selected"
                                                 : ""
                                         }`
                                     }
@@ -610,12 +610,12 @@ function FortniteCreateRoom({
                                     type="button"
                                 >
 
-                                    <div className="rank-placeholder">
+                                    <div className="fort-rank-placeholder">
 
                                         <img
                                             src={rank.image}
                                             alt={rank.name}
-                                            className="rank-icon"
+                                            className="fort-rank-icon"
                                         />
 
                                     </div>
@@ -627,7 +627,7 @@ function FortniteCreateRoom({
 
                             {!rankEnabled && (
 
-                                <div className="rank-disabled-message">
+                                <div className="fort-rank-disabled-message">
 
                                     ELO DISPONÍVEL APENAS PARA
                                     O MODO RANKED
@@ -645,9 +645,9 @@ function FortniteCreateRoom({
                         GÊNERO
                     ================================================= */}
 
-                    <section className="create-section">
+                    <section className="fort-create-section">
 
-                        <div className="section-title">
+                        <div className="fort-section-title">
 
                             <span></span>
 
@@ -660,14 +660,14 @@ function FortniteCreateRoom({
                         </div>
 
 
-                        <div className="gender-selection">
+                        <div className="fort-gender-selection">
 
                             <button
                                 type="button"
                                 className={
-                                    `gender-button male ${
+                                    `fort-gender-button ${
                                         selectedGender === "HOMEM"
-                                            ? "selected"
+                                            ? "fort-selected"
                                             : ""
                                     }`
                                 }
@@ -684,9 +684,9 @@ function FortniteCreateRoom({
                             <button
                                 type="button"
                                 className={
-                                    `gender-button female ${
+                                    `fort-gender-button ${
                                         selectedGender === "MULHER"
-                                            ? "selected"
+                                            ? "fort-selected"
                                             : ""
                                     }`
                                 }
@@ -708,9 +708,9 @@ function FortniteCreateRoom({
                         DETALHES
                     ================================================= */}
 
-                    <section className="create-section">
+                    <section className="fort-create-section">
 
-                        <div className="section-title">
+                        <div className="fort-section-title">
 
                             <span></span>
 
@@ -723,9 +723,9 @@ function FortniteCreateRoom({
                         </div>
 
 
-                        <div className="room-details-form">
+                        <div className="fort-room-details-form">
 
-                            <div className="detail-box">
+                            <div className="fort-detail-box">
 
                                 <label>
                                     Nome da sala
@@ -739,7 +739,7 @@ function FortniteCreateRoom({
                             </div>
 
 
-                            <div className="detail-box">
+                            <div className="fort-detail-box">
 
                                 <label>
                                     Descrição
@@ -760,10 +760,10 @@ function FortniteCreateRoom({
                         BOTÕES
                     ================================================= */}
 
-                    <div className="create-actions">
+                    <div className="fort-create-actions">
 
                         <button
-                            className="create-button"
+                            className="fort-create-button"
                             type="button"
                         >
                             CRIAR SALA
@@ -771,7 +771,7 @@ function FortniteCreateRoom({
 
 
                         <button
-                            className="cancel-button"
+                            className="fort-cancel-button"
                             onClick={onBack}
                             type="button"
                         >
@@ -789,4 +789,4 @@ function FortniteCreateRoom({
 }
 
 
-export default FortCreateRoom;
+export default FortniteCreateRoom;

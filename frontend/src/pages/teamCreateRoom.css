@@ -1,0 +1,288 @@
+/* =========================================================
+   TEAM FORTRESS 2 CREATE ROOM
+   Reaproveita 100% do CSS base já usado no Brawlhalla/Valorant
+   (create-room-page, sidebar, navbar, botões, form, etc.)
+   e só adiciona o que é específico do TF2.
+========================================================= */
+
+@import "./brawlCreateRoom.css";
+
+
+/* =========================================================
+   MODOS DO TF2
+   (4 modos: Casual, Competitivo, Highlander e MvM)
+========================================================= */
+
+.game-modes.team-modes {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+
+/* =========================================================
+   CARDS DE MODO DO TF2 — COR + ÍCONE SVG
+   (mesmo padrão visual usado no Brawlhalla)
+========================================================= */
+
+.team-mode-image {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+
+.team-mode-icon {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  filter:
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.55));
+
+  transition: transform 0.25s ease;
+
+  z-index: 1;
+}
+
+
+.team-mode-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+
+.mode-card:hover .team-mode-icon {
+  transform: scale(1.12);
+}
+
+
+/* =========================================================
+   CORES POR MODO
+========================================================= */
+
+/* CASUAL — laranja (cor de marca do TF2/RED) */
+
+.mode-casual {
+  background-color: #3a2408;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(230, 140, 60, 0.35),
+      rgba(58, 36, 8, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.mode-casual .team-mode-icon {
+  color: #ffb066;
+}
+
+
+/* COMPETITIVO — dourado */
+
+.mode-comp {
+  background-color: #3a2a08;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(255, 190, 60, 0.35),
+      rgba(58, 42, 8, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.mode-comp .team-mode-icon {
+  color: #ffd97a;
+}
+
+
+/* HIGHLANDER — vermelho (time RED) */
+
+.mode-highlander {
+  background-color: #3a1010;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(230, 60, 60, 0.35),
+      rgba(58, 16, 16, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.mode-highlander .team-mode-icon {
+  color: #ff8a8a;
+}
+
+
+/* MANN VS MACHINE — azul-acinzentado (robôs) */
+
+.mode-mvm {
+  background-color: #0e1e2a;
+
+  background-image:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(90, 160, 200, 0.32),
+      rgba(14, 30, 42, 0.2) 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.mode-mvm .team-mode-icon {
+  color: #9adcff;
+}
+
+
+/* selecionado: reforça o glow da cor do próprio modo */
+
+.mode-card.selected .mode-casual {
+  box-shadow: inset 0 0 25px rgba(230, 150, 70, 0.35);
+}
+
+.mode-card.selected .mode-comp {
+  box-shadow: inset 0 0 25px rgba(255, 200, 80, 0.35);
+}
+
+.mode-card.selected .mode-highlander {
+  box-shadow: inset 0 0 25px rgba(255, 90, 90, 0.35);
+}
+
+.mode-card.selected .mode-mvm {
+  box-shadow: inset 0 0 25px rgba(100, 180, 220, 0.35);
+}
+
+
+/* =========================================================
+   ELO DO TF2
+   18 medalhas — precisa de ícones bem menores e
+   quebra de linha (flex-wrap) pra não virar uma
+   fileira gigante.
+========================================================= */
+
+.team-rank-selection {
+  flex-wrap: wrap;
+
+  gap: 18px 22px;
+
+  padding: 18px 24px;
+}
+
+
+.team-rank-item {
+  width: 54px;
+  height: 46px;
+}
+
+
+.team-rank-item .rank-placeholder {
+  width: 46px;
+  height: 36px;
+}
+
+
+.team-rank-item .rank-icon {
+  width: 50px;
+  height: 50px;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .game-modes.team-modes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 900px) {
+
+  .game-modes.team-modes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .team-rank-selection {
+    gap: 14px 16px;
+
+    padding: 14px;
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .game-modes.team-modes {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+  }
+
+  .team-mode-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .team-rank-item {
+    width: 44px;
+    height: 38px;
+  }
+
+  .team-rank-item .rank-placeholder {
+    width: 38px;
+    height: 30px;
+  }
+
+  .team-rank-item .rank-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
