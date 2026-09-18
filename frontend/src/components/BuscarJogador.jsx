@@ -56,12 +56,6 @@ export default function BuscarJogador({
     const texto = termo.trim();
 
     if (texto.length < 2) {
-      setResultados([]);
-
-      setAberto(false);
-
-      setErro("");
-
       return undefined;
     }
 
@@ -142,9 +136,17 @@ export default function BuscarJogador({
           value={termo}
           placeholder={placeholder}
           onChange={(evento) => {
-            setTermo(evento.target.value);
+            const valor = evento.target.value;
+
+            setTermo(valor);
 
             setErro("");
+
+            if (valor.trim().length < 2) {
+              setResultados([]);
+
+              setAberto(false);
+            }
           }}
           onFocus={() => {
             if (resultados.length > 0) {

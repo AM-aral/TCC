@@ -83,9 +83,29 @@ const criar = async (req, res) => {
 
 const listar = async (req, res) => {
     try {
-        const { jogo } = req.query;
+        const { jogo, q, status } = req.query;
 
-        const filtro = jogo ? { jogo } : {};
+        const filtro = {};
+
+        if (jogo) {
+            filtro.jogo = jogo;
+        }
+
+        if (status) {
+            filtro.status = status;
+        }
+
+        if (q && q.trim()) {
+            const termo = q.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+            const regex = new RegExp(termo, "i");
+
+            filtro.$or = [
+                { nome: regex },
+                { descricao: regex },
+                { jogo: regex }
+            ];
+        }
 
         const salas = await Room.find(filtro)
             .populate("criador", "nome foto")

@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import { apiFetch } from "../api";
+
 import "./RoomCard.css";
 
 
@@ -36,6 +40,7 @@ function RoomCard({
   currentUserId,
   onJoin,
   onLeave,
+  onAfterDelete,
   processando
 }) {
   const jogadores = room.jogadores || [];
@@ -44,10 +49,60 @@ function RoomCard({
     (jogador) => (jogador._id || jogador) === currentUserId
   );
 
+  const criadorId = room.criador?._id || room.criador;
+
+  const souCriador = String(criadorId) === String(currentUserId);
+
   const cheia = jogadores.length >= room.maxJogadores;
+
+  const [apagando, setApagando] = useState(false);
+
+  const excluirSala = async () => {
+    if (apagando) {
+      return;
+    }
+
+    const confirmou = window.confirm(
+      `Apagar a sala "${room.nome}"?`
+    );
+
+    if (!confirmou) {
+      return;
+    }
+
+    setApagando(true);
+
+    try {
+      await apiFetch(`/rooms/${room._id}`, {
+        method: "DELETE"
+      });
+
+      if (typeof onAfterDelete === "function") {
+        onAfterDelete(room);
+      }
+    } catch (e) {
+      window.alert(e.message || "Não foi possível apagar a sala.");
+    } finally {
+      setApagando(false);
+    }
+  };
 
   return (
     <div className="room-card">
+
+      {souCriador && (
+
+        <button
+          className="room-delete-button"
+          type="button"
+          title="Apagar sala"
+          disabled={apagando}
+          onClick={excluirSala}
+        >
+          {apagando ? "..." : "🗑"}
+        </button>
+
+      )}
 
       <div className="room-profile">
 

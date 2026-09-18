@@ -103,6 +103,7 @@ export default function Profile({
   onFeedbacks,
   onSettings,
   onGameSelect,
+  onBuscar
 }) {
   const [perfil, setPerfil] = useState(() => getUsuario());
 
@@ -379,6 +380,20 @@ export default function Profile({
               src={homeIcon}
               alt="Home"
             />
+
+          </button>
+
+          {/* BUSCAR */}
+          <button
+            className="profile-sidebar-item"
+            type="button"
+            onClick={onBuscar}
+            title="Buscar"
+          >
+
+            <span className="profile-buscar-icone">
+              ⌕
+            </span>
 
           </button>
 

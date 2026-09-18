@@ -6,7 +6,28 @@ export function normalizar(valor) {
     .trim();
 }
 
-export function salaPassaFiltros(sala, filtros) {
+export function salaPassaFiltros(sala, filtros, busca = "") {
+  const termo = normalizar(busca);
+
+  if (termo) {
+    const alvo = normalizar(
+      [
+        sala.nome,
+        sala.descricao,
+        sala.modalidade,
+        sala.genero,
+        sala.modo,
+        sala.elo,
+        sala.jogo,
+        typeof sala.criador === "object" ? sala.criador?.nome : ""
+      ].join(" ")
+    );
+
+    if (!alvo.includes(termo)) {
+      return false;
+    }
+  }
+
   if (filtros.genero) {
     const genero = normalizar(sala.genero);
 

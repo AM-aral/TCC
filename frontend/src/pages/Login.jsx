@@ -12,6 +12,8 @@ import emailIcon from "../assets/email.png";
 import userIcon from "../assets/user.png";
 import lockIcon from "../assets/lock.png";
 
+import { salvarContaAtual } from "../api";
+
 
 const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -103,6 +105,9 @@ function Login({ onLogin }) {
         "usuario",
         JSON.stringify(dados.usuario)
       );
+
+      // Guarda a conta na lista de contas salvas (troca de conta)
+      salvarContaAtual();
 
 
       setMensagem(

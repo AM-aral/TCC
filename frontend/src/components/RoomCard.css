@@ -30,3 +30,53 @@
 
   font-size: 14px;
 }
+
+
+/* =====================================================
+   APAGAR SALA (SÓ O CRIADOR VÊ)
+   ===================================================== */
+
+.room-delete-button {
+  position: absolute;
+
+  top: 12px;
+  right: 14px;
+
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid rgba(255, 120, 120, 0.45);
+
+  border-radius: 50%;
+
+  background: rgba(160, 20, 20, 0.35);
+
+  color: white;
+
+  font-size: 15px;
+
+  line-height: 1;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.room-delete-button:hover:not(:disabled) {
+  background: rgba(200, 30, 30, 0.55);
+
+  transform: scale(1.08);
+}
+
+.room-delete-button:disabled {
+  opacity: 0.6;
+
+  cursor: wait;
+}

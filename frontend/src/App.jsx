@@ -1,9 +1,11 @@
 import { useState } from "react";
 
-import { getUsuario } from "./api";
+import { getToken, trocarConta as trocarContaSalva } from "./api";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Buscar from "./pages/Buscar";
+import PublicProfile from "./pages/PublicProfile";
 
 // =====================================================
 // ROOMS
@@ -96,9 +98,17 @@ function App() {
     // ESTADOS
     // =====================================================
 
-    const [pagina, setPagina] = useState("login");
+    const [pagina, setPagina] = useState(
+        getToken() ? "home" : "login"
+    );
 
     const [jogoSelecionado, setJogoSelecionado] = useState(null);
+
+    // Visita ao perfil público de outro jogador
+    const [perfilVisita, setPerfilVisita] = useState(null);
+
+    // Termo inicial passado para a página Buscar
+    const [termoBusca, setTermoBusca] = useState("");
 
 
     // =====================================================
@@ -193,6 +203,81 @@ function App() {
     };
 
 
+    const irParaBuscar = (termo = "") => {
+
+        setTermoBusca(
+            typeof termo === "string" ? termo : ""
+        );
+
+        setPagina("buscar");
+
+    };
+
+
+    // =====================================================
+    // PERFIL PÚBLICO
+    // Abre o perfil de outro jogador. Se já estávamos vendo
+    // um perfil, guarda o anterior para o "Voltar" funcionar.
+    // =====================================================
+
+    const abrirPerfil = (id) => {
+
+        setPerfilVisita((atual) => ({
+
+            id,
+
+            anteriorId: atual?.id || null,
+
+            origem: atual?.origem || pagina
+
+        }));
+
+        setPagina("public-profile");
+
+    };
+
+
+    const voltarDoPerfil = () => {
+
+        if (perfilVisita?.anteriorId) {
+
+            setPerfilVisita({
+                id: perfilVisita.anteriorId,
+                anteriorId: null,
+                origem: perfilVisita.origem
+            });
+
+            return;
+        }
+
+        const origem = perfilVisita?.origem || "home";
+
+        setPerfilVisita(null);
+
+        setPagina(origem);
+
+    };
+
+
+    // =====================================================
+    // TROCA DE CONTA
+    // =====================================================
+
+    const trocarConta = (contaId) => {
+
+        if (trocarContaSalva(contaId)) {
+
+            setPerfilVisita(null);
+
+            setJogoSelecionado(null);
+
+            setPagina("home");
+
+        }
+
+    };
+
+
     // =====================================================
     // LOGIN
     // =====================================================
@@ -226,6 +311,78 @@ function App() {
                 onFeedbacks={irParaFeedbacks}
 
                 onSettings={irParaConfiguracoes}
+
+                onBuscar={irParaBuscar}
+
+            />
+        );
+
+    }
+
+
+    // =====================================================
+    // BUSCAR
+    // =====================================================
+
+    if (pagina === "buscar") {
+
+        return (
+            <Buscar
+
+                termoInicial={termoBusca}
+
+                onHome={irParaHome}
+
+                onProfile={irParaPerfil}
+
+                onHistory={irParaHistorico}
+
+                onFeedbacks={irParaFeedbacks}
+
+                onSettings={irParaConfiguracoes}
+
+                onSelectGame={selecionarJogo}
+
+                onVerPerfil={abrirPerfil}
+
+                onVerSala={(sala) =>
+                    selecionarJogo(sala.jogo)
+                }
+
+            />
+        );
+
+    }
+
+
+    // =====================================================
+    // PERFIL PÚBLICO
+    // =====================================================
+
+    if (pagina === "public-profile") {
+
+        return (
+            <PublicProfile
+
+                perfilId={perfilVisita?.id}
+
+                onHome={irParaHome}
+
+                onProfile={irParaPerfil}
+
+                onHistory={irParaHistorico}
+
+                onFeedbacks={irParaFeedbacks}
+
+                onSettings={irParaConfiguracoes}
+
+                onBuscar={irParaBuscar}
+
+                onGameSelect={selecionarJogo}
+
+                onVerPerfil={abrirPerfil}
+
+                onVoltar={voltarDoPerfil}
 
             />
         );
@@ -341,6 +498,8 @@ function App() {
 
                 onGameSelect={selecionarJogo}
 
+                onBuscar={irParaBuscar}
+
             />
         );
 
@@ -368,6 +527,8 @@ function App() {
 
                 onGameSelect={selecionarJogo}
 
+                onBuscar={irParaBuscar}
+
             />
         );
 
@@ -394,6 +555,8 @@ function App() {
                 onSettings={irParaConfiguracoes}
 
                 onSelectGame={selecionarJogo}
+
+                onBuscar={irParaBuscar}
 
             />
         );
@@ -423,6 +586,10 @@ function App() {
                 onSelectGame={selecionarJogo}
 
                 onLogout={sairDaConta}
+
+                onBuscar={irParaBuscar}
+
+                onTrocarConta={trocarConta}
 
             />
         );

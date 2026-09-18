@@ -1455,6 +1455,29 @@
 }
 
 /* =====================================================
+   ÍCONE DE BUSCAR
+===================================================== */
+
+.profile-buscar-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  color: #ffffff;
+
+  font-size: 25px;
+  line-height: 1;
+
+  font-weight: 400;
+
+  text-shadow:
+    0 0 8px rgba(209, 140, 255, 0.25);
+}
+
+/* =====================================================
    ÍCONE DE FEEDBACK
 ===================================================== */
 
@@ -2065,4 +2088,351 @@ select.edit-input option {
   .edit-linha-botoes {
     flex-wrap: wrap;
   }
+}
+
+
+/* =====================================================
+   PERFIL PUBLICO - TOOLBAR / VOLTAR
+   ===================================================== */
+
+.pp-toolbar {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: flex-start;
+}
+
+.pp-voltar {
+  padding: 10px 22px;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  color: rgba(255, 255, 255, 0.8);
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.pp-voltar:hover {
+  background: rgba(255, 255, 255, 0.12);
+
+  color: white;
+}
+
+
+/* =====================================================
+   PERFIL PUBLICO - ESTADO (CARREGANDO / ERRO)
+   ===================================================== */
+
+.pp-estado {
+  width: 100%;
+
+  padding: 40px 25px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(42, 5, 70, 0.96),
+      rgba(30, 0, 52, 0.98)
+    );
+
+  border: 1px solid rgba(201, 147, 255, 0.13);
+
+  text-align: center;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+.pp-estado p {
+  color: rgba(255, 255, 255, 0.7);
+
+  font-size: 16px;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   PERFIL PUBLICO - ESTRELAS
+   ===================================================== */
+
+.pp-stars {
+  display: flex;
+
+  gap: 2px;
+}
+
+.pp-star {
+  color: rgba(255, 255, 255, 0.2);
+
+  font-size: 16px;
+}
+
+.pp-star.active {
+  color: #ffc107;
+}
+
+
+/* =====================================================
+   PERFIL PUBLICO - AVALIACAO CARD
+   ===================================================== */
+
+.pp-avaliacao {
+  width: 100%;
+
+  padding: 28px 32px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(42, 5, 70, 0.96),
+      rgba(30, 0, 52, 0.98)
+    );
+
+  border: 1px solid rgba(201, 147, 255, 0.13);
+
+  box-shadow: 0 13px 32px rgba(0, 0, 0, 0.20);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 40px;
+}
+
+.pp-avaliacao-numero {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 4px;
+
+  min-width: 120px;
+}
+
+.pp-avaliacao-numero strong {
+  font-size: 48px;
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  color: white;
+}
+
+.pp-avaliacao-numero span {
+  color: rgba(255, 255, 255, 0.5);
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   PERFIL PUBLICO - BARRAS DE DISTRIBUICAO
+   ===================================================== */
+
+.pp-barras {
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.pp-barra {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.pp-barra span {
+  width: 36px;
+
+  text-align: right;
+
+  color: rgba(255, 255, 255, 0.6);
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.pp-barra small {
+  width: 20px;
+
+  text-align: left;
+
+  color: rgba(255, 255, 255, 0.4);
+
+  font-size: 12px;
+}
+
+.pp-barra-trilha {
+  flex: 1;
+
+  height: 8px;
+
+  border-radius: 4px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  overflow: hidden;
+}
+
+.pp-barra-preenchida {
+  height: 100%;
+
+  border-radius: 4px;
+
+  background: linear-gradient(90deg, #a83cff, #6411c5);
+
+  transition: width 0.3s ease;
+}
+
+
+/* =====================================================
+   PERFIL PUBLICO - FEEDBACKS LISTA
+   ===================================================== */
+
+.pp-feedbacks {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.pp-feedback {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 14px;
+
+  padding: 16px 20px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pp-feedback-avatar {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: rgba(168, 60, 255, 0.25);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+.pp-feedback-avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.pp-feedback-conteudo {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.pp-feedback-topo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+}
+
+.pp-feedback-nome {
+  border: 0;
+
+  background: transparent;
+
+  color: #d9b3ff;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  padding: 0;
+
+  cursor: pointer;
+
+  text-decoration: underline;
+}
+
+.pp-feedback-nome:hover {
+  color: white;
+}
+
+.pp-feedback-data {
+  color: rgba(255, 255, 255, 0.35);
+
+  font-size: 12px;
+}
+
+.pp-feedback-conteudo > p {
+  color: rgba(255, 255, 255, 0.75);
+
+  font-size: 14px;
+
+  line-height: 1.5;
 }

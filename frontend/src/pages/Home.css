@@ -31,6 +31,86 @@
   font-size: 20px;
 }
 
+/* BUSCA DA HOME */
+
+.home-buscar {
+  width: 100%;
+  max-width: 520px;
+
+  margin: 26px auto 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 8px 10px 8px 16px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  backdrop-filter: blur(4px);
+}
+
+.home-buscar-lupa {
+  font-size: 20px;
+  color: #d9a8ff;
+
+  border: none;
+  background: transparent;
+
+  padding: 0;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.home-buscar-lupa:hover {
+  color: #ffffff;
+}
+
+.home-buscar input {
+  flex: 1;
+  min-width: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: white;
+  font-size: 15px;
+}
+
+.home-buscar input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.home-buscar button {
+  border: none;
+
+  padding: 9px 18px;
+
+  border-radius: 9px;
+
+  background: #9b5cd9;
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.home-buscar button:hover {
+  background: #7b3fa3;
+}
+
 /* JOGOS */
 
 .games-section {

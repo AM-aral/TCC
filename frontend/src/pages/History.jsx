@@ -79,7 +79,8 @@ function History({
   onHistory,
   onFeedbacks,
   onSettings,
-  onGameSelect
+  onGameSelect,
+  onBuscar
 }) {
 
   // =====================================================
@@ -314,6 +315,21 @@ function History({
               src={homeIcon}
               alt="Home"
             />
+          </button>
+
+          {/* BUSCAR */}
+
+          <button
+            className="history-sidebar-item"
+            type="button"
+            onClick={onBuscar}
+            title="Buscar"
+          >
+
+            <span className="history-buscar-icone">
+              ⌕
+            </span>
+
           </button>
 
           {/* PERFIL */}

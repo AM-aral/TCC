@@ -1,0 +1,771 @@
+/* =========================================================
+   PÁGINA
+========================================================= */
+
+.buscar-page {
+  width: 100%;
+  min-height: 100vh;
+
+  background-size: cover;
+  background-position: center;
+
+  background-color: #150b20;
+
+  color: #24152d;
+}
+
+.buscar-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(20, 8, 32, 0.55);
+
+  z-index: 1;
+}
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.buscar-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 76px;
+  right: 0;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+
+  background: linear-gradient(
+    90deg,
+    #69379a,
+    #63318f
+  );
+
+  z-index: 90;
+}
+
+.buscar-navbar-logo {
+  width: 115px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.buscar-navbar-logo img {
+  width: 70px;
+  height: auto;
+
+  object-fit: contain;
+}
+
+.buscar-games-navbar {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 0 18px;
+
+  overflow-x: auto;
+}
+
+.buscar-navbar-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+
+  height: 60px;
+
+  padding: 0 10px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.buscar-navbar-game:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.buscar-navbar-game img {
+  width: 26px;
+  height: 26px;
+
+  object-fit: contain;
+}
+
+.buscar-navbar-game span {
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  color: rgba(255, 255, 255, 0.85);
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.buscar-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  width: 76px;
+  height: 100vh;
+
+  background: rgba(20, 4, 40, 0.98);
+
+  z-index: 100;
+}
+
+.buscar-sidebar-menu {
+  margin-top: 92px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 18px;
+}
+
+.buscar-sidebar-item {
+  width: 52px;
+  height: 52px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.buscar-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.05);
+}
+
+.buscar-sidebar-item img {
+  width: 27px;
+  height: 27px;
+
+  object-fit: contain;
+}
+
+.buscar-sidebar-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  color: #ffffff;
+
+  font-size: 25px;
+  line-height: 1;
+
+  text-shadow:
+    0 0 8px rgba(209, 140, 255, 0.25);
+}
+
+.buscar-sidebar-active {
+  background: rgba(184, 108, 255, 0.25);
+
+  box-shadow:
+    inset 3px 0 0 #b86cff;
+}
+
+/* =========================================================
+   CONTEÚDO
+========================================================= */
+
+.buscar-main {
+  position: relative;
+
+  z-index: 2;
+
+  margin-left: 76px;
+
+  min-height: 100vh;
+
+  padding:
+    110px
+    5vw
+    60px;
+}
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+.buscar-kicker {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  color: #d9a8ff;
+}
+
+.buscar-header h1 {
+  margin: 0 0 8px;
+
+  font-size: 34px;
+  font-weight: 700;
+
+  color: #ffffff;
+}
+
+.buscar-header p {
+  margin: 0;
+
+  font-size: 16px;
+
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* =========================================================
+   CAMPO DE BUSCA
+========================================================= */
+
+.buscar-campo {
+  width: 100%;
+  max-width: 850px;
+
+  margin-top: 26px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 8px 18px;
+
+  border-radius: 14px;
+
+  background: white;
+
+  border: 1px solid #e7dced;
+
+  box-shadow:
+    0 8px 25px rgba(20, 8, 32, 0.3);
+}
+
+.buscar-campo-lupa {
+  font-size: 22px;
+
+  color: #7b3fa3;
+}
+
+.buscar-campo input {
+  flex: 1;
+
+  border: none;
+  outline: none;
+
+  font-size: 16px;
+
+  color: #24152d;
+
+  background: transparent;
+}
+
+.buscar-campo input::placeholder {
+  color: #a894b0;
+}
+
+.buscar-campo-status {
+  font-size: 12px;
+
+  color: #806d88;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   ABAS
+========================================================= */
+
+.buscar-tabs {
+  max-width: 850px;
+
+  margin-top: 24px;
+
+  display: flex;
+
+  gap: 12px;
+}
+
+.buscar-tab {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 11px 20px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.9);
+
+  color: #24152d;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.buscar-tab:hover {
+  transform: translateY(-1px);
+}
+
+.buscar-tab.active {
+  background: #7b3fa3;
+
+  color: white;
+}
+
+.buscar-tab-icone {
+  font-size: 16px;
+}
+
+/* =========================================================
+   ESTADO (vazio / erro)
+========================================================= */
+
+.buscar-estado {
+  max-width: 850px;
+
+  margin-top: 24px;
+
+  padding: 34px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.9);
+
+  border: 1px dashed #d5c3de;
+
+  text-align: center;
+}
+
+.buscar-estado-icone {
+  font-size: 30px;
+
+  line-height: 1;
+}
+
+.buscar-estado p {
+  margin: 0;
+
+  font-size: 15px;
+
+  color: #6c586e;
+}
+
+/* =========================================================
+   RESULTADOS
+========================================================= */
+
+.buscar-resultados-jogadores,
+.buscar-resultados-salas {
+  max-width: 850px;
+
+  margin-top: 24px;
+}
+
+.buscar-lista-titulo {
+  display: flex;
+  align-items: baseline;
+
+  gap: 12px;
+
+  margin-bottom: 14px;
+}
+
+.buscar-lista-titulo h2 {
+  margin: 0;
+
+  font-size: 20px;
+
+  color: #ffffff;
+}
+
+.buscar-lista-titulo span {
+  font-size: 13px;
+
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* =========================================================
+   RESULTADO: JOGADORES
+========================================================= */
+
+.buscar-jogadores-grid {
+  display: grid;
+
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  );
+
+  gap: 14px;
+}
+
+.buscar-jogador-card {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 16px 18px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: white;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  box-shadow:
+    0 8px 25px rgba(20, 8, 32, 0.2);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.buscar-jogador-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 30px rgba(20, 8, 32, 0.35);
+}
+
+.buscar-avatar {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    #7b3fa3,
+    #a95ad1
+  );
+
+  color: white;
+
+  font-size: 19px;
+  font-weight: 700;
+
+  overflow: hidden;
+}
+
+.buscar-avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.buscar-jogador-info {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.buscar-jogador-info strong {
+  font-size: 15px;
+
+  color: #321442;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.buscar-jogador-info span {
+  font-size: 13px;
+
+  color: #806d88;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.buscar-jogador-seta {
+  font-size: 18px;
+
+  color: #a894b0;
+
+  transition: transform 0.2s ease;
+}
+
+.buscar-jogador-card:hover .buscar-jogador-seta {
+  transform: translateX(3px);
+}
+
+/* =========================================================
+   RESULTADO: SALAS
+========================================================= */
+
+.buscar-salas-grid {
+  display: grid;
+
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(320px, 1fr)
+  );
+
+  gap: 18px;
+}
+
+.buscar-sala-card {
+  border: none;
+
+  padding: 0;
+
+  border-radius: 16px;
+
+  background: white;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  box-shadow:
+    0 8px 25px rgba(20, 8, 32, 0.2);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.buscar-sala-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 30px rgba(20, 8, 32, 0.35);
+}
+
+.buscar-sala-capa {
+  position: relative;
+
+  height: 120px;
+
+  background-size: cover;
+  background-position: center;
+
+  padding: 14px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+
+  gap: 4px;
+}
+
+.buscar-sala-capa-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to top,
+    rgba(20, 8, 32, 0.85),
+    rgba(20, 8, 32, 0.15)
+  );
+}
+
+.buscar-sala-capa span,
+.buscar-sala-capa h3 {
+  position: relative;
+
+  z-index: 2;
+
+  color: white;
+}
+
+.buscar-sala-jogo {
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+
+  color: #d9a8ff;
+}
+
+.buscar-sala-capa h3 {
+  margin: 0;
+
+  font-size: 20px;
+}
+
+.buscar-sala-info {
+  padding: 14px 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.buscar-sala-tags {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.buscar-sala-tag {
+  padding: 5px 10px;
+
+  border-radius: 8px;
+
+  background: #f3eaf8;
+
+  color: #5d4a66;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.buscar-sala-tag.errada {
+  background: #ffe0e0;
+  color: #a33;
+}
+
+.buscar-sala-tag.aberta {
+  background: #dff3e6;
+  color: #1e7a3c;
+}
+
+.buscar-sala-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  font-size: 12px;
+
+  color: #806d88;
+}
+
+.buscar-sala-seta {
+  font-weight: 700;
+
+  color: #7b3fa3;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .buscar-games-navbar {
+    display: none;
+  }
+
+  .buscar-navbar-logo {
+    width: 100%;
+
+    border-right: none;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .buscar-main {
+    padding:
+      100px
+      25px
+      50px;
+  }
+
+  .buscar-header h1 {
+    font-size: 28px;
+  }
+
+  .buscar-tabs {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .buscar-tab {
+    justify-content: center;
+  }
+
+}

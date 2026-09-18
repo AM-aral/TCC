@@ -144,7 +144,8 @@ export default function Feedbacks({
   onHistory,
   onFeedbacks,
   onSettings,
-  onSelectGame
+  onSelectGame,
+  onBuscar
 }) {
 
   // ======================================================
@@ -549,6 +550,22 @@ export default function Feedbacks({
               src={homeIcon}
               alt="Home"
             />
+
+          </button>
+
+
+          {/* BUSCAR */}
+
+          <button
+            className="feedbacks-sidebar-item"
+            onClick={onBuscar}
+            title="Buscar"
+            type="button"
+          >
+
+            <span className="feedbacks-buscar-icone">
+              ⌕
+            </span>
 
           </button>
 

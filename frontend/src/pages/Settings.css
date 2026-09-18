@@ -326,6 +326,218 @@
 
 
 /* =========================================================
+   ÍCONE BUSCAR NA SIDEBAR
+========================================================= */
+
+.settings-buscar-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  color: #ffffff;
+  font-size: 25px;
+  line-height: 1;
+
+  text-shadow:
+    0 0 8px rgba(209, 140, 255, 0.25);
+}
+
+
+/* =========================================================
+   CARD: CONTA ATUAL
+========================================================= */
+
+.settings-card-conta {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.settings-conta-acoes {
+  margin-top: 14px;
+}
+
+.settings-conta-badge {
+  display: inline-block;
+
+  padding: 6px 14px;
+
+  border-radius: 10px;
+
+  background: #f0e4f7;
+  color: #7b3fa3;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CONTAS SALVAS
+========================================================= */
+
+.settings-contas {
+  max-width: 850px;
+
+  margin-bottom: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.settings-conta-item {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 18px 24px;
+
+  border-radius: 16px;
+
+  background: white;
+  border: 1px solid #e7dced;
+
+  box-shadow:
+    0 8px 25px rgba(50, 20, 66, 0.08);
+}
+
+.settings-conta-item.atual {
+  border-color: #7b3fa3;
+
+  background: linear-gradient(
+    135deg,
+    rgba(123, 63, 163, 0.04),
+    rgba(184, 108, 255, 0.06)
+  );
+}
+
+.settings-conta-avatar {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    #7b3fa3,
+    #a95ad1
+  );
+
+  color: white;
+
+  font-size: 19px;
+  font-weight: 700;
+
+  overflow: hidden;
+}
+
+.settings-conta-avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.settings-conta-dados {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.settings-conta-dados strong {
+  font-size: 16px;
+
+  color: #321442;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.settings-conta-dados span {
+  font-size: 13px;
+
+  color: #806d88;
+}
+
+.settings-conta-acoes {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.settings-conta-entrar {
+  padding: 10px 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #7b3fa3;
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.settings-conta-entrar:hover {
+  background: #642f87;
+
+  transform: translateY(-1px);
+}
+
+.settings-conta-remover {
+  width: 34px;
+  height: 34px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #a894b0;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.settings-conta-remover:hover {
+  background: rgba(200, 40, 40, 0.08);
+  color: #b33;
+}
+
+/* =========================================================
    RESPONSIVO
 ========================================================= */
 

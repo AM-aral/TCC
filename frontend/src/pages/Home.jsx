@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import "./Home.css";
 
 import logo from "../assets/logo.png";
@@ -38,7 +40,17 @@ import tf2Logo from "../assets/games-icon/TF2.png";
 import valorantLogo from "../assets/games-icon/valorant icon.png";
 import warzoneLogo from "../assets/games-icon/warzone icon.png";
 
-function Home({ onSelectGame }) {
+function Home({ onSelectGame, onBuscar }) {
+
+  const [busca, setBusca] = useState("");
+
+  const buscar = (e) => {
+    e.preventDefault();
+
+    if (typeof onBuscar === "function") {
+      onBuscar(busca);
+    }
+  };
 
   // =====================================================
   // IMPORTANTE: o "name" de cada jogo abaixo tem que ser
@@ -179,6 +191,36 @@ function Home({ onSelectGame }) {
         </h1>
 
       </header>
+
+      <form
+        className="home-buscar"
+        onSubmit={buscar}
+      >
+
+        <button
+          type="submit"
+          className="home-buscar-lupa"
+          aria-label="Buscar"
+        >
+          ⌕
+        </button>
+
+        <input
+          type="text"
+          placeholder="Buscar perfis e salas..."
+          value={busca}
+          onChange={(evento) =>
+            setBusca(evento.target.value)
+          }
+        />
+
+        <button
+          type="submit"
+        >
+          Buscar
+        </button>
+
+      </form>
 
       <section className="games-section">
 

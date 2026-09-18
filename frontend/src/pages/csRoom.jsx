@@ -61,6 +61,8 @@ function CSRoom({
 
   const [menuAberto, setMenuAberto] = useState(null);
 
+  const [busca, setBusca] = useState("");
+
   const [filtros, setFiltros] = useState({
     genero: "",
     jogadores: "",
@@ -78,7 +80,7 @@ function CSRoom({
   const { salas, carregando, erro, recarregar } = useRooms(game);
 
   const salasFiltradas = salas.filter((sala) =>
-    salaPassaFiltros(sala, filtros)
+    salaPassaFiltros(sala, filtros, busca)
   );
 
   const [processandoId, setProcessandoId] = useState(null);
@@ -471,19 +473,6 @@ function CSRoom({
 
 
           {/* =====================================================
-              PESQUISA DO TOPO
-          ===================================================== */}
-
-          <div className="cs-top-search">
-
-            <input
-              type="text"
-            />
-
-          </div>
-
-
-          {/* =====================================================
               JOGO SELECIONADO
           ===================================================== */}
 
@@ -516,6 +505,8 @@ function CSRoom({
               <input
                 type="text"
                 placeholder="Buscar sala..."
+                value={busca}
+                onChange={(evento) => setBusca(evento.target.value)}
               />
 
             </div>
@@ -966,6 +957,7 @@ function CSRoom({
                 onJoin={entrarNaSala}
                 onLeave={sairDaSala}
                 processando={processandoId === sala._id}
+                onAfterDelete={recarregar}
               />
             ))}
 

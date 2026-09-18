@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import { apiFetch, getUsuario } from "../api";
 
-import BuscarJogador from "../components/BuscarJogador";
 import FeedbackModal from "../components/FeedbackModal";
 
 import {
@@ -34,6 +33,7 @@ import lolIcon from "../assets/icon/lol icon.png";
 
 import "./Profile.css";
 
+
 // ======================================================
 // ESTRELAS
 // ======================================================
@@ -42,17 +42,12 @@ function Stars({ nota }) {
   const valor = Math.round(nota || 0);
 
   return (
-    <div
-      className="pp-stars"
-      aria-label={`${nota} de 5 estrelas`}
-    >
+    <div className="pp-stars">
       {[1, 2, 3, 4, 5].map((estrela) => (
         <span
           key={estrela}
           className={
-            estrela <= valor
-              ? "pp-star active"
-              : "pp-star"
+            estrela <= valor ? "pp-star active" : "pp-star"
           }
         >
           ★
@@ -62,19 +57,18 @@ function Stars({ nota }) {
   );
 }
 
+
 // ======================================================
 // FORMATAR DATA
 // ======================================================
 
 function formatarData(iso) {
   const data = new Date(iso);
-
   const dia = String(data.getDate()).padStart(2, "0");
-
   const mes = String(data.getMonth() + 1).padStart(2, "0");
-
   return `${dia}/${mes}/${data.getFullYear()}`;
 }
+
 
 // ======================================================
 // MONTA CARDS DE JOGOS
@@ -84,21 +78,15 @@ function montarJogos(perfil) {
   return (perfil?.jogos || [])
     .map((item) => {
       const jogo = obterJogo(item.jogo);
-
-      if (!jogo) {
-        return null;
-      }
+      if (!jogo) return null;
 
       const elo = elosDoJogo(item.jogo).find(
         (opcao) => opcao.valor === item.elo
       );
-
       const funcoes = funcoesDoJogo(item.jogo);
-
       const principal = funcoes.find(
         (opcao) => opcao.valor === item.funcao
       );
-
       const secundaria = funcoes.find(
         (opcao) => opcao.valor === item.funcao2
       );
@@ -109,12 +97,13 @@ function montarJogos(perfil) {
         name: jogo.nome,
         rank: elo?.nome || "Sem elo",
         rankImage: elo?.imagem || null,
-        mainNome: principal?.nome || "—",
-        secondaryNome: secundaria?.nome || "—"
+        mainNome: principal?.nome || "\u2014",
+        secondaryNome: secundaria?.nome || "\u2014"
       };
     })
     .filter(Boolean);
 }
+
 
 // ======================================================
 // COMPONENTE
@@ -127,40 +116,30 @@ export default function PublicProfile({
   onHistory,
   onFeedbacks,
   onSettings,
+  onBuscar,
   onGameSelect,
   onVerPerfil,
   onVoltar
 }) {
 
   const [dados, setDados] = useState(null);
-
   const [carregando, setCarregando] = useState(true);
-
   const [erro, setErro] = useState("");
-
   const [avaliando, setAvaliando] = useState(false);
 
   const usuario = getUsuario();
-
   const meuId = usuario?.id || "";
-
   const ehEu = String(perfilId) === String(meuId);
-
-  // =====================================================
-  // CARREGAR PERFIL PÚBLICO
-  // =====================================================
 
   const carregar = async () => {
     setCarregando(true);
-
     setErro("");
 
     try {
       const resposta = await apiFetch(`/usuarios/${perfilId}`);
-
       setDados(resposta);
     } catch (e) {
-      setErro(e.message || "Não foi possível carregar o perfil.");
+      setErro(e.message || "N\u00e3o foi poss\u00edvel carregar o perfil.");
     } finally {
       setCarregando(false);
     }
@@ -171,31 +150,21 @@ export default function PublicProfile({
 
     const iniciar = async () => {
       setCarregando(true);
-
       setErro("");
 
       try {
         const resposta = await apiFetch(`/usuarios/${perfilId}`);
-
-        if (ativo) {
-          setDados(resposta);
-        }
+        if (ativo) setDados(resposta);
       } catch (e) {
-        if (ativo) {
-          setErro(e.message || "Não foi possível carregar o perfil.");
-        }
+        if (ativo) setErro(e.message || "N\u00e3o foi poss\u00edvel carregar o perfil.");
       } finally {
-        if (ativo) {
-          setCarregando(false);
-        }
+        if (ativo) setCarregando(false);
       }
     };
 
     iniciar();
 
-    return () => {
-      ativo = false;
-    };
+    return () => { ativo = false; };
   }, [perfilId]);
 
   const perfil = dados?.usuario || null;
@@ -207,7 +176,6 @@ export default function PublicProfile({
   };
 
   const feedbacks = dados?.feedbacks || [];
-
   const jogos = montarJogos(perfil);
 
   const apelido = perfil?.apelido
@@ -219,21 +187,19 @@ export default function PublicProfile({
     ...Object.values(avaliacao.distribuicao)
   );
 
+  const tags = perfil?.tags || [];
+  const preferencias = perfil?.preferencias || [];
+
   return (
     <div className="profile-page">
 
-      {/* ==================================================
-          NAVBAR
-      ================================================== */}
+      {/* ================================================== */}
+      {/* NAVBAR */}
+      {/* ================================================== */}
       <header className="profile-navbar">
 
         <div className="profile-navbar-logo">
-
-          <img
-            src={logo}
-            alt="Logo"
-          />
-
+          <img src={logo} alt="Logo" />
         </div>
 
         <div className="profile-games-navbar">
@@ -242,10 +208,7 @@ export default function PublicProfile({
             className="profile-navbar-game"
             onClick={() => onGameSelect("Overwatch")}
           >
-            <img
-              src={owIcon}
-              alt="Overwatch"
-            />
+            <img src={owIcon} alt="Overwatch" />
             <span>OVERWATCH</span>
           </div>
 
@@ -253,10 +216,7 @@ export default function PublicProfile({
             className="profile-navbar-game"
             onClick={() => onGameSelect("Counter-Strike 2")}
           >
-            <img
-              src={csIcon}
-              alt="CS2"
-            />
+            <img src={csIcon} alt="CS2" />
             <span>CS2</span>
           </div>
 
@@ -264,10 +224,7 @@ export default function PublicProfile({
             className="profile-navbar-game"
             onClick={() => onGameSelect("Valorant")}
           >
-            <img
-              src={valIcon}
-              alt="Valorant"
-            />
+            <img src={valIcon} alt="Valorant" />
             <span>VALORANT</span>
           </div>
 
@@ -275,10 +232,7 @@ export default function PublicProfile({
             className="profile-navbar-game"
             onClick={() => onGameSelect("Fortnite")}
           >
-            <img
-              src={fortniteIcon}
-              alt="Fortnite"
-            />
+            <img src={fortniteIcon} alt="Fortnite" />
             <span>FORTNITE</span>
           </div>
 
@@ -286,10 +240,7 @@ export default function PublicProfile({
             className="profile-navbar-game"
             onClick={() => onGameSelect("Rocket League")}
           >
-            <img
-              src={rocketIcon}
-              alt="Rocket League"
-            />
+            <img src={rocketIcon} alt="Rocket League" />
             <span>ROCKET LEAGUE</span>
           </div>
 
@@ -297,10 +248,7 @@ export default function PublicProfile({
             className="profile-navbar-game"
             onClick={() => onGameSelect("Dota 2")}
           >
-            <img
-              src={dotaIcon}
-              alt="Dota 2"
-            />
+            <img src={dotaIcon} alt="Dota 2" />
             <span>DOTA 2</span>
           </div>
 
@@ -308,10 +256,7 @@ export default function PublicProfile({
             className="profile-navbar-game"
             onClick={() => onGameSelect("Marvel Rivals")}
           >
-            <img
-              src={rivalsIcon}
-              alt="Marvel Rivals"
-            />
+            <img src={rivalsIcon} alt="Marvel Rivals" />
             <span>MARVEL RIVALS</span>
           </div>
 
@@ -319,10 +264,7 @@ export default function PublicProfile({
             className="profile-navbar-game"
             onClick={() => onGameSelect("League of Legends")}
           >
-            <img
-              src={lolIcon}
-              alt="League of Legends"
-            />
+            <img src={lolIcon} alt="League of Legends" />
             <span>LEAGUE OF LEGENDS</span>
           </div>
 
@@ -330,9 +272,9 @@ export default function PublicProfile({
 
       </header>
 
-      {/* ==================================================
-          SIDEBAR
-      ================================================== */}
+      {/* ================================================== */}
+      {/* SIDEBAR */}
+      {/* ================================================== */}
       <aside className="profile-sidebar">
 
         <div className="profile-sidebar-menu">
@@ -343,10 +285,16 @@ export default function PublicProfile({
             title="Home"
             type="button"
           >
-            <img
-              src={homeIcon}
-              alt="Home"
-            />
+            <img src={homeIcon} alt="Home" />
+          </button>
+
+          <button
+            className="profile-sidebar-item"
+            type="button"
+            onClick={onBuscar}
+            title="Buscar"
+          >
+            <span className="profile-buscar-icone">⌕</span>
           </button>
 
           <button
@@ -355,10 +303,7 @@ export default function PublicProfile({
             title="Perfil"
             type="button"
           >
-            <img
-              src={perfilIcon}
-              alt="Perfil"
-            />
+            <img src={perfilIcon} alt="Perfil" />
           </button>
 
           <button
@@ -367,10 +312,7 @@ export default function PublicProfile({
             title="Histórico"
             type="button"
           >
-            <img
-              src={historicoIcon}
-              alt="Histórico"
-            />
+            <img src={historicoIcon} alt="Histórico" />
           </button>
 
           <button
@@ -379,9 +321,7 @@ export default function PublicProfile({
             title="Feedbacks"
             type="button"
           >
-            <span className="profile-feedback-star">
-              ★
-            </span>
+            <span className="profile-feedback-star">★</span>
           </button>
 
           <button
@@ -390,54 +330,33 @@ export default function PublicProfile({
             title="Configurações"
             type="button"
           >
-            <img
-              src={configuracoesIcon}
-              alt="Configurações"
-            />
+            <img src={configuracoesIcon} alt="Configurações" />
           </button>
 
         </div>
 
       </aside>
 
-      {/* ==================================================
-          CONTEÚDO
-      ================================================== */}
+      {/* ================================================== */}
+      {/* CONTEUDO */}
+      {/* ================================================== */}
       <main className="profile-main">
 
-        {/* BUSCAR JOGADOR */}
-
-        <div className="pp-buscar-top">
-
-          <div className="pp-voltar">
-
-            <button
-              type="button"
-              onClick={onVoltar}
-            >
-              ← Voltar
-            </button>
-
-          </div>
-
-          <BuscarJogador
-            onSelecionar={(jogador) =>
-              onVerPerfil(jogador._id)
-            }
-          />
-
+        {/* TOOLBAR */}
+        <div className="pp-toolbar">
+          <button
+            className="pp-voltar"
+            type="button"
+            onClick={onVoltar}
+          >
+            ← Voltar
+          </button>
         </div>
 
-        {/* =================================================
-            ERRO / CARREGANDO
-        ================================================= */}
-
+        {/* ERRO */}
         {erro && !carregando && (
-
           <div className="pp-estado">
-
             <p>⚠ {erro}</p>
-
             <button
               type="button"
               className="profile-edit-button profile-edit-button-inline"
@@ -445,29 +364,21 @@ export default function PublicProfile({
             >
               Voltar
             </button>
-
           </div>
-
         )}
 
+        {/* CARREGANDO */}
         {carregando && !erro && (
-
           <div className="pp-estado">
-
             <p>Carregando perfil...</p>
-
           </div>
-
         )}
 
+        {/* PERFIL CARREGADO */}
         {!carregando && !erro && perfil && (
-
           <>
 
-            {/* =============================================
-                CABEÇALHO
-            ============================================= */}
-
+            {/* CABECALHO */}
             <section className="profile-header-card">
 
               <img
@@ -479,7 +390,6 @@ export default function PublicProfile({
               <div className="profile-banner-dark"></div>
 
               {ehEu ? (
-
                 <button
                   className="profile-edit-button"
                   onClick={onProfile}
@@ -487,9 +397,7 @@ export default function PublicProfile({
                 >
                   ✏️ Este é você — editar
                 </button>
-
               ) : (
-
                 <button
                   className="profile-edit-button"
                   onClick={() => setAvaliando(true)}
@@ -497,358 +405,242 @@ export default function PublicProfile({
                 >
                   ★ Avaliar jogador
                 </button>
-
               )}
 
               <div className="profile-user-area">
 
                 <div className="profile-avatar-wrapper">
-
                   <img
                     src={perfil.foto || FOTO_PADRAO}
                     className="profile-avatar"
                     alt="Foto de perfil"
                   />
-
                 </div>
 
                 <div className="profile-user-text">
-
-                  <h1>
-                    {perfil.nome || "JOGADOR"}
-                  </h1>
-
-                  <span className="profile-user-name">
-                    {apelido}
-                  </span>
-
+                  <h1>{perfil.nome || "JOGADOR"}</h1>
+                  <span className="profile-user-name">{apelido}</span>
                   <p>
                     {perfil.descricao ||
                       "Procurando players para jogar e subir de elo."}
                   </p>
 
-                  {perfil.tags?.length > 0 && (
-
+                  {tags.length > 0 && (
                     <div className="profile-user-tags">
-
-                      {perfil.tags.map((tag) => (
-                        <span key={tag}>
-                          {tag}
-                        </span>
+                      {tags.map((tag) => (
+                        <span key={tag}>{tag}</span>
                       ))}
-
                     </div>
-
                   )}
-
                 </div>
 
               </div>
 
             </section>
 
-            {/* =============================================
-                AVALIAÇÃO
-            ============================================= */}
-
+            {/* AVALIACAO */}
             <section className="pp-avaliacao">
 
               <div className="pp-avaliacao-numero">
-
                 <strong>
-                  {avaliacao.media || "0.0"}
+                  {avaliacao.media ? avaliacao.media.toFixed(1) : "0.0"}
                 </strong>
-
                 <Stars nota={avaliacao.media} />
-
                 <span>
                   {avaliacao.total}{" "}
                   {avaliacao.total === 1
                     ? "avaliação"
                     : "avaliações"}
                 </span>
-
               </div>
 
               <div className="pp-barras">
-
                 {[5, 4, 3, 2, 1].map((nota) => {
-
-                  const quantidade =
-                    avaliacao.distribuicao[nota] || 0;
-
+                  const quantidade = avaliacao.distribuicao[nota] || 0;
                   const largura =
-                    Math.round(
-                      (quantidade / maxDistribuicao) * 100
-                    );
+                    Math.round((quantidade / maxDistribuicao) * 100);
 
                   return (
-
-                    <div
-                      className="pp-barra"
-                      key={nota}
-                    >
-
+                    <div className="pp-barra" key={nota}>
                       <span>{nota} ★</span>
-
                       <div className="pp-barra-trilha">
-
                         <div
                           className="pp-barra-preenchida"
                           style={{ width: `${largura}%` }}
                         ></div>
-
                       </div>
-
                       <small>{quantidade}</small>
-
                     </div>
-
                   );
-
                 })}
-
               </div>
 
             </section>
 
-            {/* =============================================
-                JOGOS
-            ============================================= */}
-
+            {/* JOGOS */}
             {jogos.length > 0 && (
-
               <section className="profile-games-section">
 
                 <div className="profile-section-header">
-
-                  <h2>
-                    Jogos
-                  </h2>
-
+                  <h2>Jogos</h2>
                   <span>
                     {jogos.length}{" "}
                     {jogos.length === 1 ? "jogo" : "jogos"}
                   </span>
-
                 </div>
 
                 <div className="profile-games-grid">
-
                   {jogos.map((game) => (
-
                     <article
                       className="profile-game-card"
                       key={game.id}
                     >
-
                       <div className="profile-game-cover">
-
                         <img
                           src={game.image}
                           alt={game.name}
                           className="profile-game-cover-image"
                         />
-
                         <div className="profile-game-gradient"></div>
-
                         <h3
                           className={`profile-game-title profile-game-title-${game.id}`}
                         >
                           {game.name}
                         </h3>
-
                         <div className="profile-game-rank">
-
                           {game.rankImage && (
-
                             <img
                               src={game.rankImage}
                               className="profile-rank-image"
                               alt={game.rank}
                             />
-
                           )}
-
                           <div className="profile-rank-text">
-
-                            <strong>
-                              {game.rank}
-                            </strong>
-
+                            <strong>{game.rank}</strong>
                           </div>
-
                         </div>
-
                       </div>
 
                       <div className="profile-game-footer">
-
                         <div className="profile-game-role">
-
                           <div>
-
                             <span>Função Principal</span>
-
-                            <strong>
-                              {game.mainNome}
-                            </strong>
-
+                            <strong>{game.mainNome}</strong>
                           </div>
-
                         </div>
-
                         <div className="profile-game-role">
-
                           <div>
-
                             <span>Função Secundária</span>
-
-                            <strong>
-                              {game.secondaryNome}
-                            </strong>
-
+                            <strong>{game.secondaryNome}</strong>
                           </div>
-
                         </div>
-
                       </div>
-
                     </article>
-
                   ))}
-
                 </div>
 
               </section>
-
             )}
 
-            {/* =============================================
-                FEEDBACKS RECEBIDOS
-            ============================================= */}
+            {/* SOBRE MIM + PREFERENCIAS */}
+            <section className="profile-bottom-grid">
 
-            <section className="profile-games-section">
-
-              <div className="profile-section-header">
-
-                <h2>
-                  Feedbacks recebidos
-                </h2>
-
-                <span>
-                  {feedbacks.length}
-                </span>
-
+              <div className="profile-bottom-card">
+                <h2>Sobre Mim</h2>
+                <p>
+                  {perfil.descricao ||
+                    "Procurando players para jogar e subir de elo."}
+                </p>
               </div>
 
-              {feedbacks.length === 0 && (
-
-                <div className="profile-games-empty">
-
-                  <p>
-                    Este jogador ainda não recebeu avaliações.
-                  </p>
-
-                </div>
-
-              )}
-
-              <div className="pp-feedbacks">
-
-                {feedbacks.map((feedback) => {
-
-                  const autor = feedback.remetente;
-
-                  return (
-
-                    <article
-                      className="pp-feedback"
-                      key={feedback._id}
-                    >
-
-                      <span className="pp-feedback-avatar">
-
-                        {autor?.foto ? (
-
-                          <img
-                            src={autor.foto}
-                            alt={autor.nome}
-                          />
-
-                        ) : (
-
-                          String(autor?.nome || "?").charAt(0).toUpperCase()
-
-                        )}
-
-                      </span>
-
-                      <div className="pp-feedback-conteudo">
-
-                        <div className="pp-feedback-topo">
-
-                          <button
-                            type="button"
-                            className="pp-feedback-nome"
-                            onClick={() =>
-                              onVerPerfil(autor._id)
-                            }
-                          >
-                            {autor?.nome || "Jogador"}
-                          </button>
-
-                          <Stars nota={feedback.nota} />
-
-                          <span className="pp-feedback-data">
-                            {formatarData(feedback.createdAt)}
-                          </span>
-
-                        </div>
-
-                        {feedback.comentario && (
-
-                          <p>
-                            {feedback.comentario}
-                          </p>
-
-                        )}
-
+              <div className="profile-bottom-card">
+                <h2>Preferências</h2>
+                <div className="profile-preferences">
+                  {preferencias.length > 0 ? (
+                    preferencias.map((item) => (
+                      <div
+                        className="profile-preference-item"
+                        key={item}
+                      >
+                        <span>✦</span>
+                        <p>{item}</p>
                       </div>
-
-                    </article>
-
-                  );
-
-                })}
-
+                    ))
+                  ) : (
+                    <p style={{ color: "rgba(255,255,255,.45)", fontSize: 14 }}>
+                      Nenhuma preferência informada.
+                    </p>
+                  )}
+                </div>
               </div>
 
             </section>
 
-          </>
+            {/* FEEDBACKS RECEBIDOS */}
+            {feedbacks.length > 0 && (
+              <section className="profile-games-section">
 
+                <div className="profile-section-header">
+                  <h2>Feedbacks recebidos</h2>
+                  <span>{feedbacks.length}</span>
+                </div>
+
+                <div className="pp-feedbacks">
+                  {feedbacks.map((fb) => {
+                    const autor = fb.remetente;
+                    return (
+                      <article
+                        className="pp-feedback"
+                        key={fb._id}
+                      >
+                        <span className="pp-feedback-avatar">
+                          {autor?.foto ? (
+                            <img src={autor.foto} alt={autor.nome} />
+                          ) : (
+                            String(autor?.nome || "?")
+                              .charAt(0)
+                              .toUpperCase()
+                          )}
+                        </span>
+                        <div className="pp-feedback-conteudo">
+                          <div className="pp-feedback-topo">
+                            <button
+                              type="button"
+                              className="pp-feedback-nome"
+                              onClick={() => onVerPerfil(autor._id)}
+                            >
+                              {autor?.nome || "Jogador"}
+                            </button>
+                            <Stars nota={fb.nota} />
+                            <span className="pp-feedback-data">
+                              {formatarData(fb.createdAt)}
+                            </span>
+                          </div>
+                          {fb.comentario && <p>{fb.comentario}</p>}
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+
+              </section>
+            )}
+
+          </>
         )}
 
       </main>
 
-      {/* ==================================================
-          MODAL DE AVALIAÇÃO
-      ================================================== */}
-
+      {/* MODAL DE AVALIACAO */}
       {!ehEu && perfil && (
-
         <FeedbackModal
           aberto={avaliando}
           destinatarioId={perfil._id}
           destinatarioNome={perfil.nome}
           destinatarioFoto={perfil.foto}
           onFechar={() => setAvaliando(false)}
-          onEnviado={() => {
-            carregar();
-          }}
+          onEnviado={() => carregar()}
         />
-
       )}
 
     </div>

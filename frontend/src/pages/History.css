@@ -172,6 +172,25 @@ body {
 
 
 /* =====================================================
+   ÍCONE DE BUSCAR
+===================================================== */
+
+.history-buscar-icone {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+/* =====================================================
    ESTRELA DE FEEDBACK
 ===================================================== */
 

@@ -60,6 +60,8 @@ function RocketRoom({
 
   const [menuAberto, setMenuAberto] = useState(null);
 
+  const [busca, setBusca] = useState("");
+
   const [filtros, setFiltros] = useState({
     genero: "",
     jogadores: "",
@@ -77,7 +79,7 @@ function RocketRoom({
   const { salas, carregando, erro, recarregar } = useRooms(game);
 
   const salasFiltradas = salas.filter((sala) =>
-    salaPassaFiltros(sala, filtros)
+    salaPassaFiltros(sala, filtros, busca)
   );
 
   const [processandoId, setProcessandoId] = useState(null);
@@ -470,19 +472,6 @@ function RocketRoom({
 
 
           {/* =====================================================
-              PESQUISA DO TOPO
-          ===================================================== */}
-
-          <div className="rocket-top-search">
-
-            <input
-              type="text"
-            />
-
-          </div>
-
-
-          {/* =====================================================
               JOGO SELECIONADO
           ===================================================== */}
 
@@ -515,6 +504,8 @@ function RocketRoom({
               <input
                 type="text"
                 placeholder="Buscar sala..."
+                value={busca}
+                onChange={(evento) => setBusca(evento.target.value)}
               />
 
             </div>
@@ -912,6 +903,7 @@ function RocketRoom({
                 onJoin={entrarNaSala}
                 onLeave={sairDaSala}
                 processando={processandoId === sala._id}
+                onAfterDelete={recarregar}
               />
             ))}
 
