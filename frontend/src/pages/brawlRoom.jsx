@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./brawlRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -53,11 +58,80 @@ function BrawlRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -84,10 +158,10 @@ function BrawlRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -460,7 +534,7 @@ function BrawlRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -474,38 +548,38 @@ function BrawlRoom({
 
                 <div className="brawl-room-dropdown-menu">
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "genero",
-                        "Masculino"
-                      )
-                    }
-                  >
-                    Masculino
-                  </button>
+<button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "genero",
+                          "HOMEM"
+                        )
+                      }
+                    >
+                      Masculino
+                    </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "genero",
-                        "Feminino"
-                      )
-                    }
-                  >
-                    Feminino
-                  </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "genero",
+                          "MULHER"
+                        )
+                      }
+                    >
+                      Feminino
+                    </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "genero",
-                        "Qualquer"
-                      )
-                    }
-                  >
-                    Qualquer
-                  </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "genero",
+                          ""
+                        )
+                      }
+                    >
+                      Qualquer
+                    </button>
 
                 </div>
 
@@ -531,7 +605,9 @@ function BrawlRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -548,7 +624,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "1 jogador"
+                          1
                         )
                       }
                     >
@@ -558,7 +634,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "2 jogadores"
+                          2
                         )
                       }
                     >
@@ -568,7 +644,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "3 jogadores"
+                          3
                         )
                       }
                     >
@@ -598,7 +674,7 @@ function BrawlRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -615,7 +691,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Tin"
+                          "TIN"
                         )
                       }
                     >
@@ -625,7 +701,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Bronze"
+                          "BRONZE"
                         )
                       }
                     >
@@ -635,7 +711,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Prata"
+                          "PRATA"
                         )
                       }
                     >
@@ -645,7 +721,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Ouro"
+                          "OURO"
                         )
                       }
                     >
@@ -655,7 +731,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Platina"
+                          "PLATINA"
                         )
                       }
                     >
@@ -665,7 +741,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Diamante"
+                          "DIAMANTE"
                         )
                       }
                     >
@@ -675,7 +751,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Valhallan"
+                          "VALHALLAN"
                         )
                       }
                     >
@@ -705,7 +781,7 @@ function BrawlRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -722,7 +798,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Ranked 1v1"
+                          "RANKED 1V1"
                         )
                       }
                     >
@@ -732,7 +808,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Ranked 2v2"
+                          "RANKED 2V2"
                         )
                       }
                     >
@@ -742,7 +818,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Casual"
+                          "CASUAL"
                         )
                       }
                     >
@@ -752,7 +828,7 @@ function BrawlRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Experimental"
+                          "EXPERIMENTAL"
                         )
                       }
                     >
@@ -789,98 +865,53 @@ function BrawlRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="brawl-room-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="brawl-room-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="brawl-room-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="brawl-room-room-details">
-
-                <h2>
-                  Ranked 2v2
-                </h2>
-
-
-                <div className="brawl-room-room-tags">
-
-                  <span className="brawl-room-rank-tag">
-                    🏆 Platina/Diamante
-                  </span>
-
-
-                  <span className="brawl-room-mode-tag">
-
-                    <img
-                      src={brawlLogo}
-                      alt=""
-                    />
-
-                    Ranked 2v2
-
-                  </span>
-
-                </div>
-
-
-                <div className="brawl-room-gender-options">
-
-                  <span className="brawl-room-male">
-                    ♂
-                  </span>
-
-                  <span className="brawl-room-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro duo pra subir de elo no ranked 2v2.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="brawl-room-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="brawl-room-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={brawlLogo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

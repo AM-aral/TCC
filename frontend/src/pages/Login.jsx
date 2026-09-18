@@ -1,8 +1,6 @@
 import { useState } from "react";
 import "./Login.css";
 
-import { supabase } from "../supabase";
-
 import hero from "../assets/hero.png";
 import logo from "../assets/logo.png";
 
@@ -13,6 +11,10 @@ import twitch from "../assets/twitch.png";
 import emailIcon from "../assets/email.png";
 import userIcon from "../assets/user.png";
 import lockIcon from "../assets/lock.png";
+
+
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 
 function Login({ onLogin }) {
@@ -51,7 +53,7 @@ function Login({ onLogin }) {
 
 
   // =====================================================
-  // LOGIN COM SUPABASE
+  // LOGIN COM O BACKEND
   // =====================================================
 
   const fazerLogin = async (e) => {
@@ -70,41 +72,36 @@ function Login({ onLogin }) {
 
       setCarregando(true);
 
-      // Login usando Supabase Auth
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: senha
+      const resposta = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, senha })
       });
 
+      const dados = await resposta.json();
 
-      // Se o Supabase retornar erro
-      if (error) {
 
-        console.error("Erro no login:", error);
+      // Se o backend retornar erro
+      if (!resposta.ok) {
+
+        console.error("Erro no login:", dados);
 
         setErro(
-          "Email ou senha incorretos."
+          dados.mensagem || "Email ou senha incorretos."
         );
 
         return;
       }
 
 
-      // Verifica se o usuário realmente foi encontrado
-      if (!data.user) {
+      // Guarda o token e os dados básicos do usuário
+      localStorage.setItem("token", dados.token);
 
-        setErro(
-          "Não foi possível realizar o login."
-        );
-
-        return;
-      }
-
-
-      // Guarda os dados básicos do usuário
       localStorage.setItem(
         "usuario",
-        JSON.stringify(data.user)
+        JSON.stringify(dados.usuario)
       );
 
 
@@ -126,7 +123,7 @@ function Login({ onLogin }) {
       console.error(erro);
 
       setErro(
-        "Não foi possível conectar ao Supabase."
+        "Não foi possível conectar ao servidor."
       );
 
     } finally {
@@ -138,7 +135,7 @@ function Login({ onLogin }) {
 
 
   // =====================================================
-  // CADASTRO COM SUPABASE
+  // CADASTRO COM O BACKEND
   // =====================================================
 
   const fazerCadastro = async (e) => {
@@ -174,39 +171,37 @@ function Login({ onLogin }) {
       setCarregando(true);
 
 
-      // Cria o usuário no Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
+      // Cria o usuário no backend (MongoDB)
+      const resposta = await fetch(`${API_URL}/auth/cadastro`, {
 
-        email: email,
+        method: "POST",
 
-        password: senha,
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-        options: {
-          data: {
-            nome: usuario
-          }
-        }
+        body: JSON.stringify({
+          nome: usuario,
+          email,
+          senha
+        })
 
       });
 
+      const dados = await resposta.json();
+
 
       // Se houver erro
-      if (error) {
+      if (!resposta.ok) {
 
-        console.error("Erro no cadastro:", error);
+        console.error("Erro no cadastro:", dados);
 
         setErro(
-          error.message || "Não foi possível cadastrar."
+          dados.mensagem || "Não foi possível cadastrar."
         );
 
         return;
       }
-
-
-      console.log(
-        "Usuário criado:",
-        data.user
-      );
 
 
       // =================================================
@@ -237,7 +232,7 @@ function Login({ onLogin }) {
       console.error(erro);
 
       setErro(
-        "Não foi possível conectar ao Supabase."
+        "Não foi possível conectar ao servidor."
       );
 
     } finally {

@@ -4,6 +4,24 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 // ==============================
+// PERFIL PÚBLICO
+// ==============================
+
+const perfilPublico = (usuario) => ({
+    id: usuario._id,
+    nome: usuario.nome,
+    email: usuario.email,
+    foto: usuario.foto,
+    descricao: usuario.descricao,
+    apelido: usuario.apelido,
+    banner: usuario.banner,
+    tags: usuario.tags,
+    preferencias: usuario.preferencias,
+    jogos: usuario.jogos
+});
+
+
+// ==============================
 // CADASTRAR USUÁRIO
 // ==============================
 
@@ -39,11 +57,7 @@ const cadastrar = async (req, res) => {
 
         res.status(201).json({
             mensagem: "Usuário cadastrado com sucesso!",
-            usuario: {
-                id: usuario._id,
-                nome: usuario.nome,
-                email: usuario.email
-            }
+            usuario: perfilPublico(usuario)
         });
 
     } catch (erro) {
@@ -109,13 +123,7 @@ const login = async (req, res) => {
 
             token,
 
-            usuario: {
-                id: usuario._id,
-                nome: usuario.nome,
-                email: usuario.email,
-                foto: usuario.foto,
-                descricao: usuario.descricao
-            }
+            usuario: perfilPublico(usuario)
         });
 
     } catch (erro) {
@@ -128,7 +136,125 @@ const login = async (req, res) => {
 };
 
 
+// ==============================
+// BUSCAR PERFIL LOGADO
+// ==============================
+
+const me = async (req, res) => {
+    try {
+        const usuario = await User.findById(req.usuario.id);
+
+        if (!usuario) {
+            return res.status(404).json({
+                mensagem: "Usuário não encontrado."
+            });
+        }
+
+        res.json({
+            usuario: perfilPublico(usuario)
+        });
+
+    } catch (erro) {
+        console.error("Erro ao buscar perfil:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
+// ==============================
+// ATUALIZAR PERFIL
+// ==============================
+
+const atualizarPerfil = async (req, res) => {
+    try {
+        const {
+            nome,
+            apelido,
+            descricao,
+            foto,
+            banner,
+            tags,
+            preferencias,
+            jogos
+        } = req.body;
+
+        const usuario = await User.findById(req.usuario.id);
+
+        if (!usuario) {
+            return res.status(404).json({
+                mensagem: "Usuário não encontrado."
+            });
+        }
+
+        if (typeof nome === "string" && nome.trim()) {
+            usuario.nome = nome.trim();
+        }
+
+        if (typeof apelido === "string") {
+            usuario.apelido = apelido.trim();
+        }
+
+        if (typeof descricao === "string") {
+            usuario.descricao = descricao;
+        }
+
+        if (typeof foto === "string") {
+            usuario.foto = foto;
+        }
+
+        if (typeof banner === "string") {
+            usuario.banner = banner;
+        }
+
+        if (Array.isArray(tags)) {
+            usuario.tags = tags
+                .map((tag) => String(tag).trim())
+                .filter(Boolean)
+                .slice(0, 20);
+        }
+
+        if (Array.isArray(preferencias)) {
+            usuario.preferencias = preferencias
+                .map((item) => String(item).trim())
+                .filter(Boolean)
+                .slice(0, 20);
+        }
+
+        if (Array.isArray(jogos)) {
+            usuario.jogos = jogos
+                .slice(0, 20)
+                .map((item) => ({
+                    jogo: String(item?.jogo || "").trim(),
+                    elo: String(item?.elo || "").trim(),
+                    funcao: String(item?.funcao || "").trim(),
+                    funcao2: String(item?.funcao2 || "").trim()
+                }))
+                .filter((item) => item.jogo);
+        }
+
+        await usuario.save();
+
+        res.json({
+            mensagem: "Perfil atualizado com sucesso!",
+            usuario: perfilPublico(usuario)
+        });
+
+    } catch (erro) {
+        console.error("Erro ao atualizar perfil:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
 module.exports = {
     cadastrar,
-    login
+    login,
+    me,
+    atualizarPerfil
 };

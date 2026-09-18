@@ -773,6 +773,17 @@ body {
 }
 
 
+.history-status.open {
+  background:
+    rgba(49, 120, 235, 0.18);
+
+  border-color:
+    rgba(110, 170, 255, 0.60);
+
+  color: #9cc9ff;
+}
+
+
 /* =====================================================
    TAGS
 ===================================================== */
@@ -826,6 +837,159 @@ body {
   color: #d0b5e5;
 
   font-size: 12px;
+}
+
+
+/* =====================================================
+   RODAPÉ DO CARD (DATA + AÇÕES)
+===================================================== */
+
+.history-card-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-top: 13px;
+
+  flex-wrap: wrap;
+}
+
+
+.history-card-footer .history-date {
+  margin-top: 0;
+}
+
+
+.history-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+}
+
+
+.history-action {
+  min-height: 32px;
+
+  padding: 6px 14px;
+
+  border: 1px solid transparent;
+
+  border-radius: 7px;
+
+  color: white;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.history-action:hover:not(:disabled) {
+  filter: brightness(1.15);
+
+  transform: translateY(-1px);
+}
+
+
+.history-action:disabled {
+  opacity: 0.55;
+
+  cursor: default;
+}
+
+
+.history-action.finalizar {
+  background: rgba(39, 190, 112, 0.22);
+
+  border-color: rgba(67, 221, 143, 0.60);
+
+  color: #7affb0;
+}
+
+
+.history-action.cancelar {
+  background: rgba(220, 60, 90, 0.20);
+
+  border-color: rgba(255, 100, 120, 0.60);
+
+  color: #ff9cae;
+}
+
+
+.history-action.reabrir {
+  background: rgba(147, 71, 218, 0.30);
+
+  border-color: rgba(184, 108, 255, 0.60);
+
+  color: #e3c9ff;
+}
+
+
+/* =====================================================
+   ESTADOS (VAZIO / ERRO / CARREGANDO)
+===================================================== */
+
+.history-empty {
+  width: 100%;
+
+  min-height: 160px;
+
+  margin-bottom: 17px;
+
+  padding: 30px 20px;
+
+  border: 1px dashed rgba(213, 168, 255, 0.45);
+
+  border-radius: 18px;
+
+  background:
+    rgba(46, 0, 82, 0.45);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  text-align: center;
+}
+
+
+.history-empty-icon {
+  font-size: 34px;
+
+  line-height: 1;
+}
+
+
+.history-empty p {
+  margin: 0;
+
+  max-width: 480px;
+
+  color: #dfc7f9;
+
+  font-size: 14px;
+
+  line-height: 1.5;
 }
 
 

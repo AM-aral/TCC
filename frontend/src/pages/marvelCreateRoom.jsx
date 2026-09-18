@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./marvelCreateRoom.css";
 
+import { apiFetch } from "../api";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -80,9 +82,17 @@ function CreateRoom({
 
     const [selectedRank, setSelectedRank] = useState(null);
 
-    const [selectedGender, setSelectedGender] = useState("HOMEM");
+    const [selectedGender, setSelectedGender] = useState(["HOMEM"]);
 
     const [selectedFunction, setSelectedFunction] = useState(null);
+
+    const [nomeSala, setNomeSala] = useState("");
+
+    const [descricao, setDescricao] = useState("");
+
+    const [criando, setCriando] = useState(false);
+
+    const [erro, setErro] = useState("");
 
 
     /* =====================================================
@@ -282,6 +292,27 @@ function CreateRoom({
         selectedMode === "CLASSIFICATÓRIA";
 
 
+    const modoSoloDuo = false;
+
+
+    const alternarGenero = (genero) => {
+
+        setSelectedGender((atual) => {
+
+            if (atual.includes(genero)) {
+
+                if (atual.length === 1) {
+                    return atual;
+                }
+
+                return atual.filter((item) => item !== genero);
+            }
+
+            return [...atual, genero];
+        });
+    };
+
+
     /* =====================================================
        TROCAR MODO
     ===================================================== */
@@ -313,6 +344,67 @@ function CreateRoom({
         if (typeof onGameSelect === "function") {
             onGameSelect(selectedGame);
         }
+    };
+
+
+    /* =====================================================
+       CRIAR SALA NO BACKEND
+    ===================================================== */
+
+    const tamanhos = {
+        DUO: 2,
+        TRIO: 3,
+        SQUAD: 4,
+        GRUPO: 4,
+        "5V5": 5,
+        "6V6": 6,
+        DUPLA: 2,
+        SOLO: 1,
+        "ESQUADRÃO": 4
+    };
+
+
+    const criarSala = async () => {
+
+        if (!nomeSala.trim()) {
+            setErro("Digite o nome da sala.");
+            return;
+        }
+
+        try {
+
+            setErro("");
+            setCriando(true);
+
+            await apiFetch("/rooms", {
+                method: "POST",
+                body: JSON.stringify({
+                    jogo: game,
+                    nome: nomeSala.trim(),
+                    descricao: descricao.trim(),
+                    modo: selectedMode,
+                    time: selectedTeam,
+                    elo: selectedRank || "",
+                    funcao: selectedFunction || "",
+                    genero: selectedGender.join(", "),
+                    maxJogadores: modoSoloDuo
+                        ? 2
+                        : (tamanhos[selectedTeam] || 2)
+                })
+            });
+
+            onBack();
+
+        } catch (e) {
+
+            setErro(e.message);
+
+        } finally {
+
+            setCriando(false);
+
+        }
+
     };
 
 
@@ -617,6 +709,8 @@ function CreateRoom({
                         TAMANHO DA EQUIPE
                     ================================================= */}
 
+                    {!modoSoloDuo && (
+
                     <section className="create-section">
 
                         <div className="section-title">
@@ -660,6 +754,7 @@ function CreateRoom({
                         </div>
 
                     </section>
+                    )}
 
 
                     {/* =================================================
@@ -827,13 +922,13 @@ function CreateRoom({
                                 type="button"
                                 className={
                                     `gender-button male ${
-                                        selectedGender === "HOMEM"
+                                        selectedGender.includes("HOMEM")
                                             ? "selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("HOMEM")
+                                    alternarGenero("HOMEM")
                                 }
                             >
 
@@ -846,13 +941,13 @@ function CreateRoom({
                                 type="button"
                                 className={
                                     `gender-button female ${
-                                        selectedGender === "MULHER"
+                                        selectedGender.includes("MULHER")
                                             ? "selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("MULHER")
+                                    alternarGenero("MULHER")
                                 }
                             >
 
@@ -895,6 +990,10 @@ function CreateRoom({
                                 <input
                                     type="text"
                                     placeholder="Digite o nome da sala..."
+                                    value={nomeSala}
+                                    onChange={(e) =>
+                                        setNomeSala(e.target.value)
+                                    }
                                 />
 
                             </div>
@@ -908,6 +1007,10 @@ function CreateRoom({
 
                                 <textarea
                                     placeholder="Digite uma descrição..."
+                                    value={descricao}
+                                    onChange={(e) =>
+                                        setDescricao(e.target.value)
+                                    }
                                 ></textarea>
 
                             </div>
@@ -923,11 +1026,26 @@ function CreateRoom({
 
                     <div className="create-actions">
 
+                        {erro && (
+                            <p
+                                style={{
+                                    color: "#ffb3b3",
+                                    textAlign: "center",
+                                    width: "100%"
+                                }}
+                            >
+                                {erro}
+                            </p>
+                        )}
+
+
                         <button
                             className="create-button"
                             type="button"
+                            onClick={criarSala}
+                            disabled={criando}
                         >
-                            CRIAR SALA
+                            {criando ? "CRIANDO..." : "CRIAR SALA"}
                         </button>
 
 

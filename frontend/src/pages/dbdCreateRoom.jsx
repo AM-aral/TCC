@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./dbdCreateRoom.css";
 
+import { apiFetch } from "../api";
+
+import TeamSize from "../components/TeamSize";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -67,13 +71,19 @@ function DbdCreateRoom({
 
     const [selectedMode, setSelectedMode] = useState("CLASSIFICADA");
 
+    const [selectedTeam, setSelectedTeam] = useState("DUO");
+
     const [selectedGrade, setSelectedGrade] = useState(null);
 
-    const [selectedGender, setSelectedGender] = useState("HOMEM");
+    const [selectedGender, setSelectedGender] = useState(["HOMEM"]);
 
     const [roomName, setRoomName] = useState("");
 
     const [roomDescription, setRoomDescription] = useState("");
+
+    const [criando, setCriando] = useState(false);
+
+    const [erro, setErro] = useState("");
 
 
     /* =====================================================
@@ -203,6 +213,18 @@ function DbdCreateRoom({
 
 
     /* =====================================================
+       TAMANHO DAS EQUIPES
+    ===================================================== */
+
+    const teams = [
+        "SOLO",
+        "DUO",
+        "TRIO",
+        "SQUAD"
+    ];
+
+
+    /* =====================================================
        HABILITAÇÃO DO GRAU
        (grau só importa em partidas com matchmaking —
        Personalizada e Treino não usam grau)
@@ -211,6 +233,27 @@ function DbdCreateRoom({
     const gradeEnabled =
         selectedMode !== "PERSONALIZADA" &&
         selectedMode !== "TREINO";
+
+
+    const modoSoloDuo = false;
+
+
+    const alternarGenero = (genero) => {
+
+        setSelectedGender((atual) => {
+
+            if (atual.includes(genero)) {
+
+                if (atual.length === 1) {
+                    return atual;
+                }
+
+                return atual.filter((item) => item !== genero);
+            }
+
+            return [...atual, genero];
+        });
+    };
 
 
     /* =====================================================
@@ -248,21 +291,58 @@ function DbdCreateRoom({
 
 
     /* =====================================================
-       CRIAR SALA
+       CRIAR SALA NO BACKEND
     ===================================================== */
 
-    const handleCreateRoom = () => {
+    const tamanhos = {
+        SOLO: 1,
+        DUO: 2,
+        TRIO: 3,
+        SQUAD: 4
+    };
 
-        const novaSala = {
-            jogo: "Dead By Daylight",
-            modo: selectedMode,
-            grau: gradeEnabled ? selectedGrade : null,
-            genero: selectedGender,
-            nome: roomName,
-            descricao: roomDescription
-        };
 
-        console.log("Sala criada:", novaSala);
+    const criarSala = async () => {
+
+        if (!roomName.trim()) {
+            setErro("Digite o nome da sala.");
+            return;
+        }
+
+        try {
+
+            setErro("");
+            setCriando(true);
+
+            await apiFetch("/rooms", {
+                method: "POST",
+                body: JSON.stringify({
+                    jogo: game,
+                    nome: roomName.trim(),
+                    descricao: roomDescription.trim(),
+                    modo: selectedMode,
+                    time: selectedTeam,
+                    elo: selectedGrade || "",
+                    funcao: "",
+                    genero: selectedGender.join(", "),
+                    maxJogadores: modoSoloDuo
+                        ? 2
+                        : (tamanhos[selectedTeam] || 2)
+                })
+            });
+
+            onBack();
+
+        } catch (e) {
+
+            setErro(e.message);
+
+        } finally {
+
+            setCriando(false);
+
+        }
+
     };
 
 
@@ -647,6 +727,37 @@ function DbdCreateRoom({
                     </section>
 
 
+{/* =================================================
+                        TAMANHO DA EQUIPE
+                    ================================================= */}
+
+                    {!modoSoloDuo && (
+
+                    <section className="dbd-create-section">
+
+                        <div className="dbd-section-title">
+
+                            <span></span>
+
+                            <p>
+                                TAMANHO DA EQUIPE
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <TeamSize
+                            opcoes={teams}
+                            valor={selectedTeam}
+                            onChange={setSelectedTeam}
+                        />
+
+                    </section>
+                    )}
+
+
                     {/* =================================================
                         GÊNERO
                     ================================================= */}
@@ -672,13 +783,13 @@ function DbdCreateRoom({
                                 type="button"
                                 className={
                                     `dbd-gender-button ${
-                                        selectedGender === "HOMEM"
+                                        selectedGender.includes("HOMEM")
                                             ? "dbd-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("HOMEM")
+                                    alternarGenero("HOMEM")
                                 }
                             >
 
@@ -691,13 +802,13 @@ function DbdCreateRoom({
                                 type="button"
                                 className={
                                     `dbd-gender-button ${
-                                        selectedGender === "MULHER"
+                                        selectedGender.includes("MULHER")
                                             ? "dbd-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("MULHER")
+                                    alternarGenero("MULHER")
                                 }
                             >
 
@@ -776,12 +887,25 @@ function DbdCreateRoom({
 
                     <div className="dbd-create-actions">
 
+                        {erro && (
+                            <p
+                                style={{
+                                    color: "#ffb3b3",
+                                    textAlign: "center",
+                                    width: "100%"
+                                }}
+                            >
+                                {erro}
+                            </p>
+                        )}
+
                         <button
                             className="dbd-create-button"
-                            onClick={handleCreateRoom}
+                            onClick={criarSala}
                             type="button"
+                            disabled={criando}
                         >
-                            CRIAR SALA
+                            {criando ? "CRIANDO..." : "CRIAR SALA"}
                         </button>
 
 

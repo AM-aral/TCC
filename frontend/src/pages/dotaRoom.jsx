@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./dotaRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -56,11 +61,80 @@ function DotaRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -87,10 +161,10 @@ function DotaRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -463,7 +537,7 @@ function DotaRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -481,7 +555,7 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -492,7 +566,7 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -503,7 +577,7 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -534,7 +608,9 @@ function DotaRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -552,7 +628,7 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "1 jogador"
+                        1
                       )
                     }
                   >
@@ -563,7 +639,7 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "2 jogadores"
+                        2
                       )
                     }
                   >
@@ -574,7 +650,7 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "3 jogadores"
+                        3
                       )
                     }
                   >
@@ -585,7 +661,7 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "4 jogadores"
+                        4
                       )
                     }
                   >
@@ -616,7 +692,7 @@ function DotaRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -632,7 +708,7 @@ function DotaRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Arauto")
+                      selecionarFiltro("elo", "ARAUTO")
                     }
                   >
                     Arauto
@@ -640,7 +716,7 @@ function DotaRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Guardião")
+                      selecionarFiltro("elo", "GUARDIÃO")
                     }
                   >
                     Guardião
@@ -648,7 +724,7 @@ function DotaRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Cruzado")
+                      selecionarFiltro("elo", "CRUZADO")
                     }
                   >
                     Cruzado
@@ -656,7 +732,7 @@ function DotaRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Arconte")
+                      selecionarFiltro("elo", "ARCONTE")
                     }
                   >
                     Arconte
@@ -664,7 +740,7 @@ function DotaRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Lenda")
+                      selecionarFiltro("elo", "LENDA")
                     }
                   >
                     Lenda
@@ -672,7 +748,7 @@ function DotaRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Ancião")
+                      selecionarFiltro("elo", "ANCIÃO")
                     }
                   >
                     Ancião
@@ -680,7 +756,7 @@ function DotaRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Divino")
+                      selecionarFiltro("elo", "DIVINO")
                     }
                   >
                     Divino
@@ -688,7 +764,7 @@ function DotaRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Imortal")
+                      selecionarFiltro("elo", "IMORTAL")
                     }
                   >
                     Imortal
@@ -718,7 +794,7 @@ function DotaRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -736,29 +812,29 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Ranked All Pick"
+                        "RANQUEADA"
                       )
                     }
                   >
-                    Ranked All Pick
+                    Ranqueada
                   </button>
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "All Pick"
+                        "NÃO RANQUEADA"
                       )
                     }
                   >
-                    All Pick
+                    Não Ranqueada
                   </button>
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Turbo"
+                        "TURBO"
                       )
                     }
                   >
@@ -769,7 +845,18 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Ability Draft"
+                        "MODO CAPITÃES"
+                      )
+                    }
+                  >
+                    Modo Capitães
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "modo",
+                        "ABILITY DRAFT"
                       )
                     }
                   >
@@ -780,11 +867,11 @@ function DotaRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Captains Mode"
+                        "PERSONALIZADA"
                       )
                     }
                   >
-                    Captains Mode
+                    Personalizada
                   </button>
 
                 </div>
@@ -818,98 +905,53 @@ function DotaRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="dota-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="dota-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="dota-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="dota-room-details">
-
-                <h2>
-                  Ranked All Pick - Duo
-                </h2>
-
-
-                <div className="dota-room-tags">
-
-                  <span className="dota-rank-tag">
-                    🏆 Arconte/Lenda
-                  </span>
-
-
-                  <span className="dota-mode-tag">
-
-                    <img
-                      src={dota2Logo}
-                      alt=""
-                    />
-
-                    Ranked All Pick
-
-                  </span>
-
-                </div>
-
-
-                <div className="dota-gender-options">
-
-                  <span className="dota-male">
-                    ♂
-                  </span>
-
-                  <span className="dota-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro duo pra subir de MMR e evoluir na call.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="dota-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="dota-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={dota2Logo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

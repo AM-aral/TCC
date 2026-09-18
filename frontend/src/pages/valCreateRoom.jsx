@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./valCreateRoom.css";
 
+import { apiFetch } from "../api";
+
+import TeamSize from "../components/TeamSize";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -90,9 +94,19 @@ function ValorantCreateRoom({
 
     const [selectedRank, setSelectedRank] = useState(null);
 
-    const [selectedGender, setSelectedGender] = useState("HOMEM");
+    const [selectedGender, setSelectedGender] = useState(["HOMEM"]);
+
+    const [selectedTeam, setSelectedTeam] = useState("DUO");
 
     const [selectedFunction, setSelectedFunction] = useState(null);
+
+    const [nomeSala, setNomeSala] = useState("");
+
+    const [descricao, setDescricao] = useState("");
+
+    const [criando, setCriando] = useState(false);
+
+    const [erro, setErro] = useState("");
 
 
     /* =====================================================
@@ -204,6 +218,19 @@ function ValorantCreateRoom({
 
 
     /* =====================================================
+       TAMANHO DAS EQUIPES
+    ===================================================== */
+
+    const teams = [
+        "SOLO",
+        "DUO",
+        "TRIO",
+        "SQUAD",
+        "5V5"
+    ];
+
+
+    /* =====================================================
        FUNÇÕES
     ===================================================== */
 
@@ -233,6 +260,28 @@ function ValorantCreateRoom({
     ===================================================== */
 
     const rankEnabled = selectedMode === "COMPETITIVO";
+
+
+    /* =====================================================
+       GÊNERO MÚLTIPLO
+    ===================================================== */
+
+    const alternarGenero = (genero) => {
+
+        setSelectedGender((atual) => {
+
+            if (atual.includes(genero)) {
+
+                if (atual.length === 1) {
+                    return atual;
+                }
+
+                return atual.filter((item) => item !== genero);
+            }
+
+            return [...atual, genero];
+        });
+    };
 
 
     /* =====================================================
@@ -266,6 +315,66 @@ function ValorantCreateRoom({
         if (typeof onGameSelect === "function") {
             onGameSelect(selectedGame);
         }
+    };
+
+
+    /* =====================================================
+       CRIAR SALA NO BACKEND
+    ===================================================== */
+
+    const tamanhos = {
+        SOLO: 1,
+        DUO: 2,
+        TRIO: 3,
+        SQUAD: 4,
+        "5V5": 5
+    };
+
+
+    const modoSoloDuo = false;
+
+
+    const criarSala = async () => {
+
+        if (!nomeSala.trim()) {
+            setErro("Digite o nome da sala.");
+            return;
+        }
+
+        try {
+
+            setErro("");
+            setCriando(true);
+
+            await apiFetch("/rooms", {
+                method: "POST",
+                body: JSON.stringify({
+                    jogo: game,
+                    nome: nomeSala.trim(),
+                    descricao: descricao.trim(),
+                    modo: selectedMode,
+                    time: selectedTeam,
+                    elo: selectedRank || "",
+                    funcao: selectedFunction || "",
+                    genero: selectedGender.join(", "),
+                    maxJogadores: modoSoloDuo
+                        ? 2
+                        : (tamanhos[selectedTeam] || 2)
+                })
+            });
+
+            onBack();
+
+        } catch (e) {
+
+            setErro(e.message);
+
+        } finally {
+
+            setCriando(false);
+
+        }
+
     };
 
 
@@ -647,6 +756,37 @@ function ValorantCreateRoom({
 
 
                     {/* =================================================
+                        TAMANHO DA EQUIPE
+                    ================================================= */}
+
+                    {!modoSoloDuo && (
+
+                    <section className="val-create-section">
+
+                        <div className="val-section-title">
+
+                            <span></span>
+
+                            <p>
+                                TAMANHO DA EQUIPE
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <TeamSize
+                            opcoes={teams}
+                            valor={selectedTeam}
+                            onChange={setSelectedTeam}
+                        />
+
+                    </section>
+                    )}
+
+
+                    {/* =================================================
                         GÊNERO
                     ================================================= */}
 
@@ -671,13 +811,13 @@ function ValorantCreateRoom({
                                 type="button"
                                 className={
                                     `val-gender-button ${
-                                        selectedGender === "HOMEM"
+                                        selectedGender.includes("HOMEM")
                                             ? "val-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("HOMEM")
+                                    alternarGenero("HOMEM")
                                 }
                             >
 
@@ -690,13 +830,13 @@ function ValorantCreateRoom({
                                 type="button"
                                 className={
                                     `val-gender-button ${
-                                        selectedGender === "MULHER"
+                                        selectedGender.includes("MULHER")
                                             ? "val-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("MULHER")
+                                    alternarGenero("MULHER")
                                 }
                             >
 
@@ -796,6 +936,10 @@ function ValorantCreateRoom({
                                 <input
                                     type="text"
                                     placeholder="Digite o nome da sala..."
+                                    value={nomeSala}
+                                    onChange={(e) =>
+                                        setNomeSala(e.target.value)
+                                    }
                                 />
 
                             </div>
@@ -809,6 +953,10 @@ function ValorantCreateRoom({
 
                                 <textarea
                                     placeholder="Digite uma descrição..."
+                                    value={descricao}
+                                    onChange={(e) =>
+                                        setDescricao(e.target.value)
+                                    }
                                 ></textarea>
 
                             </div>
@@ -824,11 +972,26 @@ function ValorantCreateRoom({
 
                     <div className="val-create-actions">
 
+                        {erro && (
+                            <p
+                                style={{
+                                    color: "#ffb3b3",
+                                    textAlign: "center",
+                                    width: "100%"
+                                }}
+                            >
+                                {erro}
+                            </p>
+                        )}
+
+
                         <button
                             className="val-create-button"
                             type="button"
+                            onClick={criarSala}
+                            disabled={criando}
                         >
-                            CRIAR SALA
+                            {criando ? "CRIANDO..." : "CRIAR SALA"}
                         </button>
 
 

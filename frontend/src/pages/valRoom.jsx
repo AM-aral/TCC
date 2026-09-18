@@ -3,6 +3,11 @@ import { useState } from "react";
 
 import "./valRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -48,12 +53,81 @@ function ValRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    funcao: "Função",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    funcao: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   // =====================================================
@@ -77,10 +151,10 @@ function ValRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -475,7 +549,7 @@ function ValRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -493,7 +567,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -504,7 +578,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -515,7 +589,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -548,7 +622,9 @@ function ValRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -566,7 +642,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "1 jogador"
+                        1
                       )
                     }
                   >
@@ -577,7 +653,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "2 jogadores"
+                        2
                       )
                     }
                   >
@@ -588,7 +664,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "3 jogadores"
+                        3
                       )
                     }
                   >
@@ -599,7 +675,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "4 jogadores"
+                        4
                       )
                     }
                   >
@@ -632,7 +708,7 @@ function ValRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -650,7 +726,73 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Ascendente"
+                        "FERRO"
+                      )
+                    }
+                  >
+                    Ferro
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "elo",
+                        "BRONZE"
+                      )
+                    }
+                  >
+                    Bronze
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "elo",
+                        "PRATA"
+                      )
+                    }
+                  >
+                    Prata
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "elo",
+                        "OURO"
+                      )
+                    }
+                  >
+                    Ouro
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "elo",
+                        "PLATINA"
+                      )
+                    }
+                  >
+                    Platina
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "elo",
+                        "DIAMANTE"
+                      )
+                    }
+                  >
+                    Diamante
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "elo",
+                        "ASCENDENTE"
                       )
                     }
                   >
@@ -661,51 +803,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Ascendente 2"
-                      )
-                    }
-                  >
-                    Ascendente 2
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "elo",
-                        "Ascendente 3"
-                      )
-                    }
-                  >
-                    Ascendente 3
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "elo",
-                        "Diamante 2"
-                      )
-                    }
-                  >
-                    Diamante 2
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "elo",
-                        "Diamante 3"
-                      )
-                    }
-                  >
-                    Diamante 3
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "elo",
-                        "Imortal"
+                        "IMORTAL"
                       )
                     }
                   >
@@ -716,29 +814,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Imortal 2"
-                      )
-                    }
-                  >
-                    Imortal 2
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "elo",
-                        "Imortal 3"
-                      )
-                    }
-                  >
-                    Imortal 3
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "elo",
-                        "Radiante"
+                        "RADIANTE"
                       )
                     }
                   >
@@ -771,7 +847,7 @@ function ValRoom({
                 </span>
 
                 <span>
-                  {filtros.funcao}
+                  {filtros.funcao || "Função"}
                 </span>
 
                 <b>
@@ -789,7 +865,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "funcao",
-                        "Duelista"
+                        "DUELISTA"
                       )
                     }
                   >
@@ -800,7 +876,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "funcao",
-                        "Controlador"
+                        "CONTROLADOR"
                       )
                     }
                   >
@@ -811,7 +887,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "funcao",
-                        "Iniciador"
+                        "INICIADOR"
                       )
                     }
                   >
@@ -822,7 +898,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "funcao",
-                        "Sentinela"
+                        "SENTINELA"
                       )
                     }
                   >
@@ -855,7 +931,7 @@ function ValRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -873,7 +949,7 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Competitivo"
+                        "COMPETITIVO"
                       )
                     }
                   >
@@ -884,44 +960,33 @@ function ValRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Sem Classificação"
+                        "NÃO-CLASSIFICATÓRIA"
                       )
                     }
                   >
-                    Sem Classificação
+                    Não-Classificatória
                   </button>
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Swiftplay"
+                        "MATA-MATA"
                       )
                     }
                   >
-                    Swiftplay
+                    Mata-Mata
                   </button>
 
                   <button
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Premier"
+                        "FRENÉTICO"
                       )
                     }
                   >
-                    Premier
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "modo",
-                        "Deathmatch"
-                      )
-                    }
-                  >
-                    Deathmatch
+                    Frenético
                   </button>
 
                 </div>
@@ -955,104 +1020,53 @@ function ValRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="val-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* =================================================
-                PERFIL
-            ================================================= */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="val-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="val-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="val-room-details">
-
-                <h2>
-                  Competitivo - Duo
-                </h2>
-
-
-                <div className="val-room-tags">
-
-                  <span className="val-rank-tag">
-                    🏆 Diamante / Ascendente
-                  </span>
-
-
-                  <span className="val-mode-tag">
-
-                    <img
-                      src={valorantLogo}
-                      alt=""
-                    />
-
-                    Competitivo
-
-                  </span>
-
-                </div>
-
-
-                <div className="val-gender-options">
-
-                  <span className="val-male">
-                    ♂
-                  </span>
-
-                  <span className="val-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro duo para jogar competitivo e subir de elo.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* =================================================
-                MEMBROS
-            ================================================= */}
-
-            <div className="val-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 5 min
-              </span>
-
-            </div>
-
-
-            {/* =================================================
-                ENTRAR
-            ================================================= */}
-
-            <button
-              className="val-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={valorantLogo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

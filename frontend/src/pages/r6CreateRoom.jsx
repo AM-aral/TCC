@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./r6CreateRoom.css";
 
+import { apiFetch } from "../api";
+
+import TeamSize from "../components/TeamSize";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -86,11 +90,17 @@ function R6CreateRoom({
 
     const [selectedRole, setSelectedRole] = useState(null);
 
-    const [selectedGender, setSelectedGender] = useState("HOMEM");
+    const [selectedGender, setSelectedGender] = useState(["HOMEM"]);
+
+    const [selectedTeam, setSelectedTeam] = useState("DUO");
 
     const [roomName, setRoomName] = useState("");
 
     const [roomDescription, setRoomDescription] = useState("");
+
+    const [criando, setCriando] = useState(false);
+
+    const [erro, setErro] = useState("");
 
 
     /* =====================================================
@@ -236,6 +246,19 @@ function R6CreateRoom({
 
 
     /* =====================================================
+       TAMANHO DAS EQUIPES
+    ===================================================== */
+
+    const teams = [
+        "SOLO",
+        "DUO",
+        "TRIO",
+        "SQUAD",
+        "5V5"
+    ];
+
+
+    /* =====================================================
        FUNÇÕES
     ===================================================== */
 
@@ -269,6 +292,28 @@ function R6CreateRoom({
     ===================================================== */
 
     const rankEnabled = selectedMode === "RANQUEADA";
+
+
+    /* =====================================================
+       GÊNERO MÚLTIPLO
+    ===================================================== */
+
+    const alternarGenero = (genero) => {
+
+        setSelectedGender((atual) => {
+
+            if (atual.includes(genero)) {
+
+                if (atual.length === 1) {
+                    return atual;
+                }
+
+                return atual.filter((item) => item !== genero);
+            }
+
+            return [...atual, genero];
+        });
+    };
 
 
     /* =====================================================
@@ -319,22 +364,62 @@ function R6CreateRoom({
 
 
     /* =====================================================
-       CRIAR SALA
+       CRIAR SALA NO BACKEND
     ===================================================== */
 
-    const handleCreateRoom = () => {
+    const tamanhos = {
+        SOLO: 1,
+        DUO: 2,
+        TRIO: 3,
+        SQUAD: 4,
+        "5V5": 5
+    };
 
-        const novaSala = {
-            jogo: "Rainbow Six Siege",
-            modo: selectedMode,
-            elo: rankEnabled ? selectedRank : null,
-            funcao: selectedRole,
-            genero: selectedGender,
-            nome: roomName,
-            descricao: roomDescription
-        };
 
-        console.log("Sala criada:", novaSala);
+    const modoSoloDuo = false;
+
+
+    const criarSala = async () => {
+
+        if (!roomName.trim()) {
+            setErro("Digite o nome da sala.");
+            return;
+        }
+
+        try {
+
+            setErro("");
+            setCriando(true);
+
+            await apiFetch("/rooms", {
+                method: "POST",
+                body: JSON.stringify({
+                    jogo: game,
+                    nome: roomName.trim(),
+                    descricao: roomDescription.trim(),
+                    modo: selectedMode,
+                    time: selectedTeam,
+                    elo: selectedRank || "",
+                    funcao: selectedRole || "",
+                    genero: selectedGender.join(", "),
+                    maxJogadores: modoSoloDuo
+                        ? 2
+                        : (tamanhos[selectedTeam] || 2)
+                })
+            });
+
+            onBack();
+
+        } catch (e) {
+
+            setErro(e.message);
+
+        } finally {
+
+            setCriando(false);
+
+        }
+
     };
 
 
@@ -718,6 +803,92 @@ function R6CreateRoom({
 
 
                     {/* =================================================
+                        FUNÇÃO
+                    ================================================= */}
+
+                    <section className="r6-create-section">
+
+                        <div className="r6-section-title">
+
+                            <span></span>
+
+                            <p>
+                                FUNÇÃO
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <div className="r6-role-selection">
+
+                            {roles.map((role) => (
+
+                                <button
+                                    key={role.name}
+                                    className={
+                                        `r6-role-item ${selectedRole === role.name
+                                            ? "r6-selected"
+                                            : ""
+                                        }`
+                                    }
+                                    onClick={() =>
+                                        handleRoleChange(role.name)
+                                    }
+                                    type="button"
+                                >
+
+                                    <img
+                                        src={role.image}
+                                        alt={role.name}
+                                    />
+
+                                    <span className="r6-role-name">
+                                        {role.name}
+                                    </span>
+
+                                </button>
+
+                            ))}
+
+                        </div>
+
+                    </section>
+
+
+                    {/* =================================================
+                        TAMANHO DA EQUIPE
+                    ================================================= */}
+
+                    {!modoSoloDuo && (
+
+                    <section className="r6-create-section">
+
+                        <div className="r6-section-title">
+
+                            <span></span>
+
+                            <p>
+                                TAMANHO DA EQUIPE
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <TeamSize
+                            opcoes={teams}
+                            valor={selectedTeam}
+                            onChange={setSelectedTeam}
+                        />
+
+                    </section>
+                    )}
+
+
+                    {/* =================================================
                         GÊNERO
                     ================================================= */}
 
@@ -741,13 +912,13 @@ function R6CreateRoom({
                             <button
                                 type="button"
                                 className={
-                                    `r6-gender-button ${selectedGender === "HOMEM"
+                                    `r6-gender-button ${selectedGender.includes("HOMEM")
                                         ? "r6-selected"
                                         : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("HOMEM")
+                                    alternarGenero("HOMEM")
                                 }
                             >
 
@@ -759,13 +930,13 @@ function R6CreateRoom({
                             <button
                                 type="button"
                                 className={
-                                    `r6-gender-button ${selectedGender === "MULHER"
+                                    `r6-gender-button ${selectedGender.includes("MULHER")
                                         ? "r6-selected"
                                         : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("MULHER")
+                                    alternarGenero("MULHER")
                                 }
                             >
 
@@ -844,12 +1015,26 @@ function R6CreateRoom({
 
                     <div className="r6-create-actions">
 
+                        {erro && (
+                            <p
+                                style={{
+                                    color: "#ffb3b3",
+                                    textAlign: "center",
+                                    width: "100%"
+                                }}
+                            >
+                                {erro}
+                            </p>
+                        )}
+
+
                         <button
                             className="r6-create-button"
-                            onClick={handleCreateRoom}
+                            onClick={criarSala}
+                            disabled={criando}
                             type="button"
                         >
-                            CRIAR SALA
+                            {criando ? "CRIANDO..." : "CRIAR SALA"}
                         </button>
 
 

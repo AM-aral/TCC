@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./fortRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -56,11 +61,80 @@ function FortRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -87,10 +161,10 @@ function FortRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -463,7 +537,7 @@ function FortRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -481,7 +555,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -492,7 +566,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -503,7 +577,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -534,7 +608,9 @@ function FortRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -552,7 +628,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "1 jogador"
+                        1
                       )
                     }
                   >
@@ -563,7 +639,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "2 jogadores"
+                        2
                       )
                     }
                   >
@@ -574,7 +650,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "3 jogadores"
+                        3
                       )
                     }
                   >
@@ -605,7 +681,7 @@ function FortRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -621,7 +697,7 @@ function FortRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Bronze")
+                      selecionarFiltro("elo", "BRONZE")
                     }
                   >
                     Bronze
@@ -629,7 +705,7 @@ function FortRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Prata")
+                      selecionarFiltro("elo", "PRATA")
                     }
                   >
                     Prata
@@ -637,7 +713,7 @@ function FortRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Ouro")
+                      selecionarFiltro("elo", "OURO")
                     }
                   >
                     Ouro
@@ -645,7 +721,7 @@ function FortRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Platina")
+                      selecionarFiltro("elo", "PLATINA")
                     }
                   >
                     Platina
@@ -653,7 +729,7 @@ function FortRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Diamante")
+                      selecionarFiltro("elo", "DIAMANTE")
                     }
                   >
                     Diamante
@@ -661,7 +737,7 @@ function FortRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Elite")
+                      selecionarFiltro("elo", "ELITE")
                     }
                   >
                     Elite
@@ -671,7 +747,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Campeão"
+                        "CAMPEÃO"
                       )
                     }
                   >
@@ -682,7 +758,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Surreal"
+                        "UNREAL"
                       )
                     }
                   >
@@ -713,7 +789,7 @@ function FortRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -731,7 +807,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Battle Royale"
+                        "BATTLE ROYALE"
                       )
                     }
                   >
@@ -742,7 +818,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Zero Build"
+                        "ZERO BUILD"
                       )
                     }
                   >
@@ -753,7 +829,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Reload"
+                        "RELOAD"
                       )
                     }
                   >
@@ -764,7 +840,7 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Ranqueada"
+                        "RANKED"
                       )
                     }
                   >
@@ -775,11 +851,11 @@ function FortRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Casual"
+                        "TEAM RUMBLE"
                       )
                     }
                   >
-                    Casual
+                    Team Rumble
                   </button>
 
                 </div>
@@ -813,98 +889,53 @@ function FortRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="fort-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="fort-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="fort-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="fort-room-details">
-
-                <h2>
-                  Battle Royale - Squad
-                </h2>
-
-
-                <div className="fort-room-tags">
-
-                  <span className="fort-rank-tag">
-                    🏆 Elite/Campeão
-                  </span>
-
-
-                  <span className="fort-mode-tag">
-
-                    <img
-                      src={fortniteBigLogo}
-                      alt=""
-                    />
-
-                    Battle Royale
-
-                  </span>
-
-                </div>
-
-
-                <div className="fort-gender-options">
-
-                  <span className="fort-male">
-                    ♂
-                  </span>
-
-                  <span className="fort-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro squad pra farmar vitórias e subir de elo.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="fort-room-members">
-
-              <strong>
-                1/4
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="fort-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={fortniteBigLogo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

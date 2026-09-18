@@ -29,6 +29,54 @@ const userSchema = new mongoose.Schema(
         descricao: {
             type: String,
             default: ""
+        },
+
+        apelido: {
+            type: String,
+            default: "",
+            trim: true
+        },
+
+        banner: {
+            type: String,
+            default: ""
+        },
+
+        tags: {
+            type: [String],
+            default: []
+        },
+
+        preferencias: {
+            type: [String],
+            default: []
+        },
+
+        jogos: {
+            type: [
+                {
+                    jogo: {
+                        type: String,
+                        default: ""
+                    },
+
+                    elo: {
+                        type: String,
+                        default: ""
+                    },
+
+                    funcao: {
+                        type: String,
+                        default: ""
+                    },
+
+                    funcao2: {
+                        type: String,
+                        default: ""
+                    }
+                }
+            ],
+            default: []
         }
     },
     {

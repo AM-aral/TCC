@@ -3,6 +3,11 @@ import { useState } from "react";
 
 import "./csRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -57,11 +62,80 @@ function CSRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -88,10 +162,10 @@ function CSRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -464,7 +538,7 @@ function CSRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -482,7 +556,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -493,7 +567,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -504,7 +578,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -535,7 +609,9 @@ function CSRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -553,7 +629,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "1 jogador"
+                        1
                       )
                     }
                   >
@@ -564,7 +640,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "2 jogadores"
+                        2
                       )
                     }
                   >
@@ -575,7 +651,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "3 jogadores"
+                        3
                       )
                     }
                   >
@@ -586,7 +662,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "4 jogadores"
+                        4
                       )
                     }
                   >
@@ -597,7 +673,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "5 jogadores"
+                        5
                       )
                     }
                   >
@@ -628,7 +704,7 @@ function CSRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -644,7 +720,7 @@ function CSRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Prata")
+                      selecionarFiltro("elo", "PRATA")
                     }
                   >
                     Prata
@@ -652,7 +728,7 @@ function CSRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Ouro")
+                      selecionarFiltro("elo", "OURO NOVA")
                     }
                   >
                     Ouro
@@ -660,7 +736,7 @@ function CSRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "AK")
+                      selecionarFiltro("elo", "MESTRE GUARDIÃO")
                     }
                   >
                     AK
@@ -670,7 +746,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "AK Cruzada"
+                        "GUARDIÃO DISTINTO"
                       )
                     }
                   >
@@ -681,7 +757,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Águia"
+                        "ÁGUIA"
                       )
                     }
                   >
@@ -692,7 +768,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Supremo"
+                        "SUPREMO"
                       )
                     }
                   >
@@ -703,7 +779,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Global Elite"
+                        "GLOBAL ELITE"
                       )
                     }
                   >
@@ -734,7 +810,7 @@ function CSRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -752,7 +828,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Competitivo"
+                        "COMPETITIVO"
                       )
                     }
                   >
@@ -763,7 +839,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Premier"
+                        "PREMIER"
                       )
                     }
                   >
@@ -774,7 +850,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Casual"
+                        "CASUAL"
                       )
                     }
                   >
@@ -785,7 +861,7 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Wingman"
+                        "WINGMAN"
                       )
                     }
                   >
@@ -796,11 +872,22 @@ function CSRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Deathmatch"
+                        "DEATHMATCH"
                       )
                     }
                   >
                     Deathmatch
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "modo",
+                        "ARMS RACE"
+                      )
+                    }
+                  >
+                    Arms Race
                   </button>
 
                 </div>
@@ -834,98 +921,53 @@ function CSRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="cs-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="cs-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="cs-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="cs-room-details">
-
-                <h2>
-                  Competitivo - Duo
-                </h2>
-
-
-                <div className="cs-room-tags">
-
-                  <span className="cs-rank-tag">
-                    🏆 Águia
-                  </span>
-
-
-                  <span className="cs-mode-tag">
-
-                    <img
-                      src={cs2Logo}
-                      alt=""
-                    />
-
-                    Competitivo
-
-                  </span>
-
-                </div>
-
-
-                <div className="cs-gender-options">
-
-                  <span className="cs-male">
-                    ♂
-                  </span>
-
-                  <span className="cs-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro duo para jogar competitivo, evoluir e subir de elo.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="cs-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="cs-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={cs2Logo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

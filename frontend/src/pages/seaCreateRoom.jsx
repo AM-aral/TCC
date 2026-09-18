@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./seaCreateRoom.css";
 
+import { apiFetch } from "../api";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -59,11 +61,15 @@ function SotCreateRoom({
 
     const [selectedRole, setSelectedRole] = useState(null);
 
-    const [selectedGender, setSelectedGender] = useState("HOMEM");
+    const [selectedGender, setSelectedGender] = useState(["HOMEM"]);
 
     const [roomName, setRoomName] = useState("");
 
     const [roomDescription, setRoomDescription] = useState("");
+
+    const [criando, setCriando] = useState(false);
+
+    const [erro, setErro] = useState("");
 
 
     /* =====================================================
@@ -219,6 +225,17 @@ function SotCreateRoom({
 
 
     /* =====================================================
+       TAMANHOS POR NAVIO
+    ===================================================== */
+
+    const tamanhos = {
+        SLOOP: 2,
+        BRIGUE: 3,
+        GALEÃO: 4
+    };
+
+
+    /* =====================================================
        FUNÇÕES NA TRIPULAÇÃO
     ===================================================== */
 
@@ -238,6 +255,27 @@ function SotCreateRoom({
     ===================================================== */
 
     const shipEnabled = selectedMode !== "ARENA";
+
+
+    const modoSoloDuo = false;
+
+
+    const alternarGenero = (genero) => {
+
+        setSelectedGender((atual) => {
+
+            if (atual.includes(genero)) {
+
+                if (atual.length === 1) {
+                    return atual;
+                }
+
+                return atual.filter((item) => item !== genero);
+            }
+
+            return [...atual, genero];
+        });
+    };
 
 
     /* =====================================================
@@ -304,22 +342,50 @@ function SotCreateRoom({
 
 
     /* =====================================================
-       CRIAR SALA
+       CRIAR SALA NO BACKEND
     ===================================================== */
 
-    const handleCreateRoom = () => {
+    const criarSala = async () => {
 
-        const novaSala = {
-            jogo: "Sea of Thieves",
-            modo: selectedMode,
-            navio: selectedShip,
-            funcao: selectedRole,
-            genero: selectedGender,
-            nome: roomName,
-            descricao: roomDescription
-        };
+        if (!roomName.trim()) {
+            setErro("Digite o nome da sala.");
+            return;
+        }
 
-        console.log("Sala criada:", novaSala);
+        try {
+
+            setErro("");
+            setCriando(true);
+
+            await apiFetch("/rooms", {
+                method: "POST",
+                body: JSON.stringify({
+                    jogo: game,
+                    nome: roomName.trim(),
+                    descricao: roomDescription.trim(),
+                    modo: selectedMode,
+                    time: selectedShip || "",
+                    elo: "",
+                    funcao: selectedRole || "",
+                    genero: selectedGender.join(", "),
+                    maxJogadores: modoSoloDuo
+                        ? 2
+                        : (tamanhos[selectedShip] || 2),
+                })
+            });
+
+            onBack();
+
+        } catch (e) {
+
+            setErro(e.message);
+
+        } finally {
+
+            setCriando(false);
+
+        }
+
     };
 
 
@@ -783,13 +849,13 @@ function SotCreateRoom({
                                 type="button"
                                 className={
                                     `sot-gender-button ${
-                                        selectedGender === "HOMEM"
+                                        selectedGender.includes("HOMEM")
                                             ? "sot-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("HOMEM")
+                                    alternarGenero("HOMEM")
                                 }
                             >
 
@@ -802,13 +868,13 @@ function SotCreateRoom({
                                 type="button"
                                 className={
                                     `sot-gender-button ${
-                                        selectedGender === "MULHER"
+                                        selectedGender.includes("MULHER")
                                             ? "sot-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("MULHER")
+                                    alternarGenero("MULHER")
                                 }
                             >
 
@@ -887,12 +953,26 @@ function SotCreateRoom({
 
                     <div className="sot-create-actions">
 
+                        {erro && (
+                            <p
+                                style={{
+                                    color: "#ffb3b3",
+                                    textAlign: "center",
+                                    width: "100%"
+                                }}
+                            >
+                                {erro}
+                            </p>
+                        )}
+
+
                         <button
                             className="sot-create-button"
-                            onClick={handleCreateRoom}
+                            onClick={criarSala}
+                            disabled={criando}
                             type="button"
                         >
-                            CRIAR SALA
+                            {criando ? "CRIANDO..." : "CRIAR SALA"}
                         </button>
 
 

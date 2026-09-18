@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./dotaCreateRoom.css";
 
+import { apiFetch } from "../api";
+
+import TeamSize from "../components/TeamSize";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -81,11 +85,17 @@ function DotaCreateRoom({
 
     const [selectedRole, setSelectedRole] = useState(null);
 
-    const [selectedGender, setSelectedGender] = useState("HOMEM");
+    const [selectedGender, setSelectedGender] = useState(["HOMEM"]);
+
+    const [selectedTeam, setSelectedTeam] = useState("DUO");
 
     const [roomName, setRoomName] = useState("");
 
     const [roomDescription, setRoomDescription] = useState("");
+
+    const [criando, setCriando] = useState(false);
+
+    const [erro, setErro] = useState("");
 
 
     /* =====================================================
@@ -237,6 +247,19 @@ function DotaCreateRoom({
 
 
     /* =====================================================
+       TAMANHO DAS EQUIPES
+    ===================================================== */
+
+    const teams = [
+        "SOLO",
+        "DUO",
+        "TRIO",
+        "SQUAD",
+        "5V5"
+    ];
+
+
+    /* =====================================================
        FUNÇÕES
     ===================================================== */
 
@@ -272,6 +295,28 @@ function DotaCreateRoom({
     const rankEnabled =
         selectedMode === "RANQUEADA" ||
         selectedMode === "MODO CAPITÃES";
+
+
+    /* =====================================================
+       GÊNERO MÚLTIPLO
+    ===================================================== */
+
+    const alternarGenero = (genero) => {
+
+        setSelectedGender((atual) => {
+
+            if (atual.includes(genero)) {
+
+                if (atual.length === 1) {
+                    return atual;
+                }
+
+                return atual.filter((item) => item !== genero);
+            }
+
+            return [...atual, genero];
+        });
+    };
 
 
     /* =====================================================
@@ -325,22 +370,62 @@ function DotaCreateRoom({
 
 
     /* =====================================================
-       CRIAR SALA
+       CRIAR SALA NO BACKEND
     ===================================================== */
 
-    const handleCreateRoom = () => {
+    const tamanhos = {
+        SOLO: 1,
+        DUO: 2,
+        TRIO: 3,
+        SQUAD: 4,
+        "5V5": 5
+    };
 
-        const novaSala = {
-            jogo: "Dota 2",
-            modo: selectedMode,
-            elo: rankEnabled ? selectedRank : null,
-            funcao: selectedRole,
-            genero: selectedGender,
-            nome: roomName,
-            descricao: roomDescription
-        };
 
-        console.log("Sala criada:", novaSala);
+    const modoSoloDuo = false;
+
+
+    const criarSala = async () => {
+
+        if (!roomName.trim()) {
+            setErro("Digite o nome da sala.");
+            return;
+        }
+
+        try {
+
+            setErro("");
+            setCriando(true);
+
+            await apiFetch("/rooms", {
+                method: "POST",
+                body: JSON.stringify({
+                    jogo: game,
+                    nome: roomName.trim(),
+                    descricao: roomDescription.trim(),
+                    modo: selectedMode,
+                    time: selectedTeam,
+                    elo: selectedRank || "",
+                    funcao: selectedRole || "",
+                    genero: selectedGender.join(", "),
+                    maxJogadores: modoSoloDuo
+                        ? 2
+                        : (tamanhos[selectedTeam] || 2)
+                })
+            });
+
+            onBack();
+
+        } catch (e) {
+
+            setErro(e.message);
+
+        } finally {
+
+            setCriando(false);
+
+        }
+
     };
 
 
@@ -782,6 +867,37 @@ function DotaCreateRoom({
 
 
                     {/* =================================================
+                        TAMANHO DA EQUIPE
+                    ================================================= */}
+
+                    {!modoSoloDuo && (
+
+                    <section className="dota-create-section">
+
+                        <div className="dota-section-title">
+
+                            <span></span>
+
+                            <p>
+                                TAMANHO DA EQUIPE
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <TeamSize
+                            opcoes={teams}
+                            valor={selectedTeam}
+                            onChange={setSelectedTeam}
+                        />
+
+                    </section>
+                    )}
+
+
+                    {/* =================================================
                         GÊNERO
                     ================================================= */}
 
@@ -806,13 +922,13 @@ function DotaCreateRoom({
                                 type="button"
                                 className={
                                     `dota-gender-button ${
-                                        selectedGender === "HOMEM"
+                                        selectedGender.includes("HOMEM")
                                             ? "dota-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("HOMEM")
+                                    alternarGenero("HOMEM")
                                 }
                             >
 
@@ -825,13 +941,13 @@ function DotaCreateRoom({
                                 type="button"
                                 className={
                                     `dota-gender-button ${
-                                        selectedGender === "MULHER"
+                                        selectedGender.includes("MULHER")
                                             ? "dota-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("MULHER")
+                                    alternarGenero("MULHER")
                                 }
                             >
 
@@ -910,12 +1026,26 @@ function DotaCreateRoom({
 
                     <div className="dota-create-actions">
 
+                        {erro && (
+                            <p
+                                style={{
+                                    color: "#ffb3b3",
+                                    textAlign: "center",
+                                    width: "100%"
+                                }}
+                            >
+                                {erro}
+                            </p>
+                        )}
+
+
                         <button
                             className="dota-create-button"
-                            onClick={handleCreateRoom}
+                            onClick={criarSala}
+                            disabled={criando}
                             type="button"
                         >
-                            CRIAR SALA
+                            {criando ? "CRIANDO..." : "CRIAR SALA"}
                         </button>
 
 

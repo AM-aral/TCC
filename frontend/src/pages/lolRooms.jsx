@@ -3,6 +3,11 @@ import { useState } from "react";
 
 import "./lolRooms.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -54,11 +59,80 @@ function Rooms({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -85,10 +159,10 @@ function Rooms({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -461,7 +535,7 @@ function Rooms({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -479,7 +553,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -490,7 +564,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -501,7 +575,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -532,7 +606,9 @@ function Rooms({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -550,7 +626,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "1 jogador"
+                        1
                       )
                     }
                   >
@@ -561,7 +637,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "2 jogadores"
+                        2
                       )
                     }
                   >
@@ -572,7 +648,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "3 jogadores"
+                        3
                       )
                     }
                   >
@@ -583,7 +659,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "4 jogadores"
+                        4
                       )
                     }
                   >
@@ -614,7 +690,7 @@ function Rooms({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -630,7 +706,7 @@ function Rooms({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Ferro")
+                      selecionarFiltro("elo", "FERRO")
                     }
                   >
                     Ferro
@@ -638,7 +714,7 @@ function Rooms({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Bronze")
+                      selecionarFiltro("elo", "BRONZE")
                     }
                   >
                     Bronze
@@ -646,7 +722,7 @@ function Rooms({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Prata")
+                      selecionarFiltro("elo", "PRATA")
                     }
                   >
                     Prata
@@ -654,7 +730,7 @@ function Rooms({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Ouro")
+                      selecionarFiltro("elo", "OURO")
                     }
                   >
                     Ouro
@@ -662,7 +738,7 @@ function Rooms({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Platina")
+                      selecionarFiltro("elo", "PLATINA")
                     }
                   >
                     Platina
@@ -670,7 +746,15 @@ function Rooms({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Diamante")
+                      selecionarFiltro("elo", "ESMERALDA")
+                    }
+                  >
+                    Esmeralda
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro("elo", "DIAMANTE")
                     }
                   >
                     Diamante
@@ -678,7 +762,7 @@ function Rooms({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Mestre")
+                      selecionarFiltro("elo", "MESTRE")
                     }
                   >
                     Mestre
@@ -688,7 +772,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Grão-Mestre"
+                        "GM"
                       )
                     }
                   >
@@ -699,7 +783,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Desafiante"
+                        "DESAFIANTE"
                       )
                     }
                   >
@@ -730,7 +814,7 @@ function Rooms({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -748,7 +832,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Ranked Soloqueue"
+                        "SOLOQ"
                       )
                     }
                   >
@@ -759,7 +843,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Ranked Flex"
+                        "FLEX"
                       )
                     }
                   >
@@ -781,7 +865,7 @@ function Rooms({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Normal"
+                        "NORMAL"
                       )
                     }
                   >
@@ -819,98 +903,53 @@ function Rooms({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="room-details">
-
-                <h2>
-                  Ranked Soloqueue
-                </h2>
-
-
-                <div className="room-tags">
-
-                  <span className="rank-tag">
-                    🏆 Silver/Gold/Platina
-                  </span>
-
-
-                  <span className="mode-tag">
-
-                    <img
-                      src={lolLogo}
-                      alt=""
-                    />
-
-                    Ranked Soloqueue
-
-                  </span>
-
-                </div>
-
-
-                <div className="gender-options">
-
-                  <span className="male">
-                    ♂
-                  </span>
-
-                  <span className="female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro por um duo focado na vitória e na resenha
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={lolLogo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

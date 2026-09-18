@@ -1,0 +1,55 @@
+.team-size {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 14px;
+
+  flex-wrap: wrap;
+}
+
+.team-button {
+  width: 155px;
+  height: 38px;
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  background: rgba(255, 255, 255, 0.06);
+
+  color: white;
+
+  clip-path:
+    polygon(
+      5% 0,
+      100% 0,
+      95% 100%,
+      0 100%
+    );
+
+  font-size: 12px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.team-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.team-button.selected {
+  background: white;
+
+  color: #24152a;
+
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 700px) {
+  .team-button {
+    width: 135px;
+  }
+}

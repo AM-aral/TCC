@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./overRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -55,11 +60,80 @@ function OverRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -86,10 +160,10 @@ function OverRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -462,7 +536,7 @@ function OverRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -480,7 +554,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -491,7 +565,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -502,7 +576,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -533,7 +607,9 @@ function OverRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -551,7 +627,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "1 jogador"
+                        1
                       )
                     }
                   >
@@ -562,7 +638,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "2 jogadores"
+                        2
                       )
                     }
                   >
@@ -573,7 +649,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "3 jogadores"
+                        3
                       )
                     }
                   >
@@ -584,7 +660,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "jogadores",
-                        "4 jogadores"
+                        4
                       )
                     }
                   >
@@ -615,7 +691,7 @@ function OverRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -631,7 +707,7 @@ function OverRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Bronze")
+                      selecionarFiltro("elo", "BRONZE")
                     }
                   >
                     Bronze
@@ -639,7 +715,7 @@ function OverRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Prata")
+                      selecionarFiltro("elo", "PRATA")
                     }
                   >
                     Prata
@@ -647,7 +723,7 @@ function OverRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Ouro")
+                      selecionarFiltro("elo", "OURO")
                     }
                   >
                     Ouro
@@ -655,7 +731,7 @@ function OverRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Platina")
+                      selecionarFiltro("elo", "PLATINA")
                     }
                   >
                     Platina
@@ -663,7 +739,7 @@ function OverRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Diamante")
+                      selecionarFiltro("elo", "DIAMANTE")
                     }
                   >
                     Diamante
@@ -671,7 +747,7 @@ function OverRoom({
 
                   <button
                     onClick={() =>
-                      selecionarFiltro("elo", "Mestre")
+                      selecionarFiltro("elo", "MESTRE")
                     }
                   >
                     Mestre
@@ -681,7 +757,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Grão-Mestre"
+                        "GRÃO-MESTRE"
                       )
                     }
                   >
@@ -692,7 +768,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Campeão"
+                        "CAMPEÃO"
                       )
                     }
                   >
@@ -703,7 +779,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "elo",
-                        "Top 500"
+                        "TOP 500"
                       )
                     }
                   >
@@ -734,7 +810,7 @@ function OverRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -752,7 +828,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Competitivo"
+                        "COMPETITIVO"
                       )
                     }
                   >
@@ -763,7 +839,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Modo Rápido"
+                        "RÁPIDA"
                       )
                     }
                   >
@@ -774,7 +850,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Arcade"
+                        "ARCADE"
                       )
                     }
                   >
@@ -785,7 +861,7 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Controle"
+                        "CONTROLE"
                       )
                     }
                   >
@@ -796,11 +872,33 @@ function OverRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "modo",
-                        "Sem Restrições"
+                        "SEM LIMITES"
                       )
                     }
                   >
                     Sem Restrições
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "modo",
+                        "MISTURA TOTAL"
+                      )
+                    }
+                  >
+                    Mistura Total
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      selecionarFiltro(
+                        "modo",
+                        "DEATHMATCH"
+                      )
+                    }
+                  >
+                    Deathmatch
                   </button>
 
                 </div>
@@ -834,98 +932,53 @@ function OverRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="over-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="over-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="over-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="over-room-details">
-
-                <h2>
-                  Competitivo - Duo
-                </h2>
-
-
-                <div className="over-room-tags">
-
-                  <span className="over-rank-tag">
-                    🏆 Diamante/Mestre
-                  </span>
-
-
-                  <span className="over-mode-tag">
-
-                    <img
-                      src={owBigLogo}
-                      alt=""
-                    />
-
-                    Competitivo
-
-                  </span>
-
-                </div>
-
-
-                <div className="over-gender-options">
-
-                  <span className="over-male">
-                    ♂
-                  </span>
-
-                  <span className="over-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro duo de suporte/tanque pra subir de elo com resenha.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="over-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="over-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={owBigLogo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

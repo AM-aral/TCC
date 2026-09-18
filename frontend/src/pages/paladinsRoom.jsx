@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./paladinsRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -53,11 +58,80 @@ function PaladinsRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -84,10 +158,10 @@ function PaladinsRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -460,7 +534,7 @@ function PaladinsRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -478,7 +552,7 @@ function PaladinsRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -489,7 +563,7 @@ function PaladinsRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -500,7 +574,7 @@ function PaladinsRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -531,7 +605,9 @@ function PaladinsRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -548,7 +624,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "1 jogador"
+                          1
                         )
                       }
                     >
@@ -558,7 +634,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "2 jogadores"
+                          2
                         )
                       }
                     >
@@ -568,7 +644,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "3 jogadores"
+                          3
                         )
                       }
                     >
@@ -578,7 +654,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "4 jogadores"
+                          4
                         )
                       }
                     >
@@ -608,7 +684,7 @@ function PaladinsRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -625,7 +701,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Bronze"
+                          "BRONZE"
                         )
                       }
                     >
@@ -635,7 +711,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Prata"
+                          "PRATA"
                         )
                       }
                     >
@@ -645,7 +721,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Ouro"
+                          "OURO"
                         )
                       }
                     >
@@ -655,7 +731,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Platina"
+                          "PLATINA"
                         )
                       }
                     >
@@ -665,7 +741,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Diamante"
+                          "DIAMANTE"
                         )
                       }
                     >
@@ -675,7 +751,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Mestre"
+                          "MESTRE"
                         )
                       }
                     >
@@ -685,7 +761,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Grão-Mestre"
+                          "GRÃO-MESTRE"
                         )
                       }
                     >
@@ -715,7 +791,7 @@ function PaladinsRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -732,7 +808,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Ranked"
+                          "CLASSIFICATÓRIA"
                         )
                       }
                     >
@@ -742,7 +818,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Casual"
+                          "PARTIDA RÁPIDA"
                         )
                       }
                     >
@@ -752,7 +828,7 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Onslaught"
+                          "ONSLAUGHT"
                         )
                       }
                     >
@@ -762,11 +838,41 @@ function PaladinsRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Team Deathmatch"
+                          "TEAM DEATHMATCH"
                         )
                       }
                     >
                       Team Deathmatch
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "modo",
+                          "PERSONALIZADA"
+                        )
+                      }
+                    >
+                      Personalizada
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "modo",
+                          "TREINO"
+                        )
+                      }
+                    >
+                      Treino
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "modo",
+                          "EVENTO"
+                        )
+                      }
+                    >
+                      Evento
                     </button>
                 </div>
 
@@ -799,98 +905,53 @@ function PaladinsRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="paladins-room-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="paladins-room-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="paladins-room-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="paladins-room-room-details">
-
-                <h2>
-                  Ranked - Duo
-                </h2>
-
-
-                <div className="paladins-room-room-tags">
-
-                  <span className="paladins-room-rank-tag">
-                    🏆 Ouro/Platina
-                  </span>
-
-
-                  <span className="paladins-room-mode-tag">
-
-                    <img
-                      src={paladinsLogo}
-                      alt=""
-                    />
-
-                    Ranked
-
-                  </span>
-
-                </div>
-
-
-                <div className="paladins-room-gender-options">
-
-                  <span className="paladins-room-male">
-                    ♂
-                  </span>
-
-                  <span className="paladins-room-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro duo pra subir de rank no competitivo.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="paladins-room-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="paladins-room-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={paladinsLogo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

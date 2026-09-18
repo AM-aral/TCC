@@ -1,4 +1,18 @@
+import { useEffect, useState } from "react";
 
+import { apiFetch, getUsuario, getToken, salvarUsuario } from "../api";
+
+import EditProfileModal from "../components/EditProfileModal";
+
+import {
+  obterJogo,
+  elosDoJogo,
+  funcoesDoJogo,
+  BANNER_PADRAO,
+  FOTO_PADRAO
+} from "../data/jogos";
+
+// LOGO
 import logo from "../assets/logo.png";
 
 // SIDEBAR
@@ -17,108 +31,67 @@ import dotaIcon from "../assets/icon/dota icon.png";
 import rivalsIcon from "../assets/icon/marvel icon.png";
 import lolIcon from "../assets/icon/lol icon.png";
 
-// JOGOS
-import lolGame from "../assets/games/lol.png";
-import valorantGame from "../assets/games/valorant.png";
-import csGame from "../assets/games/cs2.png";
-
-// PERFIL
-import profilePhoto from "../assets/profile/profile-photo.png";
-import profileBanner from "../assets/profile/banner.png";
-
-// ELOS
-import lolDesafiante from "../assets/elos/lol/desafiante.png";
-import csGlobal from "../assets/elos/cs/Global.png";
-
-// FUNÇÕES
-import topIcon from "../assets/funcoes/top.png";
-import jungleIcon from "../assets/funcoes/jungle.png";
-
-import duelistaIcon from "../assets/funcoes/duelista.png";
-import iniciadorIcon from "../assets/funcoes/iniciador.png";
-
-import awperIcon from "../assets/funcoes/awper.png";
-import lurkerIcon from "../assets/funcoes/lurker.png";
-
 import "./Profile.css";
 
 // ======================================================
-// PROCURAR AUTOMATICAMENTE O RADIANTE
+// PADRÕES (quando o usuário ainda não personalizou)
 // ======================================================
 
-const valorantRanks = import.meta.glob(
-  "../assets/elos/valorant/*",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }
-);
+const TAGS_PADRAO = ["🎮 Casual", "🏆 Competitivo", "🔥 Tryhard"];
 
-const valorantRadiante =
-  Object.entries(valorantRanks).find(([path]) =>
-    path.toLowerCase().includes("radiante")
-  )?.[1] || null;
-
-// ======================================================
-// JOGOS DO PERFIL
-// ======================================================
-
-const games = [
-  {
-    id: "lol",
-
-    image: lolGame,
-
-    name: "LEAGUE OF LEGENDS",
-
-    rank: "Desafiante",
-    rankInfo: "1467 Pdl",
-    rankImage: lolDesafiante,
-
-    mainLabel: "Rota Principal",
-    mainIcon: topIcon,
-
-    secondaryLabel: "Rota Secundária",
-    secondaryIcon: jungleIcon,
-  },
-
-  {
-    id: "valorant",
-
-    image: valorantGame,
-
-    name: "VALORANT",
-
-    rank: "Radiante",
-    rankInfo: "Top 1 BR",
-    rankImage: valorantRadiante,
-
-    mainLabel: "Função Principal",
-    mainIcon: duelistaIcon,
-
-    secondaryLabel: "Função Secundária",
-    secondaryIcon: iniciadorIcon,
-  },
-
-  {
-    id: "cs",
-
-    image: csGame,
-
-    name: "COUNTER STRIKE",
-
-    rank: "Global Elite",
-    rankInfo: "★",
-    rankImage: csGlobal,
-
-    mainLabel: "Função Principal",
-    mainIcon: awperIcon,
-
-    secondaryLabel: "Função Secundária",
-    secondaryIcon: lurkerIcon,
-  },
+const PREFERENCIAS_PADRAO = [
+  "🎙️ Comunicação por voz",
+  "🏆 Competitivo",
+  "🌎 Servidor Brasil"
 ];
+
+// ======================================================
+// MONTA OS CARDS DE JOGO A PARTIR DO PERFIL
+// ======================================================
+
+function montarJogos(perfil) {
+  return (perfil?.jogos || [])
+    .map((item) => {
+      const jogo = obterJogo(item.jogo);
+
+      if (!jogo) {
+        return null;
+      }
+
+      const elo = elosDoJogo(item.jogo).find(
+        (opcao) => opcao.valor === item.elo
+      );
+
+      const funcoes = funcoesDoJogo(item.jogo);
+
+      const principal = funcoes.find(
+        (opcao) => opcao.valor === item.funcao
+      );
+
+      const secundaria = funcoes.find(
+        (opcao) => opcao.valor === item.funcao2
+      );
+
+      return {
+        id: jogo.id,
+        image: jogo.capa,
+        name: jogo.nome,
+
+        rank: elo?.nome || "Sem elo",
+        rankInfo: "",
+        rankImage: elo?.imagem || null,
+
+        mainLabel: "Função Principal",
+        mainIcon: principal?.imagem || null,
+        mainNome: principal?.nome || "—",
+
+        secondaryLabel: "Função Secundária",
+        secondaryIcon: secundaria?.imagem || null,
+        secondaryNome: secundaria?.nome || "—"
+      };
+    })
+    .filter(Boolean);
+}
 
 // ======================================================
 // COMPONENTE
@@ -131,6 +104,84 @@ export default function Profile({
   onSettings,
   onGameSelect,
 }) {
+  const [perfil, setPerfil] = useState(() => getUsuario());
+
+  const [editando, setEditando] = useState(false);
+
+  // =====================================================
+  // BUSCAR PERFIL ATUALIZADO
+  // =====================================================
+
+  useEffect(() => {
+    let ativo = true;
+
+    const carregar = async () => {
+      if (!getToken()) {
+        return;
+      }
+
+      try {
+        const dados = await apiFetch("/auth/me");
+
+        if (ativo && dados?.usuario) {
+          setPerfil(dados.usuario);
+
+          salvarUsuario(dados.usuario);
+        }
+      } catch {
+        // Mantém os dados locais se o servidor falhar
+      }
+    };
+
+    carregar();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  // =====================================================
+  // VALORES DE EXIBIÇÃO
+  // =====================================================
+
+  const email = perfil?.email || "";
+
+  const apelido = perfil?.apelido
+    ? `@${perfil.apelido}`
+    : `@${email.split("@")[0] || "jogador"}`;
+
+  const jogos = montarJogos(perfil);
+
+  const tags = perfil?.tags?.length
+    ? perfil.tags
+    : TAGS_PADRAO;
+
+  const preferencias = perfil?.preferencias?.length
+    ? perfil.preferencias
+    : PREFERENCIAS_PADRAO;
+
+  // =====================================================
+  // SALVAR
+  // =====================================================
+
+  const salvarPerfil = async (dados) => {
+    const resposta = await apiFetch("/auth/perfil", {
+      method: "PUT",
+      body: JSON.stringify(dados)
+    });
+
+    if (resposta?.usuario) {
+      setPerfil(resposta.usuario);
+
+      salvarUsuario(resposta.usuario);
+    }
+
+    setEditando(false);
+  };
+
+  // =====================================================
+  // RENDER
+  // =====================================================
 
   return (
     <div className="profile-page">
@@ -405,13 +456,22 @@ export default function Profile({
 
           {/* BANNER */}
           <img
-            src={profileBanner}
+            src={perfil?.banner || BANNER_PADRAO}
             className="profile-banner-background"
             alt=""
           />
 
           {/* ESCURECIMENTO */}
           <div className="profile-banner-dark"></div>
+
+          {/* BOTÃO EDITAR */}
+          <button
+            className="profile-edit-button"
+            onClick={() => setEditando(true)}
+            type="button"
+          >
+            ✏️ Editar Perfil
+          </button>
 
           {/* INFORMAÇÕES */}
           <div className="profile-user-area">
@@ -420,7 +480,7 @@ export default function Profile({
             <div className="profile-avatar-wrapper">
 
               <img
-                src={profilePhoto}
+                src={perfil?.foto || FOTO_PADRAO}
                 className="profile-avatar"
                 alt="Foto de perfil"
               />
@@ -433,31 +493,28 @@ export default function Profile({
             <div className="profile-user-text">
 
               <h1>
-                TENEBROSO_DA_CINTURA_TORTA
+                {perfil?.nome || "JOGADOR"}
               </h1>
 
               <span className="profile-user-name">
-                @ESJMELO
+                {apelido}
               </span>
 
               <p>
-                Procurando players para jogar e subir de elo.
+                {perfil?.descricao ||
+                  "Procurando players para jogar e subir de elo."}
               </p>
 
               {/* TAGS */}
               <div className="profile-user-tags">
 
-                <span>
-                  🎮 Casual
-                </span>
+                {tags.map((tag) => (
 
-                <span>
-                  🏆 Competitivo
-                </span>
+                  <span key={tag}>
+                    {tag}
+                  </span>
 
-                <span>
-                  🔥 Tryhard
-                </span>
+                ))}
 
               </div>
 
@@ -480,15 +537,36 @@ export default function Profile({
             </h2>
 
             <span>
-              3 jogos
+              {jogos.length}{" "}
+              {jogos.length === 1 ? "jogo" : "jogos"}
             </span>
 
           </div>
 
+          {jogos.length === 0 && (
+
+            <div className="profile-games-empty">
+
+              <p>
+                Você ainda não adicionou nenhum jogo.
+              </p>
+
+              <button
+                className="profile-edit-button profile-edit-button-inline"
+                onClick={() => setEditando(true)}
+                type="button"
+              >
+                + Adicionar jogos
+              </button>
+
+            </div>
+
+          )}
+
           {/* CARDS */}
           <div className="profile-games-grid">
 
-            {games.map((game) => (
+            {jogos.map((game) => (
 
               <article
                 className="profile-game-card"
@@ -541,9 +619,11 @@ export default function Profile({
                         {game.rank}
                       </strong>
 
-                      <span>
-                        {game.rankInfo}
-                      </span>
+                      {game.rankInfo && (
+                        <span>
+                          {game.rankInfo}
+                        </span>
+                      )}
 
                     </div>
 
@@ -557,10 +637,12 @@ export default function Profile({
                   {/* FUNÇÃO PRINCIPAL */}
                   <div className="profile-game-role">
 
-                    <img
-                      src={game.mainIcon}
-                      alt=""
-                    />
+                    {game.mainIcon && (
+                      <img
+                        src={game.mainIcon}
+                        alt=""
+                      />
+                    )}
 
                     <div>
 
@@ -569,7 +651,7 @@ export default function Profile({
                       </span>
 
                       <strong>
-                        Principal
+                        {game.mainNome}
                       </strong>
 
                     </div>
@@ -579,10 +661,12 @@ export default function Profile({
                   {/* FUNÇÃO SECUNDÁRIA */}
                   <div className="profile-game-role">
 
-                    <img
-                      src={game.secondaryIcon}
-                      alt=""
-                    />
+                    {game.secondaryIcon && (
+                      <img
+                        src={game.secondaryIcon}
+                        alt=""
+                      />
+                    )}
 
                     <div>
 
@@ -591,7 +675,7 @@ export default function Profile({
                       </span>
 
                       <strong>
-                        Secundária
+                        {game.secondaryNome}
                       </strong>
 
                     </div>
@@ -621,8 +705,8 @@ export default function Profile({
             </h2>
 
             <p>
-              Gosto de jogar com pessoas que levam o jogo
-              a sério, mas sem perder a diversão.
+              {perfil?.descricao ||
+                "Gosto de jogar com pessoas que levam o jogo a sério, mas sem perder a diversão."}
             </p>
 
           </div>
@@ -636,41 +720,24 @@ export default function Profile({
 
             <div className="profile-preferences">
 
-              <div className="profile-preference-item">
+              {preferencias.map((item) => (
 
-                <span>
-                  🎙️
-                </span>
+                <div
+                  className="profile-preference-item"
+                  key={item}
+                >
 
-                <p>
-                  Comunicação por voz
-                </p>
+                  <span>
+                    ✦
+                  </span>
 
-              </div>
+                  <p>
+                    {item}
+                  </p>
 
-              <div className="profile-preference-item">
+                </div>
 
-                <span>
-                  🏆
-                </span>
-
-                <p>
-                  Competitivo
-                </p>
-
-              </div>
-
-              <div className="profile-preference-item">
-
-                <span>
-                  🌎
-                </span>
-
-                <p>
-                  Servidor Brasil
-                </p>
-
-              </div>
+              ))}
 
             </div>
 
@@ -728,6 +795,19 @@ export default function Profile({
         </section>
 
       </main>
+
+      {/* ==================================================
+          MODAL DE EDIÇÃO
+      ================================================== */}
+      {editando && (
+
+        <EditProfileModal
+          usuario={perfil}
+          onFechar={() => setEditando(false)}
+          onSalvar={salvarPerfil}
+        />
+
+      )}
 
     </div>
   );

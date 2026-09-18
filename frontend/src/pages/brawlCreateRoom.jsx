@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./brawlCreateRoom.css";
 
+import { apiFetch } from "../api";
+
+import TeamSize from "../components/TeamSize";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -66,9 +70,19 @@ function BrawlCreateRoom({
 
     const [selectedMode, setSelectedMode] = useState("RANKED 1V1");
 
+    const [selectedTeam, setSelectedTeam] = useState("DUO");
+
     const [selectedRank, setSelectedRank] = useState(null);
 
-    const [selectedGender, setSelectedGender] = useState("HOMEM");
+    const [selectedGender, setSelectedGender] = useState(["HOMEM"]);
+
+    const [nomeSala, setNomeSala] = useState("");
+
+    const [descricao, setDescricao] = useState("");
+
+    const [criando, setCriando] = useState(false);
+
+    const [erro, setErro] = useState("");
 
 
     /* =====================================================
@@ -167,6 +181,16 @@ function BrawlCreateRoom({
 
 
     /* =====================================================
+       TAMANHO DAS EQUIPES
+    ===================================================== */
+
+    const teams = [
+        "SOLO",
+        "DUO"
+    ];
+
+
+    /* =====================================================
        ELOS
     ===================================================== */
 
@@ -212,6 +236,27 @@ function BrawlCreateRoom({
         selectedMode === "RANKED 2V2";
 
 
+    const modoSoloDuo = selectedMode === "RANKED 1V1";
+
+
+    const alternarGenero = (genero) => {
+
+        setSelectedGender((atual) => {
+
+            if (atual.includes(genero)) {
+
+                if (atual.length === 1) {
+                    return atual;
+                }
+
+                return atual.filter((item) => item !== genero);
+            }
+
+            return [...atual, genero];
+        });
+    };
+
+
     /* =====================================================
        TROCAR MODO
     ===================================================== */
@@ -246,6 +291,60 @@ function BrawlCreateRoom({
         if (typeof onGameSelect === "function") {
             onGameSelect(selectedGame);
         }
+    };
+
+
+    /* =====================================================
+       CRIAR SALA NO BACKEND
+    ===================================================== */
+
+    const tamanhos = {
+        SOLO: 1,
+        DUO: 2
+    };
+
+
+    const criarSala = async () => {
+
+        if (!nomeSala.trim()) {
+            setErro("Digite o nome da sala.");
+            return;
+        }
+
+        try {
+
+            setErro("");
+            setCriando(true);
+
+            await apiFetch("/rooms", {
+                method: "POST",
+                body: JSON.stringify({
+                    jogo: game,
+                    nome: nomeSala.trim(),
+                    descricao: descricao.trim(),
+                    modo: selectedMode,
+                    time: selectedTeam,
+                    elo: selectedRank || "",
+                    funcao: "",
+                    genero: selectedGender.join(", "),
+                    maxJogadores: modoSoloDuo
+                        ? 2
+                        : (tamanhos[selectedTeam] || 2)
+                })
+            });
+
+            onBack();
+
+        } catch (e) {
+
+            setErro(e.message);
+
+        } finally {
+
+            setCriando(false);
+
+        }
+
     };
 
 
@@ -630,6 +729,37 @@ function BrawlCreateRoom({
 
 
                     {/* =================================================
+                        TAMANHO DA EQUIPE
+                    ================================================= */}
+
+                    {!modoSoloDuo && (
+
+                    <section className="brawl-create-section">
+
+                        <div className="brawl-section-title">
+
+                            <span></span>
+
+                            <p>
+                                TAMANHO DA EQUIPE
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <TeamSize
+                            opcoes={teams}
+                            valor={selectedTeam}
+                            onChange={setSelectedTeam}
+                        />
+
+                    </section>
+                    )}
+
+
+                    {/* =================================================
                         GÊNERO
                     ================================================= */}
 
@@ -654,13 +784,13 @@ function BrawlCreateRoom({
                                 type="button"
                                 className={
                                     `brawl-gender-button ${
-                                        selectedGender === "HOMEM"
+                                        selectedGender.includes("HOMEM")
                                             ? "brawl-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("HOMEM")
+                                    alternarGenero("HOMEM")
                                 }
                             >
 
@@ -673,13 +803,13 @@ function BrawlCreateRoom({
                                 type="button"
                                 className={
                                     `brawl-gender-button ${
-                                        selectedGender === "MULHER"
+                                        selectedGender.includes("MULHER")
                                             ? "brawl-selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("MULHER")
+                                    alternarGenero("MULHER")
                                 }
                             >
 
@@ -722,6 +852,10 @@ function BrawlCreateRoom({
                                 <input
                                     type="text"
                                     placeholder="Digite o nome da sala..."
+                                    value={nomeSala}
+                                    onChange={(e) =>
+                                        setNomeSala(e.target.value)
+                                    }
                                 />
 
                             </div>
@@ -735,6 +869,10 @@ function BrawlCreateRoom({
 
                                 <textarea
                                     placeholder="Digite uma descrição..."
+                                    value={descricao}
+                                    onChange={(e) =>
+                                        setDescricao(e.target.value)
+                                    }
                                 ></textarea>
 
                             </div>
@@ -750,11 +888,25 @@ function BrawlCreateRoom({
 
                     <div className="brawl-create-actions">
 
+                        {erro && (
+                            <p
+                                style={{
+                                    color: "#ffb3b3",
+                                    textAlign: "center",
+                                    width: "100%"
+                                }}
+                            >
+                                {erro}
+                            </p>
+                        )}
+
                         <button
                             className="brawl-create-button"
+                            onClick={criarSala}
                             type="button"
+                            disabled={criando}
                         >
-                            CRIAR SALA
+                            {criando ? "CRIANDO..." : "CRIAR SALA"}
                         </button>
 
 

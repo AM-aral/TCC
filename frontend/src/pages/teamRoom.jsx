@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./teamRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -53,11 +58,80 @@ function TeamRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -84,10 +158,10 @@ function TeamRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -460,7 +534,7 @@ function TeamRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -478,7 +552,7 @@ function TeamRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -489,7 +563,7 @@ function TeamRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -500,7 +574,7 @@ function TeamRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -531,7 +605,9 @@ function TeamRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -548,7 +624,7 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "1 jogador"
+                          1
                         )
                       }
                     >
@@ -558,7 +634,7 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "2 jogadores"
+                          2
                         )
                       }
                     >
@@ -568,7 +644,7 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "3 jogadores"
+                          3
                         )
                       }
                     >
@@ -578,7 +654,7 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "4 jogadores"
+                          4
                         )
                       }
                     >
@@ -588,7 +664,7 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "5 jogadores"
+                          5
                         )
                       }
                     >
@@ -618,7 +694,7 @@ function TeamRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -635,41 +711,81 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Novato"
+                          "SMALL-TIME THUG"
                         )
                       }
                     >
-                      Novato
+                      Small-Time Thug
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Intermediário"
+                          "HIRED GUN"
                         )
                       }
                     >
-                      Intermediário
+                      Hired Gun
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Avançado"
+                          "CONTRACT KILLER"
                         )
                       }
                     >
-                      Avançado
+                      Contract Killer
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Elite"
+                          "LIQUIDATOR"
                         )
                       }
                     >
-                      Elite
+                      Liquidator
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "elo",
+                          "RAGING SOCIOPATH"
+                        )
+                      }
+                    >
+                      Raging Sociopath
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "elo",
+                          "EXPERT ASSASSIN"
+                        )
+                      }
+                    >
+                      Expert Assassin
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "elo",
+                          "ELITE EXTERMINATOR"
+                        )
+                      }
+                    >
+                      Elite Exterminator
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "elo",
+                          "DEATH MERCHANT"
+                        )
+                      }
+                    >
+                      Death Merchant
                     </button>
                 </div>
 
@@ -695,7 +811,7 @@ function TeamRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -712,7 +828,7 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Casual"
+                          "CASUAL"
                         )
                       }
                     >
@@ -722,7 +838,7 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Competitivo 6v6"
+                          "COMPETITIVO"
                         )
                       }
                     >
@@ -732,7 +848,7 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Highlander"
+                          "HIGHLANDER"
                         )
                       }
                     >
@@ -742,7 +858,7 @@ function TeamRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Mann vs. Machine"
+                          "MANN VS MACHINE"
                         )
                       }
                     >
@@ -779,98 +895,53 @@ function TeamRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="team-room-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="team-room-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="team-room-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="team-room-room-details">
-
-                <h2>
-                  Competitivo 6v6
-                </h2>
-
-
-                <div className="team-room-room-tags">
-
-                  <span className="team-room-rank-tag">
-                    🏆 Avançado
-                  </span>
-
-
-                  <span className="team-room-mode-tag">
-
-                    <img
-                      src={tf2Logo}
-                      alt=""
-                    />
-
-                    Competitivo 6v6
-
-                  </span>
-
-                </div>
-
-
-                <div className="team-room-gender-options">
-
-                  <span className="team-room-male">
-                    ♂
-                  </span>
-
-                  <span className="team-room-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro time pra competitivo 6v6, foco em evoluir junto.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="team-room-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="team-room-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={tf2Logo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

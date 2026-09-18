@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./r6Room.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -53,11 +58,80 @@ function R6Room({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -84,10 +158,10 @@ function R6Room({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -460,7 +534,7 @@ function R6Room({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -478,7 +552,7 @@ function R6Room({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -489,7 +563,7 @@ function R6Room({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -500,7 +574,7 @@ function R6Room({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -531,7 +605,9 @@ function R6Room({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -548,7 +624,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "1 jogador"
+                          1
                         )
                       }
                     >
@@ -558,7 +634,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "2 jogadores"
+                          2
                         )
                       }
                     >
@@ -568,7 +644,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "3 jogadores"
+                          3
                         )
                       }
                     >
@@ -578,7 +654,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "4 jogadores"
+                          4
                         )
                       }
                     >
@@ -608,7 +684,7 @@ function R6Room({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -625,7 +701,47 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Cobre"
+                          "dirt"
+                        )
+                      }
+                    >
+                      dirt
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "elo",
+                          "grass"
+                        )
+                      }
+                    >
+                      grass
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "elo",
+                          "stone"
+                        )
+                      }
+                    >
+                      stone
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "elo",
+                          "tin"
+                        )
+                      }
+                    >
+                      tin
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "elo",
+                          "COBRE"
                         )
                       }
                     >
@@ -635,7 +751,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Bronze"
+                          "BRONZE"
                         )
                       }
                     >
@@ -645,7 +761,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Prata"
+                          "PRATA"
                         )
                       }
                     >
@@ -655,7 +771,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Ouro"
+                          "OURO"
                         )
                       }
                     >
@@ -665,7 +781,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Platina"
+                          "PLATINA"
                         )
                       }
                     >
@@ -675,17 +791,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Esmeralda"
-                        )
-                      }
-                    >
-                      Esmeralda
-                    </button>
-                    <button
-                      onClick={() =>
-                        selecionarFiltro(
-                          "elo",
-                          "Diamante"
+                          "DIAMANTE"
                         )
                       }
                     >
@@ -695,7 +801,7 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Campeão"
+                          "CAMPEÃO"
                         )
                       }
                     >
@@ -725,7 +831,7 @@ function R6Room({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -742,41 +848,41 @@ function R6Room({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Ranked"
+                          "RANQUEADA"
                         )
                       }
                     >
-                      Ranked
+                      Ranqueada
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Unranked"
+                          "PADRÃO"
                         )
                       }
                     >
-                      Unranked
+                      Padrão
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Casual"
+                          "ARCADE"
                         )
                       }
                     >
-                      Casual
+                      Arcade
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Turno"
+                          "PERSONALIZADA"
                         )
                       }
                     >
-                      Turno
+                      Personalizada
                     </button>
                 </div>
 
@@ -809,98 +915,53 @@ function R6Room({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="r6-room-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="r6-room-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="r6-room-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="r6-room-room-details">
-
-                <h2>
-                  Ranked - Duo
-                </h2>
-
-
-                <div className="r6-room-room-tags">
-
-                  <span className="r6-room-rank-tag">
-                    🏆 Ouro/Platina
-                  </span>
-
-
-                  <span className="r6-room-mode-tag">
-
-                    <img
-                      src={r6Logo}
-                      alt=""
-                    />
-
-                    Ranked
-
-                  </span>
-
-                </div>
-
-
-                <div className="r6-room-gender-options">
-
-                  <span className="r6-room-male">
-                    ♂
-                  </span>
-
-                  <span className="r6-room-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro duo pra subir de rank e evoluir na call.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="r6-room-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="r6-room-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={r6Logo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

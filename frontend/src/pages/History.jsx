@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from "react";
+
 import "./History.css";
 
 import logo from "../assets/logo.png";
@@ -21,10 +23,55 @@ import lolLogo from "../assets/icon/lol icon.png";
 // FUNDO
 import roomsBackground from "../assets/rooms-bg.png";
 
-// IMAGENS DOS JOGOS
-import lolBackground from "../assets/games/lol.png";
-import valorantBackground from "../assets/games/valorant.png";
-import csBackground from "../assets/games/cs2.png";
+import { apiFetch, getUsuario } from "../api";
+import { obterJogoPorNome } from "../data/jogos";
+
+// =====================================================
+// STATUS APRESENTÁVEIS
+// =====================================================
+
+const STATUS_NOMES = {
+  aberta: "Aberta",
+  concluida: "Concluída",
+  cancelada: "Cancelada"
+};
+
+// =====================================================
+// FORMATAR DATA
+// =====================================================
+
+function formatarData(iso) {
+  const data = new Date(iso);
+
+  const agora = new Date();
+
+  const inicioHoje = new Date(agora);
+
+  inicioHoje.setHours(0, 0, 0, 0);
+
+  const inicioOntem = new Date(inicioHoje);
+
+  inicioOntem.setDate(inicioOntem.getDate() - 1);
+
+  const hora =
+    `${String(data.getHours()).padStart(2, "0")}:` +
+    `${String(data.getMinutes()).padStart(2, "0")}`;
+
+  if (data >= inicioHoje) {
+    return `Hoje, ${hora}`;
+  }
+
+  if (data >= inicioOntem) {
+    return `Ontem, ${hora}`;
+  }
+
+  const dataTexto =
+    `${String(data.getDate()).padStart(2, "0")}/` +
+    `${String(data.getMonth() + 1).padStart(2, "0")}/` +
+    `${data.getFullYear()}`;
+
+  return `${dataTexto}, ${hora}`;
+}
 
 function History({
   onHome,
@@ -46,82 +93,196 @@ function History({
   };
 
   // =====================================================
-  // HISTÓRICO
+  // ESTADOS
   // =====================================================
 
-  const historico = [
-    {
-      id: 1,
-      jogo: "League of Legends",
-      imagem: lolBackground,
-      sala: "Ranked Soloqueue",
-      tipo: "Participou",
-      elo: "Platina",
-      jogadores: "2/5",
-      data: "Hoje, 12:40",
-      status: "Concluída"
-    },
+  const [salas, setSalas] = useState([]);
 
-    {
-      id: 2,
-      jogo: "Valorant",
-      imagem: valorantBackground,
-      sala: "Ranked para subir",
-      tipo: "Criou",
-      elo: "Diamante",
-      jogadores: "4/5",
-      data: "Hoje, 10:15",
-      status: "Concluída"
-    },
+  const [carregando, setCarregando] = useState(true);
 
-    {
-      id: 3,
-      jogo: "Counter-Strike 2",
-      imagem: csBackground,
-      sala: "Duo competitivo",
-      tipo: "Participou",
-      elo: "AK",
-      jogadores: "2/2",
-      data: "Ontem, 21:30",
-      status: "Concluída"
-    },
+  const [erro, setErro] = useState("");
 
-    {
-      id: 4,
-      jogo: "League of Legends",
-      imagem: lolBackground,
-      sala: "Procurando duo",
-      tipo: "Criou",
-      elo: "Ouro",
-      jogadores: "2/2",
-      data: "Ontem, 18:20",
-      status: "Finalizada"
-    },
+  const [filtro, setFiltro] = useState("todas");
 
-    {
-      id: 5,
-      jogo: "Valorant",
-      imagem: valorantBackground,
-      sala: "Ranked 5x5",
-      tipo: "Participou",
-      elo: "Ascendente",
-      jogadores: "5/5",
-      data: "12/09/2026, 20:00",
-      status: "Concluída"
-    },
+  const [busca, setBusca] = useState("");
 
-    {
-      id: 6,
-      jogo: "Counter-Strike 2",
-      imagem: csBackground,
-      sala: "Procurando time",
-      tipo: "Criou",
-      elo: "Ouro",
-      jogadores: "3/5",
-      data: "11/09/2026, 16:45",
-      status: "Cancelada"
+  const [acaoId, setAcaoId] = useState(null);
+
+  const usuario = getUsuario();
+
+  const meuId = usuario?.id || "";
+
+  // =====================================================
+  // CARREGAR HISTÓRICO
+  // =====================================================
+
+  const carregarHistorico = async () => {
+    try {
+      setCarregando(true);
+      setErro("");
+
+      const minhasSalas = await apiFetch("/rooms/minhas");
+
+      setSalas(minhasSalas);
+
+    } catch (e) {
+      setErro(e.message || "Não foi possível carregar o histórico.");
+    } finally {
+      setCarregando(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    let ativo = true;
+
+    const carregar = async () => {
+      try {
+        setCarregando(true);
+        setErro("");
+
+        const minhasSalas = await apiFetch("/rooms/minhas");
+
+        if (ativo) {
+          setSalas(minhasSalas);
+        }
+
+      } catch (e) {
+        if (ativo) {
+          setErro(e.message || "Não foi possível carregar o histórico.");
+        }
+      } finally {
+        if (ativo) {
+          setCarregando(false);
+        }
+      }
+    };
+
+    carregar();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  // =====================================================
+  // ITENS DO HISTÓRICO
+  // =====================================================
+
+  const itens = useMemo(() => salas.map((sala) => {
+    const criadorId =
+      sala.criador?._id ||
+      sala.criador ||
+      "";
+
+    const euCriei =
+      String(criadorId) === String(meuId);
+
+    const jogo = obterJogoPorNome(sala.jogo) || {};
+
+    return {
+      id: sala._id,
+      jogo: sala.jogo,
+      imagem: jogo.capa || roomsBackground,
+      sala: sala.nome,
+      tipo: euCriei ? "Criou" : "Participou",
+      elo: sala.elo || "",
+      jogadores: `${sala.jogadores?.length || 0}/${sala.maxJogadores || 2}`,
+      data: formatarData(sala.createdAt),
+      statusRaw: sala.status || "aberta",
+      status: STATUS_NOMES[sala.status] || "Aberta",
+      euSouCriador: euCriei
+    };
+  }), [salas, meuId]);
+
+  // =====================================================
+  // RESUMO
+  // =====================================================
+
+  const resumo = useMemo(() => {
+    const criadas = itens.filter(
+      (item) => item.tipo === "Criou"
+    ).length;
+
+    const participadas = itens.filter(
+      (item) => item.tipo === "Participou"
+    ).length;
+
+    const concluidas = itens.filter(
+      (item) => item.statusRaw === "concluida"
+    ).length;
+
+    return {
+      atividades: itens.length,
+      criadas,
+      participadas,
+      concluidas
+    };
+  }, [itens]);
+
+  // =====================================================
+  // FILTRO + BUSCA
+  // =====================================================
+
+  const historicoFiltrado = itens.filter((item) => {
+    if (filtro === "criadas") {
+      if (item.tipo !== "Criou") {
+        return false;
+      }
+    }
+
+    if (filtro === "participadas") {
+      if (item.tipo !== "Participou") {
+        return false;
+      }
+    }
+
+    if (filtro === "concluidas") {
+      if (item.statusRaw !== "concluida") {
+        return false;
+      }
+    }
+
+    if (busca.trim()) {
+      const alvo = busca.trim().toLowerCase();
+
+      const achou =
+        item.jogo.toLowerCase().includes(alvo) ||
+        item.sala.toLowerCase().includes(alvo) ||
+        item.status.toLowerCase().includes(alvo) ||
+        item.tipo.toLowerCase().includes(alvo);
+
+      if (!achou) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  // =====================================================
+  // ALTERAR STATUS DA SALA
+  // =====================================================
+
+  const atualizarStatusSala = async (idSala, status) => {
+    setAcaoId(idSala);
+    setErro("");
+
+    try {
+      await apiFetch(`/rooms/${idSala}/status`, {
+        method: "PUT",
+        body: JSON.stringify({ status })
+      });
+
+      setAcaoId(null);
+
+      await carregarHistorico();
+
+    } catch (e) {
+      setAcaoId(null);
+
+      setErro(e.message || "Não foi possível atualizar a sala.");
+    }
+  };
 
   return (
     <div
@@ -408,6 +569,10 @@ function History({
               <input
                 type="text"
                 placeholder="Buscar no histórico..."
+                value={busca}
+                onChange={(evento) =>
+                  setBusca(evento.target.value)
+                }
               />
 
             </div>
@@ -421,22 +586,22 @@ function History({
           <div className="history-summary">
 
             <div className="history-summary-card">
-              <strong>24</strong>
+              <strong>{resumo.atividades}</strong>
               <span>Atividades</span>
             </div>
 
             <div className="history-summary-card">
-              <strong>8</strong>
+              <strong>{resumo.criadas}</strong>
               <span>Salas criadas</span>
             </div>
 
             <div className="history-summary-card">
-              <strong>16</strong>
+              <strong>{resumo.participadas}</strong>
               <span>Salas participadas</span>
             </div>
 
             <div className="history-summary-card">
-              <strong>21</strong>
+              <strong>{resumo.concluidas}</strong>
               <span>Concluídas</span>
             </div>
 
@@ -450,28 +615,48 @@ function History({
 
             <button
               type="button"
-              className="history-filter active"
+              className={
+                filtro === "todas"
+                  ? "history-filter active"
+                  : "history-filter"
+              }
+              onClick={() => setFiltro("todas")}
             >
               Todas
             </button>
 
             <button
               type="button"
-              className="history-filter"
+              className={
+                filtro === "criadas"
+                  ? "history-filter active"
+                  : "history-filter"
+              }
+              onClick={() => setFiltro("criadas")}
             >
               Criadas
             </button>
 
             <button
               type="button"
-              className="history-filter"
+              className={
+                filtro === "participadas"
+                  ? "history-filter active"
+                  : "history-filter"
+              }
+              onClick={() => setFiltro("participadas")}
             >
               Participadas
             </button>
 
             <button
               type="button"
-              className="history-filter"
+              className={
+                filtro === "concluidas"
+                  ? "history-filter active"
+                  : "history-filter"
+              }
+              onClick={() => setFiltro("concluidas")}
             >
               Concluídas
             </button>
@@ -479,12 +664,70 @@ function History({
           </div>
 
           {/* =====================================================
+              ERRO
+          ===================================================== */}
+
+          {erro && (
+
+            <div className="history-empty">
+
+              <span className="history-empty-icon">
+                ⚠
+              </span>
+
+              <p>{erro}</p>
+
+            </div>
+
+          )}
+
+          {/* =====================================================
+              CARREGANDO
+          ===================================================== */}
+
+          {carregando && !erro && (
+
+            <div className="history-empty">
+
+              <span className="history-empty-icon">
+                ⌛
+              </span>
+
+              <p>Carregando histórico...</p>
+
+            </div>
+
+          )}
+
+          {/* =====================================================
+              VAZIO
+          ===================================================== */}
+
+          {!carregando && !erro && historicoFiltrado.length === 0 && (
+
+            <div className="history-empty">
+
+              <span className="history-empty-icon">
+                📭
+              </span>
+
+              <p>
+                {salas.length === 0
+                  ? "Você ainda não tem salas no histórico. Crie ou participe de uma sala para começar."
+                  : "Nenhuma sala encontrada com esses filtros."}
+              </p>
+
+            </div>
+
+          )}
+
+          {/* =====================================================
               LISTA
           ===================================================== */}
 
           <section className="history-list">
 
-            {historico.map((item) => (
+            {historicoFiltrado.map((item) => (
 
               <article
                 className="history-card"
@@ -524,9 +767,11 @@ function History({
 
                     <span
                       className={
-                        item.status === "Cancelada"
+                        item.statusRaw === "cancelada"
                           ? "history-status cancelled"
-                          : "history-status"
+                          : item.statusRaw === "aberta"
+                            ? "history-status open"
+                            : "history-status"
                       }
                     >
                       {item.status}
@@ -542,9 +787,13 @@ function History({
                       {item.tipo}
                     </span>
 
-                    <span className="history-tag">
-                      Elo: {item.elo}
-                    </span>
+                    {item.elo && (
+
+                      <span className="history-tag">
+                        Elo: {item.elo}
+                      </span>
+
+                    )}
 
                     <span className="history-tag">
                       👥 {item.jogadores}
@@ -552,11 +801,70 @@ function History({
 
                   </div>
 
-                  {/* DATA */}
+                  {/* RODAPÉ: DATA + AÇÕES */}
 
-                  <span className="history-date">
-                    🕒 {item.data}
-                  </span>
+                  <div className="history-card-footer">
+
+                    <span className="history-date">
+                      🕒 {item.data}
+                    </span>
+
+                    {/* AÇÕES DO CRIADOR */}
+
+                    {item.euSouCriador && item.statusRaw === "aberta" && (
+
+                      <div className="history-actions">
+
+                        <button
+                          type="button"
+                          className="history-action finalizar"
+                          disabled={acaoId === item.id}
+                          onClick={() =>
+                            atualizarStatusSala(item.id, "concluida")
+                          }
+                        >
+                          {acaoId === item.id
+                            ? "Salvando..."
+                            : "Finalizar"}
+                        </button>
+
+                        <button
+                          type="button"
+                          className="history-action cancelar"
+                          disabled={acaoId === item.id}
+                          onClick={() =>
+                            atualizarStatusSala(item.id, "cancelada")
+                          }
+                        >
+                          Cancelar
+                        </button>
+
+                      </div>
+
+                    )}
+
+                    {item.euSouCriador && item.statusRaw !== "aberta" && (
+
+                      <div className="history-actions">
+
+                        <button
+                          type="button"
+                          className="history-action reabrir"
+                          disabled={acaoId === item.id}
+                          onClick={() =>
+                            atualizarStatusSala(item.id, "aberta")
+                          }
+                        >
+                          {acaoId === item.id
+                            ? "Salvando..."
+                            : "Reabrir"}
+                        </button>
+
+                      </div>
+
+                    )}
+
+                  </div>
 
                 </div>
 

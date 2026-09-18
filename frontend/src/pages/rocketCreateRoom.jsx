@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./rocketCreateRoom.css";
 
+import { apiFetch } from "../api";
+
+import TeamSize from "../components/TeamSize";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -67,9 +71,19 @@ function RocketCreateRoom({
 
     const [selectedMode, setSelectedMode] = useState("RANKED DUELO");
 
+    const [selectedTeam, setSelectedTeam] = useState("DUO");
+
     const [selectedRank, setSelectedRank] = useState(null);
 
-    const [selectedGender, setSelectedGender] = useState("HOMEM");
+    const [selectedGender, setSelectedGender] = useState(["HOMEM"]);
+
+    const [nomeSala, setNomeSala] = useState("");
+
+    const [descricao, setDescricao] = useState("");
+
+    const [criando, setCriando] = useState(false);
+
+    const [erro, setErro] = useState("");
 
 
     /* =====================================================
@@ -208,12 +222,44 @@ function RocketCreateRoom({
 
 
     /* =====================================================
+       TAMANHO DAS EQUIPES
+    ===================================================== */
+
+    const teams = [
+        "SOLO",
+        "DUO",
+        "TRIO"
+    ];
+
+
+    /* =====================================================
        HABILITAÇÃO DO ELO
        (no Rocket League, elo só faz sentido nos modos
        ranqueados — não no Casual)
     ===================================================== */
 
     const rankEnabled = selectedMode !== "CASUAL";
+
+
+    const modoSoloDuo = selectedMode === "RANKED DUELO";
+
+
+    const alternarGenero = (genero) => {
+
+        setSelectedGender((atual) => {
+
+            if (atual.includes(genero)) {
+
+                if (atual.length === 1) {
+                    return atual;
+                }
+
+                return atual.filter((item) => item !== genero);
+            }
+
+            return [...atual, genero];
+        });
+    };
 
 
     /* =====================================================
@@ -247,6 +293,61 @@ function RocketCreateRoom({
         if (typeof onGameSelect === "function") {
             onGameSelect(selectedGame);
         }
+    };
+
+
+    /* =====================================================
+       CRIAR SALA NO BACKEND
+    ===================================================== */
+
+    const tamanhos = {
+        SOLO: 1,
+        DUO: 2,
+        TRIO: 3
+    };
+
+
+    const criarSala = async () => {
+
+        if (!nomeSala.trim()) {
+            setErro("Digite o nome da sala.");
+            return;
+        }
+
+        try {
+
+            setErro("");
+            setCriando(true);
+
+            await apiFetch("/rooms", {
+                method: "POST",
+                body: JSON.stringify({
+                    jogo: game,
+                    nome: nomeSala.trim(),
+                    descricao: descricao.trim(),
+                    modo: selectedMode,
+                    time: selectedTeam,
+                    elo: selectedRank || "",
+                    funcao: "",
+                    genero: selectedGender.join(", "),
+                    maxJogadores: modoSoloDuo
+                        ? 2
+                        : (tamanhos[selectedTeam] || 2)
+                })
+            });
+
+            onBack();
+
+        } catch (e) {
+
+            setErro(e.message);
+
+        } finally {
+
+            setCriando(false);
+
+        }
+
     };
 
 
@@ -630,6 +731,37 @@ function RocketCreateRoom({
                     </section>
 
 
+{/* =================================================
+                        TAMANHO DA EQUIPE
+                    ================================================= */}
+
+                    {!modoSoloDuo && (
+
+                    <section className="create-section">
+
+                        <div className="section-title">
+
+                            <span></span>
+
+                            <p>
+                                TAMANHO DA EQUIPE
+                            </p>
+
+                            <span></span>
+
+                        </div>
+
+
+                        <TeamSize
+                            opcoes={teams}
+                            valor={selectedTeam}
+                            onChange={setSelectedTeam}
+                        />
+
+                    </section>
+                    )}
+
+
                     {/* =================================================
                         GÊNERO
                     ================================================= */}
@@ -655,13 +787,13 @@ function RocketCreateRoom({
                                 type="button"
                                 className={
                                     `gender-button male ${
-                                        selectedGender === "HOMEM"
+                                        selectedGender.includes("HOMEM")
                                             ? "selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("HOMEM")
+                                    alternarGenero("HOMEM")
                                 }
                             >
 
@@ -674,13 +806,13 @@ function RocketCreateRoom({
                                 type="button"
                                 className={
                                     `gender-button female ${
-                                        selectedGender === "MULHER"
+                                        selectedGender.includes("MULHER")
                                             ? "selected"
                                             : ""
                                     }`
                                 }
                                 onClick={() =>
-                                    setSelectedGender("MULHER")
+                                    alternarGenero("MULHER")
                                 }
                             >
 
@@ -723,6 +855,10 @@ function RocketCreateRoom({
                                 <input
                                     type="text"
                                     placeholder="Digite o nome da sala..."
+                                    value={nomeSala}
+                                    onChange={(e) =>
+                                        setNomeSala(e.target.value)
+                                    }
                                 />
 
                             </div>
@@ -736,6 +872,10 @@ function RocketCreateRoom({
 
                                 <textarea
                                     placeholder="Digite uma descrição..."
+                                    value={descricao}
+                                    onChange={(e) =>
+                                        setDescricao(e.target.value)
+                                    }
                                 ></textarea>
 
                             </div>
@@ -751,11 +891,25 @@ function RocketCreateRoom({
 
                     <div className="create-actions">
 
+                        {erro && (
+                            <p
+                                style={{
+                                    color: "#ffb3b3",
+                                    textAlign: "center",
+                                    width: "100%"
+                                }}
+                            >
+                                {erro}
+                            </p>
+                        )}
+
                         <button
                             className="create-button"
                             type="button"
+                            onClick={criarSala}
+                            disabled={criando}
                         >
-                            CRIAR SALA
+                            {criando ? "CRIANDO..." : "CRIAR SALA"}
                         </button>
 
 

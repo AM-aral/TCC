@@ -929,6 +929,514 @@ button {
 
 
 /* =====================================================
+   AVATAR COM FOTO
+===================================================== */
+
+.feedback-avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  display: block;
+}
+
+
+/* =====================================================
+   ESPAÇADOR DAS ABAS
+===================================================== */
+
+.fb-spacer {
+  flex: 1;
+}
+
+
+.fb-enviar {
+  padding:
+    11px 18px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6514df,
+      #7b21f3
+    );
+
+  color: white;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.fb-enviar:hover {
+  filter: brightness(1.12);
+
+  transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   ESTADO (ERRO / CARREGANDO / VAZIO)
+===================================================== */
+
+.fb-estado {
+  width: 100%;
+
+  min-height: 150px;
+
+  padding:
+    28px 18px;
+
+  border: 1px dashed rgba(204, 155, 255, 0.40);
+
+  border-radius: 15px;
+
+  background:
+    rgba(34, 3, 58, 0.55);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+
+.fb-estado p {
+  margin: 0;
+
+  max-width: 480px;
+
+  color:
+    rgba(255, 255, 255, 0.62);
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   MODAL — ENVIAR FEEDBACK
+===================================================== */
+
+.fb-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 300;
+
+  background:
+    rgba(10, 0, 22, 0.82);
+
+  backdrop-filter: blur(4px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+}
+
+
+.fb-modal {
+  width: 100%;
+
+  max-width: 460px;
+
+  max-height: 92vh;
+
+  overflow-y: auto;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #3a0a63,
+      #2a0750
+    );
+
+  border:
+    1px solid rgba(201, 147, 255, 0.25);
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.55);
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.fb-modal-header {
+  padding:
+    22px 24px 16px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.fb-modal-kicker {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #c58aff;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+
+.fb-modal-header h2 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 22px;
+
+  font-weight: 800;
+}
+
+
+.fb-modal-fechar {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    rgba(255, 255, 255, 0.70);
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.fb-modal-fechar:hover {
+  background:
+    rgba(255, 255, 255, 0.16);
+
+  color: white;
+}
+
+
+.fb-modal-body {
+  padding:
+    20px 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 17px;
+}
+
+
+.fb-campo {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.fb-campo > span {
+  color:
+    rgba(255, 255, 255, 0.60);
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+.fb-campo select,
+.fb-campo textarea {
+  padding:
+    11px 13px;
+
+  border:
+
+    1px solid rgba(201, 147, 255, 0.25);
+
+  border-radius: 9px;
+
+  background:
+    rgba(18, 0, 38, 0.55);
+
+  color: white;
+
+  font-size: 13px;
+
+  font-family: inherit;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease;
+}
+
+
+.fb-campo select:focus,
+.fb-campo textarea:focus {
+  border-color: #bd88ff;
+}
+
+
+.fb-campo textarea {
+  min-height: 90px;
+
+  resize: vertical;
+}
+
+
+.fb-campo select option {
+  background: #2a0750;
+
+  color: white;
+}
+
+
+.fb-jogadores {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+
+.fb-jogador {
+  padding:
+    8px 14px;
+
+  border:
+    1px solid rgba(201, 147, 255, 0.25);
+
+  border-radius: 9px;
+
+  background:
+    rgba(18, 0, 38, 0.55);
+
+  color:
+    rgba(255, 255, 255, 0.72);
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.fb-jogador:hover {
+  background:
+    rgba(147, 71, 218, 0.25);
+}
+
+
+.fb-jogador.active {
+  background:
+    linear-gradient(
+      90deg,
+      #6514df,
+      #7b21f3
+    );
+
+  border-color: #d9b1ff;
+
+  color: white;
+}
+
+
+.fb-notas {
+  display: flex;
+
+  gap: 6px;
+}
+
+
+.fb-estrela {
+  width: 40px;
+  height: 40px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  color:
+    rgba(255, 255, 255, 0.22);
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.fb-estrela:hover {
+  transform: scale(1.08);
+}
+
+
+.fb-estrela.active {
+  background:
+    rgba(245, 197, 66, 0.15);
+
+  color: #f5c542;
+
+  text-shadow:
+    0 0 8px rgba(245, 197, 66, 0.35);
+}
+
+
+.fb-erro-modal {
+  margin: 0;
+
+  color: #ff9cae;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+
+.fb-modal-rodape {
+  padding:
+    16px 24px 22px;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.fb-cancelar,
+.fb-confirmar {
+  padding:
+    11px 20px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.fb-cancelar {
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    rgba(255, 255, 255, 0.75);
+}
+
+
+.fb-confirmar {
+  background:
+    linear-gradient(
+      90deg,
+      #6514df,
+      #7b21f3
+    );
+
+  color: white;
+}
+
+
+.fb-cancelar:hover:not(:disabled),
+.fb-confirmar:hover:not(:disabled) {
+  filter: brightness(1.12);
+
+  transform: translateY(-1px);
+}
+
+
+.fb-cancelar:disabled,
+.fb-confirmar:disabled {
+  opacity: 0.55;
+
+  cursor: default;
+}
+
+
+/* =====================================================
    RESPONSIVO — 1200px
 ===================================================== */
 

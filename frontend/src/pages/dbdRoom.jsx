@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./dbdRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -53,11 +58,80 @@ function DbdRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -84,10 +158,10 @@ function DbdRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -460,7 +534,7 @@ function DbdRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -478,7 +552,7 @@ function DbdRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -489,7 +563,7 @@ function DbdRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -500,7 +574,7 @@ function DbdRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -531,7 +605,9 @@ function DbdRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -548,7 +624,7 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "1 jogador"
+                          1
                         )
                       }
                     >
@@ -558,7 +634,7 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "2 jogadores"
+                          2
                         )
                       }
                     >
@@ -568,7 +644,7 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "3 jogadores"
+                          3
                         )
                       }
                     >
@@ -598,7 +674,7 @@ function DbdRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -615,7 +691,7 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Cinza"
+                          "CINZA"
                         )
                       }
                     >
@@ -625,7 +701,7 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Cobre"
+                          "COBRE"
                         )
                       }
                     >
@@ -635,7 +711,7 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Prata"
+                          "PRATA"
                         )
                       }
                     >
@@ -645,7 +721,7 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Ouro"
+                          "OURO"
                         )
                       }
                     >
@@ -655,7 +731,7 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Iridescente 2-4"
+                          "IRIDESCENTE II-IV"
                         )
                       }
                     >
@@ -665,7 +741,7 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Iridescente 1"
+                          "IRIDESCENTE"
                         )
                       }
                     >
@@ -695,7 +771,7 @@ function DbdRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -712,41 +788,41 @@ function DbdRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Sobrevivente"
+                          "CLASSIFICADA"
                         )
                       }
                     >
-                      Sobrevivente
+                      Classificada
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Assassino"
+                          "SWF"
                         )
                       }
                     >
-                      Assassino
+                      SWF
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Kill Your Friends"
+                          "PERSONALIZADA"
                         )
                       }
                     >
-                      Kill Your Friends
+                      Personalizada
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Casual"
+                          "TREINO"
                         )
                       }
                     >
-                      Casual
+                      Treino
                     </button>
                 </div>
 
@@ -779,98 +855,53 @@ function DbdRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="dbd-room-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="dbd-room-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="dbd-room-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="dbd-room-room-details">
-
-                <h2>
-                  Grupo de Sobreviventes
-                </h2>
-
-
-                <div className="dbd-room-room-tags">
-
-                  <span className="dbd-room-rank-tag">
-                    🏆 Prata/Ouro
-                  </span>
-
-
-                  <span className="dbd-room-mode-tag">
-
-                    <img
-                      src={dbdLogo}
-                      alt=""
-                    />
-
-                    Sobrevivente
-
-                  </span>
-
-                </div>
-
-
-                <div className="dbd-room-gender-options">
-
-                  <span className="dbd-room-male">
-                    ♂
-                  </span>
-
-                  <span className="dbd-room-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro grupo de 4 pra jogar de sobrevivente e fugir do assassino.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="dbd-room-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="dbd-room-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={dbdLogo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

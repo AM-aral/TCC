@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./wildRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -53,11 +58,80 @@ function WildRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -84,10 +158,10 @@ function WildRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -460,7 +534,7 @@ function WildRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -478,7 +552,7 @@ function WildRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Masculino"
+                        "HOMEM"
                       )
                     }
                   >
@@ -489,7 +563,7 @@ function WildRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Feminino"
+                        "MULHER"
                       )
                     }
                   >
@@ -500,7 +574,7 @@ function WildRoom({
                     onClick={() =>
                       selecionarFiltro(
                         "genero",
-                        "Qualquer"
+                        ""
                       )
                     }
                   >
@@ -531,7 +605,9 @@ function WildRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -548,7 +624,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "1 jogador"
+                          1
                         )
                       }
                     >
@@ -558,7 +634,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "2 jogadores"
+                          2
                         )
                       }
                     >
@@ -568,7 +644,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "3 jogadores"
+                          3
                         )
                       }
                     >
@@ -578,7 +654,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "4 jogadores"
+                          4
                         )
                       }
                     >
@@ -608,7 +684,7 @@ function WildRoom({
                 </span>
 
                 <span>
-                  {filtros.elo}
+                  {filtros.elo || "Elo"}
                 </span>
 
                 <b>
@@ -625,7 +701,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Ferro"
+                          "FERRO"
                         )
                       }
                     >
@@ -635,7 +711,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Bronze"
+                          "BRONZE"
                         )
                       }
                     >
@@ -645,7 +721,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Prata"
+                          "PRATA"
                         )
                       }
                     >
@@ -655,7 +731,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Ouro"
+                          "OURO"
                         )
                       }
                     >
@@ -665,7 +741,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Platina"
+                          "PLATINA"
                         )
                       }
                     >
@@ -675,7 +751,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Esmeralda"
+                          "ESMERALDA"
                         )
                       }
                     >
@@ -685,7 +761,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Diamante"
+                          "DIAMANTE"
                         )
                       }
                     >
@@ -695,7 +771,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Mestre"
+                          "MESTRE"
                         )
                       }
                     >
@@ -705,7 +781,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Grão-Mestre"
+                          "GRÃO-MESTRE"
                         )
                       }
                     >
@@ -715,7 +791,7 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "elo",
-                          "Desafiante"
+                          "DESAFIANTE"
                         )
                       }
                     >
@@ -745,7 +821,7 @@ function WildRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -762,31 +838,21 @@ function WildRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Ranked Solo/Duo"
+                          "RANQUEADA"
                         )
                       }
                     >
-                      Ranked Solo/Duo
+                      Ranqueada
                     </button>
                     <button
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Ranked Flex"
+                          "NORMAL"
                         )
                       }
                     >
-                      Ranked Flex
-                    </button>
-                    <button
-                      onClick={() =>
-                        selecionarFiltro(
-                          "modo",
-                          "Modo Rápido"
-                        )
-                      }
-                    >
-                      Modo Rápido
+                      Normal
                     </button>
                     <button
                       onClick={() =>
@@ -797,6 +863,26 @@ function WildRoom({
                       }
                     >
                       ARAM
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "modo",
+                          "CO-OP VS IA"
+                        )
+                      }
+                    >
+                      Co-op vs IA
+                    </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "modo",
+                          "PERSONALIZADA"
+                        )
+                      }
+                    >
+                      Personalizada
                     </button>
                 </div>
 
@@ -829,98 +915,53 @@ function WildRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="wild-room-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="wild-room-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="wild-room-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="wild-room-room-details">
-
-                <h2>
-                  Ranked Solo/Duo
-                </h2>
-
-
-                <div className="wild-room-room-tags">
-
-                  <span className="wild-room-rank-tag">
-                    🏆 Ouro/Platina
-                  </span>
-
-
-                  <span className="wild-room-mode-tag">
-
-                    <img
-                      src={wildLogo}
-                      alt=""
-                    />
-
-                    Ranked Solo/Duo
-
-                  </span>
-
-                </div>
-
-
-                <div className="wild-room-gender-options">
-
-                  <span className="wild-room-male">
-                    ♂
-                  </span>
-
-                  <span className="wild-room-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro duo pra subir de elo no ranked.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="wild-room-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="wild-room-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={wildLogo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 

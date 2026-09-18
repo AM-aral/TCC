@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
-import { supabase } from "./supabase";
+import { useState } from "react";
 
-console.log("Supabase:", supabase);
+import { getUsuario } from "./api";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -97,31 +96,9 @@ function App() {
     // ESTADOS
     // =====================================================
 
-    const [pagina, setPagina] = useState("home");
+    const [pagina, setPagina] = useState("login");
 
     const [jogoSelecionado, setJogoSelecionado] = useState(null);
-
-
-    // =====================================================
-    // TESTE SUPABASE
-    // =====================================================
-
-    useEffect(() => {
-
-        async function testarSupabase() {
-
-            const { data, error } = await supabase
-                .from("jogos")
-                .select("*")
-                .limit(1);
-
-            console.log("Dados do Supabase:", data);
-            console.log("Erro do Supabase:", error);
-        }
-
-        testarSupabase();
-
-    }, []);
 
 
     // =====================================================
@@ -139,29 +116,7 @@ function App() {
     // LOGOUT
     // =====================================================
 
-    const sairDaConta = async () => {
-
-        try {
-
-            const { error } = await supabase.auth.signOut();
-
-            if (error) {
-
-                console.error(
-                    "Erro ao sair do Supabase:",
-                    error
-                );
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Erro ao fazer logout:",
-                error
-            );
-
-        }
+    const sairDaConta = () => {
 
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");

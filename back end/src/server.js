@@ -5,6 +5,9 @@ const cors = require("cors");
 
 const conectarBanco = require("./database/connection");
 const authRoutes = require("./routes/authRoutes");
+const roomRoutes = require("./routes/roomRoutes");
+const feedbackRoutes = require("./routes/feedbackRoutes");
+const usuarioRoutes = require("./routes/usuarioRoutes");
 
 
 // ==============================
@@ -20,14 +23,15 @@ const app = express();
 
 app.use(cors());
 
-app.use(express.json());
+// Limite maior para aceitar imagens em base64 (foto/banner)
+app.use(express.json({ limit: "8mb" }));
 
 
 // ==============================
 // CONECTAR BANCO
 // ==============================
 
-conectarBanco();
+// A conexão é feita dentro de iniciarServidor()
 
 
 // ==============================
@@ -35,6 +39,12 @@ conectarBanco();
 // ==============================
 
 app.use("/auth", authRoutes);
+
+app.use("/rooms", roomRoutes);
+
+app.use("/feedbacks", feedbackRoutes);
+
+app.use("/usuarios", usuarioRoutes);
 
 
 // ==============================
@@ -54,6 +64,12 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
+const iniciarServidor = async () => {
+    await conectarBanco();
+
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando na porta ${PORT}`);
+    });
+};
+
+iniciarServidor();

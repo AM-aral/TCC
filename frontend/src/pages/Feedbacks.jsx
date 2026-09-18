@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./Feedbacks.css";
 
 import logo from "../assets/logo.png";
@@ -31,86 +31,79 @@ import lolLogo from "../assets/icon/lol icon.png";
 
 import roomsBackground from "../assets/rooms-bg.png";
 
-// ======================================================
-// FEEDBACKS RECEBIDOS
-// ======================================================
-
-const feedbacksRecebidos = [
-  {
-    id: 1,
-    nome: "RafaFPS",
-    usuario: "@rafafps",
-    jogo: "Valorant",
-    jogoIcon: valorantLogo,
-    nota: 5,
-    comentario:
-      "Jogou muito bem e foi super tranquilo de jogar junto. Recomendo!",
-    data: "Hoje, 11:40",
-  },
-
-  {
-    id: 2,
-    nome: "Luanzera",
-    usuario: "@luanzera",
-    jogo: "League of Legends",
-    jogoIcon: lolLogo,
-    nota: 5,
-    comentario:
-      "Boa comunicação e ajudou bastante durante a partida.",
-    data: "Ontem, 20:15",
-  },
-
-  {
-    id: 3,
-    nome: "M4rcelo",
-    usuario: "@m4rcelo",
-    jogo: "Counter-Strike 2",
-    jogoIcon: cs2Logo,
-    nota: 4,
-    comentario:
-      "Bom player, respeitoso e focado na partida.",
-    data: "10/09/2026",
-  },
-];
+import { apiFetch, getUsuario } from "../api";
+import { obterJogoPorNome } from "../data/jogos";
 
 // ======================================================
-// FEEDBACKS DADOS
+// FORMATAR DATA
 // ======================================================
 
-const feedbacksDados = [
-  {
-    id: 4,
-    nome: "Nina",
-    usuario: "@nina",
-    jogo: "League of Legends",
-    jogoIcon: lolLogo,
-    nota: 5,
-    comentario:
-      "Ótima jogadora, comunicação muito boa.",
-    data: "09/09/2026",
-  },
+function formatarData(iso) {
+  const data = new Date(iso);
 
-  {
-    id: 5,
-    nome: "Ghost",
-    usuario: "@ghost",
-    jogo: "Valorant",
-    jogoIcon: valorantLogo,
-    nota: 4,
-    comentario:
-      "Jogamos uma ótima ranked. Foi bem de boa.",
-    data: "08/09/2026",
-  },
-];
+  const agora = new Date();
+
+  const inicioHoje = new Date(agora);
+
+  inicioHoje.setHours(0, 0, 0, 0);
+
+  const inicioOntem = new Date(inicioHoje);
+
+  inicioOntem.setDate(inicioOntem.getDate() - 1);
+
+  const hora =
+    `${String(data.getHours()).padStart(2, "0")}:` +
+    `${String(data.getMinutes()).padStart(2, "0")}`;
+
+  if (data >= inicioHoje) {
+    return `Hoje, ${hora}`;
+  }
+
+  if (data >= inicioOntem) {
+    return `Ontem, ${hora}`;
+  }
+
+  const dataTexto =
+    `${String(data.getDate()).padStart(2, "0")}/` +
+    `${String(data.getMonth() + 1).padStart(2, "0")}/` +
+    `${data.getFullYear()}`;
+
+  return `${dataTexto}, ${hora}`;
+}
+
+// ======================================================
+// NOME CURTO DO USUÁRIO (@)
+// ======================================================
+
+function usuarioDe(email) {
+  if (!email) {
+    return "";
+  }
+
+  const parte = email.split("@")[0] || email;
+
+  return `@${parte}`;
+}
 
 // ======================================================
 // AVATAR
 // ======================================================
 
-function Avatar({ nome }) {
+function Avatar({ nome, foto }) {
+  if (foto) {
+    return (
+      <div className="feedback-avatar">
+        <img
+          src={foto}
+          alt={nome}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="feedback-avatar">
-      {nome.charAt(0).toUpperCase()}
+      {String(nome || "?").charAt(0).toUpperCase()}
     </div>
   );
 }
@@ -149,16 +142,198 @@ export default function Feedbacks({
   onHome,
   onProfile,
   onHistory,
-  onGameSelect,
+  onFeedbacks,
   onSettings,
+  onSelectGame
 }) {
+
+  // ======================================================
+  // ESTADOS
+  // ======================================================
 
   const [aba, setAba] = useState("recebidos");
 
+  const [recebidos, setRecebidos] = useState([]);
+
+  const [dados, setDados] = useState([]);
+
+  const [media, setMedia] = useState(0);
+
+  const [carregando, setCarregando] = useState(true);
+
+  const [erro, setErro] = useState("");
+
+  const [salas, setSalas] = useState([]);
+
+  const [modalAberto, setModalAberto] = useState(false);
+
+  const [salaId, setSalaId] = useState("");
+
+  const [jogadorId, setJogadorId] = useState("");
+
+  const [notaForm, setNotaForm] = useState(0);
+
+  const [comentario, setComentario] = useState("");
+
+  const [enviando, setEnviando] = useState(false);
+
+  const [erroModal, setErroModal] = useState("");
+
+  const usuario = getUsuario();
+
+  const meuId = usuario?.id || "";
+
+  const selecionarJogo = (game) => {
+    if (typeof onSelectGame === "function") {
+      onSelectGame(game);
+    }
+  };
+
+  // ======================================================
+  // CARREGAR DADOS
+  // ======================================================
+
+  const carregarFeedbacks = async () => {
+    try {
+      const dadosResposta = await apiFetch("/feedbacks");
+
+      setRecebidos(dadosResposta.recebidos || []);
+
+      setDados(dadosResposta.dados || []);
+
+      setMedia(dadosResposta.mediaRecebida || 0);
+
+    } catch (e) {
+      setErro(e.message || "Não foi possível carregar os feedbacks.");
+    }
+  };
+
+  useEffect(() => {
+    let ativo = true;
+
+    const carregar = async () => {
+      try {
+        setCarregando(true);
+        setErro("");
+
+        const [dadosResposta, minhasSalas] = await Promise.all([
+          apiFetch("/feedbacks"),
+          apiFetch("/rooms/minhas")
+        ]);
+
+        if (ativo) {
+          setRecebidos(dadosResposta.recebidos || []);
+          setDados(dadosResposta.dados || []);
+          setMedia(dadosResposta.mediaRecebida || 0);
+          setSalas(minhasSalas || []);
+        }
+
+      } catch (e) {
+        if (ativo) {
+          setErro(e.message || "Não foi possível carregar os feedbacks.");
+        }
+      } finally {
+        if (ativo) {
+          setCarregando(false);
+        }
+      }
+    };
+
+    carregar();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  // ======================================================
+  // OPÇÕES DE JOGADORES PARA AVALIAR
+  // ======================================================
+
+  const opcoesAvaliacao = useMemo(
+    () => salas
+      .map((sala) => ({
+        salaId: sala._id,
+        salaNome: sala.nome,
+        jogo: sala.jogo,
+        jogadores: (sala.jogadores || []).filter((jogador) =>
+          String(jogador._id || jogador) !== String(meuId)
+        )
+      }))
+      .filter((opcao) => opcao.jogadores.length > 0),
+    [salas, meuId]
+  );
+
+  const salaEscolhida = opcoesAvaliacao.find(
+    (opcao) => opcao.salaId === salaId
+  );
+
+  // ======================================================
+  // ENVIAR FEEDBACK
+  // ======================================================
+
+  const abrirModal = () => {
+    setModalAberto(true);
+
+    setErroModal("");
+  };
+
+  const fecharModal = () => {
+    setModalAberto(false);
+
+    setSalaId("");
+
+    setJogadorId("");
+
+    setNotaForm(0);
+
+    setComentario("");
+
+    setErroModal("");
+  };
+
+  const enviarFeedback = async () => {
+    setEnviando(true);
+
+    setErroModal("");
+
+    try {
+      await apiFetch("/feedbacks", {
+        method: "POST",
+        body: JSON.stringify({
+          destinatario: jogadorId,
+          jogo: salaEscolhida?.jogo || "",
+          nota: notaForm,
+          comentario
+        })
+      });
+
+      setEnviando(false);
+
+      await carregarFeedbacks();
+
+      fecharModal();
+
+    } catch (e) {
+      setEnviando(false);
+
+      setErroModal(e.message || "Não foi possível enviar o feedback.");
+    }
+  };
+
+  // ======================================================
+  // LISTA ATUAL
+  // ======================================================
+
   const lista =
     aba === "recebidos"
-      ? feedbacksRecebidos
-      : feedbacksDados;
+      ? recebidos
+      : dados;
+
+  const pessoaDo = (feedback) =>
+    aba === "recebidos"
+      ? feedback.remetente
+      : feedback.destinatario;
 
   return (
     <div
@@ -201,7 +376,7 @@ export default function Feedbacks({
 
           <div
             className="feedbacks-navbar-game"
-            onClick={() => onGameSelect("Overwatch")}
+            onClick={() => selecionarJogo("Overwatch")}
           >
 
             <img
@@ -220,7 +395,7 @@ export default function Feedbacks({
 
           <div
             className="feedbacks-navbar-game"
-            onClick={() => onGameSelect("Counter-Strike 2")}
+            onClick={() => selecionarJogo("Counter-Strike 2")}
           >
 
             <img
@@ -239,7 +414,7 @@ export default function Feedbacks({
 
           <div
             className="feedbacks-navbar-game"
-            onClick={() => onGameSelect("Valorant")}
+            onClick={() => selecionarJogo("Valorant")}
           >
 
             <img
@@ -258,7 +433,7 @@ export default function Feedbacks({
 
           <div
             className="feedbacks-navbar-game"
-            onClick={() => onGameSelect("Fortnite")}
+            onClick={() => selecionarJogo("Fortnite")}
           >
 
             <img
@@ -277,7 +452,7 @@ export default function Feedbacks({
 
           <div
             className="feedbacks-navbar-game"
-            onClick={() => onGameSelect("Rocket League")}
+            onClick={() => selecionarJogo("Rocket League")}
           >
 
             <img
@@ -296,7 +471,7 @@ export default function Feedbacks({
 
           <div
             className="feedbacks-navbar-game"
-            onClick={() => onGameSelect("Dota 2")}
+            onClick={() => selecionarJogo("Dota 2")}
           >
 
             <img
@@ -315,7 +490,7 @@ export default function Feedbacks({
 
           <div
             className="feedbacks-navbar-game"
-            onClick={() => onGameSelect("Marvel Rivals")}
+            onClick={() => selecionarJogo("Marvel Rivals")}
           >
 
             <img
@@ -334,7 +509,7 @@ export default function Feedbacks({
 
           <div
             className="feedbacks-navbar-game"
-            onClick={() => onGameSelect("League of Legends")}
+            onClick={() => selecionarJogo("League of Legends")}
           >
 
             <img
@@ -416,6 +591,7 @@ export default function Feedbacks({
 
           <button
             className="feedbacks-sidebar-item feedbacks-sidebar-active"
+            onClick={onFeedbacks}
             title="Feedbacks"
             type="button"
           >
@@ -481,10 +657,10 @@ export default function Feedbacks({
           <div className="feedbacks-average">
 
             <strong>
-              4.8
+              {media || "0.0"}
             </strong>
 
-            <Stars nota={5} />
+            <Stars nota={Math.round(media)} />
 
             <span>
               Média geral
@@ -512,7 +688,7 @@ export default function Feedbacks({
             <div>
 
               <strong>
-                4.8
+                {media || "0.0"}
               </strong>
 
               <span>
@@ -535,7 +711,7 @@ export default function Feedbacks({
             <div>
 
               <strong>
-                {feedbacksRecebidos.length}
+                {recebidos.length}
               </strong>
 
               <span>
@@ -558,7 +734,7 @@ export default function Feedbacks({
             <div>
 
               <strong>
-                {feedbacksDados.length}
+                {dados.length}
               </strong>
 
               <span>
@@ -607,93 +783,374 @@ export default function Feedbacks({
             Feedbacks dados
           </button>
 
+          <span className="fb-spacer"></span>
+
+          <button
+            type="button"
+            className="fb-enviar"
+            onClick={abrirModal}
+          >
+            + Enviar feedback
+          </button>
+
         </div>
+
+
+        {/* ==================================================
+            ERRO / CARREGANDO
+        ================================================== */}
+
+        {erro && !modalAberto && (
+
+          <div className="fb-estado">
+
+            <p>⚠ {erro}</p>
+
+          </div>
+
+        )}
+
+        {carregando && !erro && !modalAberto && (
+
+          <div className="fb-estado">
+
+            <p>⌛ Carregando feedbacks...</p>
+
+          </div>
+
+        )}
 
 
         {/* ==================================================
             LISTA DE FEEDBACKS
         ================================================== */}
 
+        {!carregando && !erro && lista.length === 0 && !modalAberto && (
+
+          <div className="fb-estado">
+
+            <p>
+              {aba === "recebidos"
+                ? "Você ainda não recebeu feedbacks."
+                : "Você ainda não enviou feedbacks."}
+            </p>
+
+          </div>
+
+        )}
+
         <section className="feedbacks-list">
 
-          {lista.map((feedback) => (
+          {lista.map((feedback) => {
 
-            <article
-              className="feedback-card"
-              key={feedback.id}
-            >
+            const pessoa = pessoaDo(feedback);
 
-              {/* AVATAR */}
+            const jogo = obterJogoPorNome(feedback.jogo) || {};
 
-              <Avatar
-                nome={feedback.nome}
-              />
+            return (
+
+              <article
+                className="feedback-card"
+                key={feedback._id}
+              >
+
+                {/* AVATAR */}
+
+                <Avatar
+                  nome={pessoa?.nome || "?"}
+                  foto={pessoa?.foto || ""}
+                />
+
+                <div className="feedback-card-main">
+
+                  {/* TOPO */}
+
+                  <div className="feedback-card-top">
+
+                    <div>
+
+                      <h2>
+                        {pessoa?.nome || "Jogador"}
+                      </h2>
+
+                      <span>
+                        {usuarioDe(pessoa?.email)}
+                      </span>
+
+                    </div>
+
+                    <div className="feedback-date">
+                      {formatarData(feedback.createdAt)}
+                    </div>
+
+                  </div>
 
 
-              <div className="feedback-card-main">
+                  {/* META */}
 
-                {/* TOPO */}
+                  <div className="feedback-meta">
 
-                <div className="feedback-card-top">
+                    <span className="feedback-game">
 
-                  <div>
+                      <img
+                        src={jogo.capa || roomsBackground}
+                        alt={feedback.jogo}
+                      />
 
-                    <h2>
-                      {feedback.nome}
-                    </h2>
+                      {feedback.jogo}
 
-                    <span>
-                      {feedback.usuario}
                     </span>
 
-                  </div>
 
-
-                  <div className="feedback-date">
-                    {feedback.data}
-                  </div>
-
-                </div>
-
-
-                {/* META */}
-
-                <div className="feedback-meta">
-
-                  <span className="feedback-game">
-
-                    <img
-                      src={feedback.jogoIcon}
-                      alt={feedback.jogo}
+                    <Stars
+                      nota={feedback.nota}
                     />
 
-                    {feedback.jogo}
-
-                  </span>
+                  </div>
 
 
-                  <Stars
-                    nota={feedback.nota}
-                  />
+                  {/* COMENTÁRIO */}
+
+                  {feedback.comentario && (
+
+                    <p>
+                      {feedback.comentario}
+                    </p>
+
+                  )}
 
                 </div>
 
+              </article>
 
-                {/* COMENTÁRIO */}
+            );
 
-                <p>
-                  {feedback.comentario}
-                </p>
-
-              </div>
-
-            </article>
-
-          ))}
+          })}
 
         </section>
 
       </main>
+
+
+      {/* ==================================================
+          MODAL: ENVIAR FEEDBACK
+      ================================================== */}
+
+      {modalAberto && (
+
+        <div
+          className="fb-modal-overlay"
+          onClick={fecharModal}
+        >
+
+          <div
+            className="fb-modal"
+            onClick={(evento) =>
+              evento.stopPropagation()
+            }
+          >
+
+            <div className="fb-modal-header">
+
+              <div>
+
+                <span className="fb-modal-kicker">
+                  REPUTAÇÃO
+                </span>
+
+                <h2>
+                  Enviar feedback
+                </h2>
+
+              </div>
+
+              <button
+                type="button"
+                className="fb-modal-fechar"
+                onClick={fecharModal}
+                title="Fechar"
+              >
+                ✕
+              </button>
+
+            </div>
+
+
+            <div className="fb-modal-body">
+
+              {/* ESCOLHER SALA */}
+
+              <label className="fb-campo">
+
+                <span>Sala em que jogou</span>
+
+                <select
+                  value={salaId}
+                  onChange={(evento) => {
+                    setSalaId(evento.target.value);
+                    setJogadorId("");
+                  }}
+                >
+                  <option value="">
+                    Selecione uma sala
+                  </option>
+
+                  {opcoesAvaliacao.map((opcao) => (
+
+                    <option
+                      key={opcao.salaId}
+                      value={opcao.salaId}
+                    >
+                      {opcao.jogo} — {opcao.salaNome}
+                    </option>
+
+                  ))}
+
+                </select>
+
+              </label>
+
+
+              {/* ESCOLHER JOGADOR */}
+
+              {salaEscolhida && (
+
+                <div className="fb-campo">
+
+                  <span>Quem você vai avaliar</span>
+
+                  <div className="fb-jogadores">
+
+                    {salaEscolhida.jogadores.map((jogador) => {
+
+                      const selecionado =
+                        String(jogador._id || jogador) === jogadorId;
+
+                      return (
+
+                        <button
+                          type="button"
+                          key={jogador._id || jogador}
+                          className={
+                            selecionado
+                              ? "fb-jogador active"
+                              : "fb-jogador"
+                          }
+                          onClick={() =>
+                            setJogadorId(String(jogador._id || jogador))
+                          }
+                        >
+
+                          {jogador.nome || "Jogador"}
+
+                        </button>
+
+                      );
+
+                    })}
+
+                  </div>
+
+                </div>
+
+              )}
+
+
+              {/* NOTA */}
+
+              <div className="fb-campo">
+
+                <span>Nota</span>
+
+                <div className="fb-notas">
+
+                  {[1, 2, 3, 4, 5].map((estrela) => (
+
+                    <button
+                      type="button"
+                      key={estrela}
+                      className={
+                        estrela <= notaForm
+                          ? "fb-estrela active"
+                          : "fb-estrela"
+                      }
+                      onClick={() =>
+                        setNotaForm(estrela)
+                      }
+                      aria-label={`${estrela} estrelas`}
+                    >
+                      ★
+                    </button>
+
+                  ))}
+
+                </div>
+
+              </div>
+
+
+              {/* COMENTÁRIO */}
+
+              <label className="fb-campo">
+
+                <span>Comentário</span>
+
+                <textarea
+                  value={comentario}
+                  placeholder="Conte como foi jogar junto..."
+                  maxLength={300}
+                  onChange={(evento) =>
+                    setComentario(evento.target.value)
+                  }
+                />
+
+              </label>
+
+
+              {erroModal && (
+
+                <p className="fb-erro-modal">
+                  {erroModal}
+                </p>
+
+              )}
+
+            </div>
+
+
+            <div className="fb-modal-rodape">
+
+              <button
+                type="button"
+                className="fb-cancelar"
+                onClick={fecharModal}
+                disabled={enviando}
+              >
+                Cancelar
+              </button>
+
+              <button
+                type="button"
+                className="fb-confirmar"
+                onClick={enviarFeedback}
+                disabled={
+                  enviando ||
+                  !jogadorId ||
+                  notaForm === 0
+                }
+              >
+                {enviando
+                  ? "Enviando..."
+                  : "Enviar feedback"}
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
   );

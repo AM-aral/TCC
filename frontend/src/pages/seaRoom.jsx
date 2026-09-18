@@ -2,6 +2,11 @@ import { useState } from "react";
 
 import "./seaRoom.css";
 
+import { apiFetch, getUsuario } from "../api";
+import { useRooms } from "../hooks/useRooms";
+import RoomCard from "../components/RoomCard";
+import { salaPassaFiltros } from "../utils/filtros";
+
 import logo from "../assets/logo.png";
 
 /* =====================================================
@@ -53,11 +58,80 @@ function SeaRoom({
   const [menuAberto, setMenuAberto] = useState(null);
 
   const [filtros, setFiltros] = useState({
-    genero: "Gênero",
-    jogadores: "jogadores",
-    elo: "Elo",
-    modo: "Modo"
+    genero: "",
+    jogadores: "",
+    elo: "",
+    modo: ""
   });
+
+
+  /* =====================================================
+     SALAS REAIS (vindas do backend)
+  ===================================================== */
+
+  const currentUserId = getUsuario()?.id;
+
+  const { salas, carregando, erro, recarregar } = useRooms(game);
+
+  const salasFiltradas = salas.filter((sala) =>
+    salaPassaFiltros(sala, filtros)
+  );
+
+  const [processandoId, setProcessandoId] = useState(null);
+
+  const [aviso, setAviso] = useState("");
+
+
+  const entrarNaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/entrar`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
+
+
+  const sairDaSala = async (sala) => {
+
+    try {
+
+      setAviso("");
+      setProcessandoId(sala._id);
+
+      await apiFetch(`/rooms/${sala._id}/sair`, {
+        method: "POST"
+      });
+
+      await recarregar();
+
+    } catch (e) {
+
+      setAviso(e.message);
+
+    } finally {
+
+      setProcessandoId(null);
+
+    }
+
+  };
 
 
   if (!game) {
@@ -84,10 +158,10 @@ function SeaRoom({
 
   function selecionarFiltro(tipo, valor) {
 
-    setFiltros({
-      ...filtros,
-      [tipo]: valor
-    });
+    setFiltros((atual) => ({
+      ...atual,
+      [tipo]: atual[tipo] === valor ? "" : valor
+    }));
 
     setMenuAberto(null);
 
@@ -460,7 +534,7 @@ function SeaRoom({
                 </span>
 
                 <span>
-                  {filtros.genero}
+                  {filtros.genero || "Gênero"}
                 </span>
 
                 <b>
@@ -474,38 +548,38 @@ function SeaRoom({
 
                 <div className="sea-room-dropdown-menu">
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "genero",
-                        "Masculino"
-                      )
-                    }
-                  >
-                    Masculino
-                  </button>
+<button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "genero",
+                          "HOMEM"
+                        )
+                      }
+                    >
+                      Masculino
+                    </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "genero",
-                        "Feminino"
-                      )
-                    }
-                  >
-                    Feminino
-                  </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "genero",
+                          "MULHER"
+                        )
+                      }
+                    >
+                      Feminino
+                    </button>
 
-                  <button
-                    onClick={() =>
-                      selecionarFiltro(
-                        "genero",
-                        "Qualquer"
-                      )
-                    }
-                  >
-                    Qualquer
-                  </button>
+                    <button
+                      onClick={() =>
+                        selecionarFiltro(
+                          "genero",
+                          ""
+                        )
+                      }
+                    >
+                      Qualquer
+                    </button>
 
                 </div>
 
@@ -531,7 +605,9 @@ function SeaRoom({
                 </span>
 
                 <span>
-                  {filtros.jogadores}
+                  {filtros.jogadores
+                    ? `${filtros.jogadores} jogadores`
+                    : "jogadores"}
                 </span>
 
                 <b>
@@ -548,7 +624,7 @@ function SeaRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "1 jogador"
+                          1
                         )
                       }
                     >
@@ -558,7 +634,7 @@ function SeaRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "2 jogadores"
+                          2
                         )
                       }
                     >
@@ -568,88 +644,11 @@ function SeaRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "jogadores",
-                          "3 jogadores"
+                          3
                         )
                       }
                     >
                       3 jogadores
-                    </button>
-                </div>
-
-              )}
-
-            </div>
-
-
-            {/* =================================================
-                ELO
-            ================================================= */}
-
-            <div className="sea-room-filter-dropdown">
-
-              <button
-                className="sea-room-filter-button"
-                onClick={() => abrirMenu("elo")}
-                type="button"
-              >
-
-                <span>
-                  ♛
-                </span>
-
-                <span>
-                  {filtros.elo}
-                </span>
-
-                <b>
-                  ⌄
-                </b>
-
-              </button>
-
-
-              {menuAberto === "elo" && (
-
-                <div className="sea-room-dropdown-menu">
-                    <button
-                      onClick={() =>
-                        selecionarFiltro(
-                          "elo",
-                          "Novato"
-                        )
-                      }
-                    >
-                      Novato
-                    </button>
-                    <button
-                      onClick={() =>
-                        selecionarFiltro(
-                          "elo",
-                          "Pirata Experiente"
-                        )
-                      }
-                    >
-                      Pirata Experiente
-                    </button>
-                    <button
-                      onClick={() =>
-                        selecionarFiltro(
-                          "elo",
-                          "Lenda dos Mares"
-                        )
-                      }
-                    >
-                      Lenda dos Mares
-                    </button>
-                    <button
-                      onClick={() =>
-                        selecionarFiltro(
-                          "elo",
-                          "Lenda Pirata"
-                        )
-                      }
-                    >
-                      Lenda Pirata
                     </button>
                 </div>
 
@@ -675,7 +674,7 @@ function SeaRoom({
                 </span>
 
                 <span>
-                  {filtros.modo}
+                  {filtros.modo || "Modo"}
                 </span>
 
                 <b>
@@ -692,7 +691,7 @@ function SeaRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "PvE"
+                          "AVENTURA"
                         )
                       }
                     >
@@ -702,7 +701,7 @@ function SeaRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Arena PvP"
+                          "ARENA"
                         )
                       }
                     >
@@ -712,7 +711,7 @@ function SeaRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Fábulas do Mar Alto"
+                          "MARES SEGUROS"
                         )
                       }
                     >
@@ -722,7 +721,7 @@ function SeaRoom({
                       onClick={() =>
                         selecionarFiltro(
                           "modo",
-                          "Servidor Aberto"
+                          "PERSONALIZADA"
                         )
                       }
                     >
@@ -759,98 +758,53 @@ function SeaRoom({
 
 
           {/* =====================================================
-              SALA
+              SALAS
           ===================================================== */}
 
-          <div className="sea-room-room-card">
+          {aviso && (
+            <p className="rooms-aviso">
+              {aviso}
+            </p>
+          )}
 
+          <div className="rooms-list">
 
-            {/* PERFIL DA SALA */}
+            {carregando && (
+              <p className="rooms-empty">
+                Carregando salas...
+              </p>
+            )}
 
-            <div className="sea-room-room-profile">
+            {!carregando && erro && (
+              <p className="rooms-empty">
+                {erro}
+              </p>
+            )}
 
-              <div className="sea-room-profile-photo">
+            {!carregando && !erro && salas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala por aqui ainda. Crie a primeira!
+              </p>
+            )}
 
-                <span>
-                  👤
-                </span>
+            {!carregando && !erro && salas.length > 0 &&
+              salasFiltradas.length === 0 && (
+              <p className="rooms-empty">
+                Nenhuma sala com esses filtros.
+              </p>
+            )}
 
-              </div>
-
-
-              <div className="sea-room-room-details">
-
-                <h2>
-                  Tripulação para Sessão
-                </h2>
-
-
-                <div className="sea-room-room-tags">
-
-                  <span className="sea-room-rank-tag">
-                    🏴‍☠️ Pirata Experiente
-                  </span>
-
-
-                  <span className="sea-room-mode-tag">
-
-                    <img
-                      src={seaLogo}
-                      alt=""
-                    />
-
-                    Servidor Aberto
-
-                  </span>
-
-                </div>
-
-
-                <div className="sea-room-gender-options">
-
-                  <span className="sea-room-male">
-                    ♂
-                  </span>
-
-                  <span className="sea-room-female">
-                    ♀
-                  </span>
-
-                </div>
-
-
-                <p>
-                  Procuro tripulação pra caçar tesouros e navegar sem compromisso.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* MEMBROS */}
-
-            <div className="sea-room-room-members">
-
-              <strong>
-                1/2
-              </strong>
-
-              <span>
-                Criado há 8 min
-              </span>
-
-            </div>
-
-
-            {/* ENTRAR */}
-
-            <button
-              className="sea-room-join-button"
-              type="button"
-            >
-              ENTRA NA SALA
-            </button>
+            {salasFiltradas.map((sala) => (
+              <RoomCard
+                key={sala._id}
+                room={sala}
+                icon={seaLogo}
+                currentUserId={currentUserId}
+                onJoin={entrarNaSala}
+                onLeave={sairDaSala}
+                processando={processandoId === sala._id}
+              />
+            ))}
 
           </div>
 
