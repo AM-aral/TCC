@@ -180,6 +180,10 @@ export default function Feedbacks({
 
   const [erroModal, setErroModal] = useState("");
 
+  const [editandoId, setEditandoId] = useState(null);
+
+  const [excluindoId, setExcluindoId] = useState(null);
+
   const usuario = getUsuario();
 
   const meuId = usuario?.id || "";
@@ -276,11 +280,7 @@ export default function Feedbacks({
   const abrirModal = () => {
     setModalAberto(true);
 
-    setErroModal("");
-  };
-
-  const fecharModal = () => {
-    setModalAberto(false);
+    setEditandoId(null);
 
     setSalaId("");
 
@@ -293,21 +293,64 @@ export default function Feedbacks({
     setErroModal("");
   };
 
-  const enviarFeedback = async () => {
+  const fecharModal = () => {
+    setModalAberto(false);
+
+    setEditandoId(null);
+
+    setSalaId("");
+
+    setJogadorId("");
+
+    setNotaForm(0);
+
+    setComentario("");
+
+    setErroModal("");
+  };
+
+  const abrirEdicao = (feedback) => {
+    setModalAberto(true);
+
+    setEditandoId(feedback._id);
+
+    setSalaId("");
+
+    setJogadorId("");
+
+    setNotaForm(feedback.nota);
+
+    setComentario(feedback.comentario || "");
+
+    setErroModal("");
+  };
+
+  const salvarFeedback = async () => {
     setEnviando(true);
 
     setErroModal("");
 
     try {
-      await apiFetch("/feedbacks", {
-        method: "POST",
-        body: JSON.stringify({
-          destinatario: jogadorId,
-          jogo: salaEscolhida?.jogo || "",
-          nota: notaForm,
-          comentario
-        })
-      });
+      if (editandoId) {
+        await apiFetch(`/feedbacks/${editandoId}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            nota: notaForm,
+            comentario
+          })
+        });
+
+      } else {
+        await apiFetch("/feedbacks", {
+          method: "POST",
+          body: JSON.stringify({
+            destinatario: jogadorId,
+            jogo: salaEscolhida?.jogo || "",
+            nota: notaForm,
+            comentario
+          })
+        });
+      }
 
       setEnviando(false);
 
@@ -319,6 +362,28 @@ export default function Feedbacks({
       setEnviando(false);
 
       setErroModal(e.message || "Não foi possível enviar o feedback.");
+    }
+  };
+
+  const excluirFeedback = async (feedback) => {
+    if (!window.confirm("Excluir esse feedback?")) {
+      return;
+    }
+
+    setExcluindoId(feedback._id);
+
+    try {
+      await apiFetch(`/feedbacks/${feedback._id}`, {
+        method: "DELETE"
+      });
+
+      await carregarFeedbacks();
+
+    } catch (e) {
+      setErro(e.message || "Não foi possível excluir o feedback.");
+
+    } finally {
+      setExcluindoId(null);
     }
   };
 
@@ -938,6 +1003,36 @@ export default function Feedbacks({
 
                 </div>
 
+
+                {/* AÇÕES (só nos feedbacks enviados) */}
+
+                {aba === "dados" && (
+
+                  <div className="feedback-card-acoes">
+
+                    <button
+                      type="button"
+                      className="fb-editar"
+                      onClick={() => abrirEdicao(feedback)}
+                    >
+                      Editar
+                    </button>
+
+                    <button
+                      type="button"
+                      className="fb-excluir"
+                      onClick={() => excluirFeedback(feedback)}
+                      disabled={excluindoId === feedback._id}
+                    >
+                      {excluindoId === feedback._id
+                        ? "Excluindo..."
+                        : "Excluir"}
+                    </button>
+
+                  </div>
+
+                )}
+
               </article>
 
             );
@@ -967,19 +1062,21 @@ export default function Feedbacks({
             }
           >
 
-            <div className="fb-modal-header">
+<div className="fb-modal-header">
 
-              <div>
+                <div>
 
-                <span className="fb-modal-kicker">
-                  REPUTAÇÃO
-                </span>
+                  <span className="fb-modal-kicker">
+                    REPUTAÇÃO
+                  </span>
 
-                <h2>
-                  Enviar feedback
-                </h2>
+                  <h2>
+                    {editandoId
+                      ? "Editar feedback"
+                      : "Enviar feedback"}
+                  </h2>
 
-              </div>
+                </div>
 
               <button
                 type="button"
@@ -995,42 +1092,43 @@ export default function Feedbacks({
 
             <div className="fb-modal-body">
 
-              {/* ESCOLHER SALA */}
+              {/* ESCOLHER SALA (só ao enviar novo) */}
 
-              <label className="fb-campo">
+              {!editandoId && (
+                <label className="fb-campo">
 
-                <span>Sala em que jogou</span>
+                  <span>Sala em que jogou</span>
 
-                <select
-                  value={salaId}
-                  onChange={(evento) => {
-                    setSalaId(evento.target.value);
-                    setJogadorId("");
-                  }}
-                >
-                  <option value="">
-                    Selecione uma sala
-                  </option>
-
-                  {opcoesAvaliacao.map((opcao) => (
-
-                    <option
-                      key={opcao.salaId}
-                      value={opcao.salaId}
-                    >
-                      {opcao.jogo} — {opcao.salaNome}
+                  <select
+                    value={salaId}
+                    onChange={(evento) => {
+                      setSalaId(evento.target.value);
+                      setJogadorId("");
+                    }}
+                  >
+                    <option value="">
+                      Selecione uma sala
                     </option>
 
-                  ))}
+                    {opcoesAvaliacao.map((opcao) => (
 
-                </select>
+                      <option
+                        key={opcao.salaId}
+                        value={opcao.salaId}
+                      >
+                        {opcao.jogo} — {opcao.salaNome}
+                      </option>
 
-              </label>
+                    ))}
 
+                  </select>
 
-              {/* ESCOLHER JOGADOR */}
+                </label>
+              )}
 
-              {salaEscolhida && (
+              {/* ESCOLHER JOGADOR (só ao enviar novo) */}
+
+              {!editandoId && salaEscolhida && (
 
                 <div className="fb-campo">
 
@@ -1149,16 +1247,18 @@ export default function Feedbacks({
               <button
                 type="button"
                 className="fb-confirmar"
-                onClick={enviarFeedback}
+                onClick={salvarFeedback}
                 disabled={
                   enviando ||
-                  !jogadorId ||
-                  notaForm === 0
+                  notaForm === 0 ||
+                  (!editandoId && !jogadorId)
                 }
               >
                 {enviando
-                  ? "Enviando..."
-                  : "Enviar feedback"}
+                  ? "Salvando..."
+                  : editandoId
+                    ? "Salvar"
+                    : "Enviar feedback"}
               </button>
 
             </div>

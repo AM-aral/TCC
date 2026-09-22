@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Buscar from "./pages/Buscar";
 import PublicProfile from "./pages/PublicProfile";
+import Lobby from "./pages/Lobby";
 
 // =====================================================
 // ROOMS
@@ -110,6 +111,9 @@ function App() {
     // Termo inicial passado para a página Buscar
     const [termoBusca, setTermoBusca] = useState("");
 
+    // Sala aberta no lobby
+    const [salaEmVisao, setSalaEmVisao] = useState(null);
+
 
     // =====================================================
     // LOGIN
@@ -132,6 +136,8 @@ function App() {
         localStorage.removeItem("usuario");
 
         setJogoSelecionado(null);
+
+        setSalaEmVisao(null);
 
         setPagina("login");
 
@@ -424,6 +430,61 @@ function App() {
                 onSettings={irParaConfiguracoes}
 
                 onSelectGame={selecionarJogo}
+
+                onBuscar={irParaBuscar}
+
+                onVerSala={(sala) => {
+
+                  setSalaEmVisao(sala);
+
+                  setPagina("lobby");
+
+                }}
+
+            />
+        );
+
+    }
+
+
+    // =====================================================
+    // LOBBY (DENTRO DA SALA)
+    // =====================================================
+
+    if (pagina === "lobby") {
+
+        const nomeJogo = obterNomeJogo(jogoSelecionado);
+
+        return (
+            <Lobby
+
+                salaId={salaEmVisao?._id}
+
+                game={nomeJogo}
+
+                onBack={() => {
+
+                  setSalaEmVisao(null);
+
+                  setPagina("rooms");
+
+                }}
+
+                onHome={irParaHome}
+
+                onProfile={irParaPerfil}
+
+                onHistory={irParaHistorico}
+
+                onFeedbacks={irParaFeedbacks}
+
+                onSettings={irParaConfiguracoes}
+
+                onSelectGame={selecionarJogo}
+
+                onBuscar={irParaBuscar}
+
+                onVerPerfil={abrirPerfil}
 
             />
         );

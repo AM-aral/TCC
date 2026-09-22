@@ -47,12 +47,14 @@ import background from "../assets/rooms-bg.png";
 function WildRoom({
   game,
   onHome,
+  onBuscar,
   onCreateRoom,
   onProfile,
   onHistory,
   onFeedbacks,
   onSettings,
-  onSelectGame
+  onSelectGame,
+  onVerSala
 }) {
 
   const [menuAberto, setMenuAberto] = useState(null);
@@ -202,6 +204,21 @@ function WildRoom({
               src={homeIcon}
               alt="Home"
             />
+
+          </button>
+
+
+          {/* BUSCAR */}
+          <button
+            className="wild-room-sidebar-item"
+            type="button"
+            onClick={onBuscar}
+            title="Buscar"
+          >
+
+            <span className="wild-room-buscar-icone">
+              ⌕
+            </span>
 
           </button>
 
@@ -950,6 +967,7 @@ function WildRoom({
                 currentUserId={currentUserId}
                 onJoin={entrarNaSala}
                 onLeave={sairDaSala}
+                onOpen={onVerSala}
                 processando={processandoId === sala._id}
                 onAfterDelete={recarregar}
               />

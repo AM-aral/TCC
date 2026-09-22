@@ -49,12 +49,14 @@ import overBackground from "../assets/rooms-bg.png";
 function OverRoom({
   game,
   onHome,
+  onBuscar,
   onCreateRoom,
   onProfile,
   onHistory,
   onFeedbacks,
   onSettings,
-  onSelectGame
+  onSelectGame,
+  onVerSala
 }) {
 
   const [menuAberto, setMenuAberto] = useState(null);
@@ -204,6 +206,21 @@ function OverRoom({
               src={homeIcon}
               alt="Home"
             />
+
+          </button>
+
+
+          {/* BUSCAR */}
+          <button
+            className="over-room-sidebar-item"
+            type="button"
+            onClick={onBuscar}
+            title="Buscar"
+          >
+
+            <span className="over-room-buscar-icone">
+              ⌕
+            </span>
 
           </button>
 
@@ -967,6 +984,7 @@ function OverRoom({
                 currentUserId={currentUserId}
                 onJoin={entrarNaSala}
                 onLeave={sairDaSala}
+                onOpen={onVerSala}
                 processando={processandoId === sala._id}
                 onAfterDelete={recarregar}
               />

@@ -50,12 +50,14 @@ import dotaBackground from "../assets/rooms-bg.png";
 function DotaRoom({
   game,
   onHome,
+  onBuscar,
   onCreateRoom,
   onProfile,
   onHistory,
   onFeedbacks,
   onSettings,
-  onSelectGame
+  onSelectGame,
+  onVerSala
 }) {
 
   const [menuAberto, setMenuAberto] = useState(null);
@@ -205,6 +207,21 @@ function DotaRoom({
               src={homeIcon}
               alt="Home"
             />
+
+          </button>
+
+
+          {/* BUSCAR */}
+          <button
+            className="dota-room-sidebar-item"
+            type="button"
+            onClick={onBuscar}
+            title="Buscar"
+          >
+
+            <span className="dota-room-buscar-icone">
+              ⌕
+            </span>
 
           </button>
 
@@ -940,6 +957,7 @@ function DotaRoom({
                 currentUserId={currentUserId}
                 onJoin={entrarNaSala}
                 onLeave={sairDaSala}
+                onOpen={onVerSala}
                 processando={processandoId === sala._id}
                 onAfterDelete={recarregar}
               />

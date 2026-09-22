@@ -47,12 +47,14 @@ import background from "../assets/rooms-bg.png";
 function R6Room({
   game,
   onHome,
+  onBuscar,
   onCreateRoom,
   onProfile,
   onHistory,
   onFeedbacks,
   onSettings,
-  onSelectGame
+  onSelectGame,
+  onVerSala
 }) {
 
   const [menuAberto, setMenuAberto] = useState(null);
@@ -202,6 +204,21 @@ function R6Room({
               src={homeIcon}
               alt="Home"
             />
+
+          </button>
+
+
+          {/* BUSCAR */}
+          <button
+            className="r6-room-sidebar-item"
+            type="button"
+            onClick={onBuscar}
+            title="Buscar"
+          >
+
+            <span className="r6-room-buscar-icone">
+              ⌕
+            </span>
 
           </button>
 
@@ -950,6 +967,7 @@ function R6Room({
                 currentUserId={currentUserId}
                 onJoin={entrarNaSala}
                 onLeave={sairDaSala}
+                onOpen={onVerSala}
                 processando={processandoId === sala._id}
                 onAfterDelete={recarregar}
               />

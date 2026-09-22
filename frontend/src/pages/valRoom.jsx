@@ -42,12 +42,14 @@ import valorantBackground from "../assets/rooms-bg.png";
 function ValRoom({
   game,
   onHome,
+  onBuscar,
   onCreateRoom,
   onProfile,
   onHistory,
   onFeedbacks,
   onSettings,
-  onSelectGame
+  onSelectGame,
+  onVerSala
 }) {
 
   const [menuAberto, setMenuAberto] = useState(null);
@@ -195,6 +197,21 @@ function ValRoom({
               src={homeIcon}
               alt="Home"
             />
+
+          </button>
+
+
+          {/* BUSCAR */}
+          <button
+            className="val-room-sidebar-item"
+            type="button"
+            onClick={onBuscar}
+            title="Buscar"
+          >
+
+            <span className="val-room-buscar-icone">
+              ⌕
+            </span>
 
           </button>
 
@@ -1054,6 +1071,7 @@ function ValRoom({
                 currentUserId={currentUserId}
                 onJoin={entrarNaSala}
                 onLeave={sairDaSala}
+                onOpen={onVerSala}
                 processando={processandoId === sala._id}
                 onAfterDelete={recarregar}
               />

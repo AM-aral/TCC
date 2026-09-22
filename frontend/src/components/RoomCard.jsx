@@ -40,6 +40,7 @@ function RoomCard({
   currentUserId,
   onJoin,
   onLeave,
+  onOpen,
   onAfterDelete,
   processando
 }) {
@@ -208,20 +209,24 @@ function RoomCard({
       <button
         className="join-button"
         type="button"
-        disabled={processando || (!souMembro && cheia)}
+        disabled={processando}
         onClick={() =>
-          souMembro
-            ? onLeave?.(room)
-            : onJoin?.(room)
+          onOpen
+            ? onOpen(room)
+            : souMembro
+              ? onLeave?.(room)
+              : onJoin?.(room)
         }
       >
         {processando
           ? "..."
-          : souMembro
-            ? "SAIR DA SALA"
-            : cheia
-              ? "SALA CHEIA"
-              : "ENTRA NA SALA"
+          : onOpen
+            ? "ABRIR SALA"
+            : souMembro
+              ? "SAIR DA SALA"
+              : cheia
+                ? "SALA CHEIA"
+                : "ENTRA NA SALA"
         }
       </button>
 

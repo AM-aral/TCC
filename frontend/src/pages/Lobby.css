@@ -1,0 +1,1033 @@
+/* =====================================================
+   LOBBY — PÁGINA GERAL
+   ===================================================== */
+
+.lobby-page {
+  width: 100%;
+  min-height: 100vh;
+
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+}
+
+.lobby-background-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(10, 7, 20, 0.86);
+
+  pointer-events: none;
+}
+
+/* =====================================================
+   SIDEBAR (padrão das outras abas)
+   ===================================================== */
+
+.rooms-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 76px;
+
+  background: rgba(36, 0, 68, 0.98);
+
+  border-right:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  z-index: 200;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rooms-sidebar-menu {
+  width: 100%;
+
+  margin-top: 92px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.rooms-sidebar-item {
+  width: 52px;
+  height: 52px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.rooms-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  transform: scale(1.04);
+}
+
+.rooms-sidebar-item img {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.70;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.rooms-sidebar-item:hover img {
+  opacity: 1;
+
+  transform: scale(1.04);
+}
+
+.rooms-feedback-star {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+/* =====================================================
+   CONTEÚDO
+   ===================================================== */
+
+.rooms-content {
+  width: calc(100% - 76px);
+
+  min-height: 100vh;
+
+  margin-left: 76px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+/* =====================================================
+   NAVBAR (padrão das outras abas)
+   ===================================================== */
+
+.rooms-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 76px;
+  right: 0;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #69379a,
+      #63318f
+    );
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.20);
+
+  z-index: 100;
+
+  overflow: hidden;
+}
+
+.rooms-navbar-logo {
+  width: 115px;
+  height: 70px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rooms-navbar-logo img {
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+.rooms-games-navbar {
+  flex: 1;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  min-width: 0;
+}
+
+.rooms-navbar-game {
+  flex: 1;
+
+  min-width: 95px;
+  max-width: 180px;
+
+  height: 70px;
+
+  padding: 4px 8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 2px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.rooms-navbar-game:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  color: white;
+}
+
+.rooms-navbar-game img {
+  width: 31px;
+  height: 31px;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0.78;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.rooms-navbar-game:hover img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+.rooms-navbar-active {
+  background: rgba(255, 255, 255, 0.13);
+
+  color: white;
+
+  box-shadow:
+    inset 0 -3px 0 white;
+}
+
+.rooms-navbar-active img {
+  opacity: 1;
+
+  transform: scale(1.08);
+}
+
+/* =====================================================
+   MAIN / LOBBY
+   ===================================================== */
+
+.lobby-main {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 98px 28px 48px;
+
+  overflow-y: auto;
+}
+
+.lobby-room {
+  width: 100%;
+
+  max-width: 900px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.lobby-empty {
+  color: #d7b3f7;
+
+  font-size: 15px;
+}
+
+.lobby-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 18px;
+}
+
+.lobby-error p {
+  color: #ffb3b3;
+
+  font-size: 15px;
+}
+
+/* =====================================================
+   CABEÇALHO DA SALA
+   ===================================================== */
+
+.lobby-room-header {
+  display: flex;
+
+  gap: 22px;
+
+  padding: 24px;
+
+  background: rgba(12, 8, 24, 0.72);
+
+  border: 1px solid rgba(190, 150, 255, 0.16);
+
+  border-radius: 18px;
+
+  backdrop-filter: blur(6px);
+}
+
+.lobby-room-logo {
+  width: 108px;
+  height: 108px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(190, 150, 255, 0.08);
+
+  border: 1px solid rgba(190, 150, 255, 0.2);
+
+  border-radius: 16px;
+}
+
+.lobby-room-logo img {
+  width: 74px;
+  height: 74px;
+
+  object-fit: contain;
+}
+
+.lobby-room-leader-foto {
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: cover !important;
+
+  border-radius: 14px;
+}
+
+.lobby-room-info {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.lobby-room-game {
+  color: #b48cff;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+}
+
+.lobby-room-info h1 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 26px;
+}
+
+.lobby-room-tags {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.lobby-tag {
+  padding: 5px 12px;
+
+  font-size: 12px;
+
+  color: #e2d4f7;
+
+  background: rgba(190, 150, 255, 0.12);
+
+  border: 1px solid rgba(190, 150, 255, 0.2);
+
+  border-radius: 999px;
+}
+
+.lobby-tag-desc {
+  background: rgba(255, 255, 255, 0.05);
+
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.lobby-room-meta {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  color: #a99bbf;
+
+  font-size: 13px;
+}
+
+.lobby-status {
+  padding: 3px 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+.lobby-status-aberta {
+  color: #8effc1;
+
+  background: rgba(60, 200, 120, 0.15);
+
+  border: 1px solid rgba(60, 200, 120, 0.35);
+}
+
+.lobby-status-concluida {
+  color: #ff95c8;
+
+  background: rgba(220, 80, 160, 0.15);
+
+  border: 1px solid rgba(220, 80, 160, 0.35);
+}
+
+.lobby-status-cancelada {
+  color: #ffb3b3;
+
+  background: rgba(220, 60, 60, 0.15);
+
+  border: 1px solid rgba(220, 60, 60, 0.35);
+}
+
+/* =====================================================
+   AVISOS
+   ===================================================== */
+
+.lobby-aviso {
+  margin: 0;
+
+  padding: 12px;
+
+  text-align: center;
+
+  color: #ffb3b3;
+
+  font-size: 14px;
+
+  background: rgba(220, 60, 60, 0.12);
+
+  border: 1px solid rgba(220, 60, 60, 0.3);
+
+  border-radius: 12px;
+}
+
+.lobby-sucesso {
+  margin: 0;
+
+  padding: 12px;
+
+  text-align: center;
+
+  color: #8effc1;
+
+  font-size: 14px;
+
+  background: rgba(60, 200, 120, 0.12);
+
+  border: 1px solid rgba(60, 200, 120, 0.3);
+
+  border-radius: 12px;
+}
+
+/* =====================================================
+   MINHA SITUAÇÃO
+   ===================================================== */
+
+.lobby-acao-box {
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 18px 22px;
+
+  background: rgba(12, 8, 24, 0.72);
+
+  border: 1px solid rgba(190, 150, 255, 0.16);
+
+  border-radius: 14px;
+
+  backdrop-filter: blur(6px);
+}
+
+.lobby-acao-box.lobby-acao-membro {
+  border-color: rgba(60, 200, 120, 0.3);
+}
+
+.lobby-acao-box.lobby-acao-pendente {
+  border-color: rgba(245, 200, 66, 0.35);
+}
+
+.lobby-acao-texto {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.lobby-acao-texto strong {
+  color: #fff;
+
+  font-size: 16px;
+}
+
+.lobby-acao-texto span {
+  color: #a99bbf;
+
+  font-size: 13px;
+}
+
+/* =====================================================
+   BOTÕES
+   ===================================================== */
+
+.lobby-botao {
+  padding: 10px 18px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+
+  color: #fff;
+
+  border-radius: 10px;
+
+  border: 1px solid transparent;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    background 0.15s ease;
+
+  white-space: nowrap;
+}
+
+.lobby-botao:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+.lobby-botao-entrar {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+}
+
+.lobby-botao-entrar:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.lobby-botao-sair {
+  background: rgba(220, 60, 60, 0.2);
+
+  border-color: rgba(255, 120, 120, 0.4);
+}
+
+.lobby-botao-sair:hover:not(:disabled) {
+  background: rgba(220, 60, 60, 0.35);
+}
+
+.lobby-botao-cancelar {
+  background: rgba(245, 200, 66, 0.12);
+
+  border-color: rgba(245, 200, 66, 0.35);
+}
+
+.lobby-botao-cancelar:hover:not(:disabled) {
+  background: rgba(245, 200, 66, 0.22);
+}
+
+.lobby-botao-aprovar {
+  background: rgba(60, 200, 120, 0.15);
+
+  border-color: rgba(60, 200, 120, 0.4);
+}
+
+.lobby-botao-aprovar:hover:not(:disabled) {
+  background: rgba(60, 200, 120, 0.3);
+}
+
+.lobby-botao-recusar {
+  background: rgba(220, 60, 60, 0.12);
+
+  border-color: rgba(255, 100, 100, 0.35);
+}
+
+.lobby-botao-recusar:hover:not(:disabled) {
+  background: rgba(220, 60, 60, 0.3);
+}
+
+.lobby-voltar-button {
+  padding: 12px 22px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+
+  color: #d7c8ee;
+
+  background: rgba(190, 150, 255, 0.08);
+
+  border: 1px solid rgba(190, 150, 255, 0.25);
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+
+  align-self: center;
+}
+
+.lobby-voltar-button:hover {
+  background: rgba(190, 150, 255, 0.18);
+
+  transform: translateY(-1px);
+}
+
+/* =====================================================
+   SEÇÕES (JOGADORES / PEDIDOS)
+   ===================================================== */
+
+.lobby-secoes {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+.lobby-painel {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding: 20px;
+
+  background: rgba(12, 8, 24, 0.66);
+
+  border: 1px solid rgba(190, 150, 255, 0.14);
+
+  border-radius: 18px;
+
+  backdrop-filter: blur(6px);
+}
+
+.lobby-painel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lobby-painel-header h2 {
+  margin: 0;
+
+  color: #e6d8fa;
+
+  font-size: 14px;
+
+  letter-spacing: 1.5px;
+}
+
+.lobby-painel-header > span {
+  color: #a99bbf;
+
+  font-size: 13px;
+}
+
+.lobby-painel-header .lobby-pedidos-count {
+  min-width: 26px;
+  height: 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 8px;
+
+  color: #fff;
+
+  background: #7c3aed;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.lobby-painel-vazio {
+  margin: 0;
+
+  padding: 24px 0;
+
+  text-align: center;
+
+  color: #a99bbf;
+
+  font-size: 13px;
+}
+
+/* =====================================================
+   JOGADORES
+   ===================================================== */
+
+.lobby-jogadores {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.lobby-jogador {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 10px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 12px;
+
+  position: relative;
+
+  cursor: pointer;
+
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.lobby-jogador:hover {
+  background: rgba(190, 150, 255, 0.08);
+
+  border-color: rgba(190, 150, 255, 0.25);
+}
+
+.lobby-jogador-foto {
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(190, 150, 255, 0.1);
+
+  border: 1px solid rgba(190, 150, 255, 0.2);
+
+  border-radius: 50%;
+
+  overflow: visible;
+}
+
+.lobby-jogador-foto img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+}
+
+.lobby-jogador-foto span {
+  color: #d7c8ee;
+
+  font-size: 20px;
+}
+
+.lobby-coroa {
+  position: absolute;
+
+  top: -12px;
+  right: -8px;
+
+  font-size: 15px;
+
+  filter: drop-shadow(0 0 4px rgba(245, 200, 66, 0.6));
+}
+
+.lobby-jogador-info {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.lobby-jogador-info strong {
+  color: #fff;
+
+  font-size: 14px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.lobby-jogador-info span {
+  color: #a99bbf;
+
+  font-size: 12px;
+}
+
+.lobby-badge-lider {
+  align-self: flex-start;
+
+  margin-top: 4px;
+
+  padding: 2px 8px;
+
+  color: #f5c842;
+
+  font-size: 10px;
+
+  letter-spacing: 0.5px;
+
+  background: rgba(245, 200, 66, 0.12);
+
+  border: 1px solid rgba(245, 200, 66, 0.35);
+
+  border-radius: 999px;
+}
+
+.lobby-voce {
+  padding: 3px 8px;
+
+  color: #b48cff;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  background: rgba(124, 58, 237, 0.15);
+
+  border: 1px solid rgba(124, 58, 237, 0.35);
+
+  border-radius: 999px;
+}
+
+/* =====================================================
+   PEDIDOS
+   ===================================================== */
+
+.lobby-pedidos {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.lobby-pedido {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 10px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.lobby-pedido:hover {
+  background: rgba(190, 150, 255, 0.08);
+
+  border-color: rgba(190, 150, 255, 0.25);
+}
+
+.lobby-pedido-acoes {
+  display: flex;
+
+  gap: 8px;
+
+  flex-shrink: 0;
+}
+
+/* =====================================================
+   RESPONSIVO
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+  .lobby-secoes {
+    grid-template-columns: 1fr;
+  }
+
+  .lobby-room-header {
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .lobby-room-logo {
+    width: 84px;
+    height: 84px;
+  }
+
+  .lobby-room-tags,
+  .lobby-room-meta {
+    justify-content: center;
+  }
+
+  .lobby-acao-box {
+    flex-direction: column;
+    text-align: center;
+  }
+}/* =====================================================
+   ÍCONE DE BUSCAR
+===================================================== */
+
+.rooms-buscar-icone {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  color: #ffffff;
+
+  font-size: 25px;
+
+  line-height: 1;
+
+  font-weight: 400;
+
+  text-shadow:
+    0 0 8px rgba(209, 140, 255, 0.25);
+}

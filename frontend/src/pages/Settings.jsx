@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import "./Settings.css";
 
-import { getContasSalvas, getUsuario, removerConta, getToken } from "../api";
+import { getContasSalvas, getUsuario, removerConta, getToken, apiFetch } from "../api";
 
 import { FOTO_PADRAO } from "../data/jogos";
 
@@ -38,6 +38,8 @@ function Settings({
 
     const [contas, setContas] = useState(() => getContasSalvas());
 
+    const [excluindo, setExcluindo] = useState(false);
+
     const usuario = getUsuario();
 
     const temToken = Boolean(getToken());
@@ -66,6 +68,35 @@ function Settings({
         removerConta(contaId);
 
         setContas(getContasSalvas());
+    };
+
+    const excluirConta = async () => {
+        if (!window.confirm(
+            "Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita."
+        )) {
+            return;
+        }
+
+        setExcluindo(true);
+
+        try {
+            await apiFetch("/auth/conta", { method: "DELETE" });
+
+            if (usuario?.id) {
+                removerConta(usuario.id);
+            }
+
+            setContas(getContasSalvas());
+
+            if (typeof onLogout === "function") {
+                onLogout();
+            }
+
+        } catch (erro) {
+            setExcluindo(false);
+
+            alert(erro.message || "Não foi possível excluir a conta.");
+        }
     };
 
     const contaAtualId = usuario?.id || null;
@@ -416,6 +447,38 @@ function Settings({
                         type="button"
                     >
                         Sair da conta
+                    </button>
+
+                </section>
+
+
+                {/* EXCLUIR CONTA */}
+
+                <section className="settings-card settings-card-danger">
+
+                    <div className="settings-card-info">
+
+                        <h2>
+                            Excluir conta
+                        </h2>
+
+                        <p>
+                            Apaga permanentemente sua conta, suas salas
+                            e suas avaliações. Essa ação não pode ser desfeita.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        className="settings-danger-button"
+                        onClick={excluirConta}
+                        disabled={excluindo}
+                        type="button"
+                    >
+                        {excluindo
+                            ? "Excluindo..."
+                            : "Excluir conta"}
                     </button>
 
                 </section>

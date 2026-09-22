@@ -954,6 +954,78 @@ button {
 
 
 /* =====================================================
+   AÇÕES DO CARD (editar / excluir)
+===================================================== */
+
+.feedback-card-acoes {
+  margin-top: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.fb-editar,
+.fb-excluir {
+  padding:
+    8px 14px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.fb-editar {
+  background:
+    linear-gradient(
+      90deg,
+      #6514df,
+      #7b21f3
+    );
+
+  color: white;
+}
+
+
+.fb-excluir {
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    rgba(255, 255, 255, 0.78);
+}
+
+
+.fb-editar:hover:not(:disabled),
+.fb-excluir:hover:not(:disabled) {
+  filter: brightness(1.12);
+
+  transform: translateY(-1px);
+}
+
+
+.fb-excluir:disabled {
+  opacity: 0.55;
+
+  cursor: default;
+}
+
+
+/* =====================================================
    AVATAR COM FOTO
 ===================================================== */
 

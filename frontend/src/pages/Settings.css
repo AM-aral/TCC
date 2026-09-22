@@ -326,6 +326,60 @@
 
 
 /* =========================================================
+   EXCLUIR CONTA
+========================================================= */
+
+.settings-card-danger {
+    border-color: #f3cfd6;
+
+    background: #fff5f6;
+}
+
+
+.settings-danger-button {
+    border: none;
+
+    padding: 13px 22px;
+
+    border-radius: 10px;
+
+    background: #c0392b;
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.settings-danger-button:hover:not(:disabled) {
+    background: #a02f22;
+
+    transform: translateY(-1px);
+}
+
+
+.settings-danger-button:active {
+    transform: translateY(0);
+}
+
+
+.settings-danger-button:disabled {
+    opacity: 0.6;
+
+    cursor: default;
+}
+
+
+/* =========================================================
    ÍCONE BUSCAR NA SIDEBAR
 ========================================================= */
 

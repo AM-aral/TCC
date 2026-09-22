@@ -1288,3 +1288,27 @@ body {
     font-size: 23px;
   }
 }
+/* =====================================================
+   ÍCONE DE BUSCAR
+===================================================== */
+
+.warzone-room-buscar-icone {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  color: #ffffff;
+
+  font-size: 25px;
+
+  line-height: 1;
+
+  font-weight: 400;
+
+  text-shadow:
+    0 0 8px rgba(209, 140, 255, 0.25);
+}

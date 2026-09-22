@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
+const Feedback = require("../models/Feedback");
+const Room = require("../models/Room");
 
 // ==============================
 // PERFIL PÚBLICO
@@ -42,6 +44,17 @@ const cadastrar = async (req, res) => {
         if (usuarioExistente) {
             return res.status(400).json({
                 mensagem: "Esse email já está cadastrado."
+            });
+        }
+
+        // Verificar se o usuário (apelido) já existe (ignorando maiúsculas)
+        const nomeEmUso = await User.findOne({
+            nome: new RegExp(`^${nome.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, "i")
+        });
+
+        if (nomeEmUso) {
+            return res.status(400).json({
+                mensagem: "Esse usuário já está em uso. Escolha outro apelido."
             });
         }
 
@@ -189,12 +202,43 @@ const atualizarPerfil = async (req, res) => {
             });
         }
 
+        const escapar = (texto) =>
+            texto.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
         if (typeof nome === "string" && nome.trim()) {
-            usuario.nome = nome.trim();
+            const novoNome = nome.trim();
+
+            const nomeEmUso = await User.findOne({
+                nome: new RegExp(`^${escapar(novoNome)}$`, "i"),
+                _id: { $ne: usuario._id }
+            });
+
+            if (nomeEmUso) {
+                return res.status(400).json({
+                    mensagem: "Esse usuário já está em uso. Escolha outro apelido."
+                });
+            }
+
+            usuario.nome = novoNome;
         }
 
         if (typeof apelido === "string") {
-            usuario.apelido = apelido.trim();
+            const novoApelido = apelido.trim();
+
+            if (novoApelido) {
+                const apelidoEmUso = await User.findOne({
+                    apelido: new RegExp(`^${escapar(novoApelido)}$`, "i"),
+                    _id: { $ne: usuario._id }
+                });
+
+                if (apelidoEmUso) {
+                    return res.status(400).json({
+                        mensagem: "Esse @apelido já está em uso. Escolha outro."
+                    });
+                }
+            }
+
+            usuario.apelido = novoApelido;
         }
 
         if (typeof descricao === "string") {
@@ -252,9 +296,65 @@ const atualizarPerfil = async (req, res) => {
 };
 
 
+// ==============================
+// EXCLUIR CONTA
+// ==============================
+
+const excluirConta = async (req, res) => {
+    try {
+        const usuario = await User.findById(req.usuario.id);
+
+        if (!usuario) {
+            return res.status(404).json({
+                mensagem: "Usuário não encontrado."
+            });
+        }
+
+        const usuarioId = usuario._id;
+
+        // Apagar feedbacks que envolvem o usuário (enviados e recebidos)
+        await Feedback.deleteMany({
+            $or: [
+                { remetente: usuarioId },
+                { destinatario: usuarioId }
+            ]
+        });
+
+        // Remover o usuário das salas em que participava ou pediu para entrar
+        await Room.updateMany(
+            {},
+            {
+                $pull: {
+                    jogadores: usuarioId,
+                    pedidos: usuarioId
+                }
+            }
+        );
+
+        // Apagar as salas que o usuário criou
+        await Room.deleteMany({ criador: usuarioId });
+
+        // Apagar o usuário
+        await usuario.deleteOne();
+
+        res.json({
+            mensagem: "Conta excluída."
+        });
+
+    } catch (erro) {
+        console.error("Erro ao excluir conta:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
 module.exports = {
     cadastrar,
     login,
     me,
-    atualizarPerfil
+    atualizarPerfil,
+    excluirConta
 };

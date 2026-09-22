@@ -15,6 +15,17 @@ const tamanhos = {
 
 
 // ==============================
+// POPULAR SALA (LOBBY)
+// ==============================
+
+const populacoes = [
+    { path: "criador", select: "nome foto apelido" },
+    { path: "jogadores", select: "nome foto apelido" },
+    { path: "pedidos", select: "nome foto apelido" }
+];
+
+
+// ==============================
 // CRIAR SALA
 // ==============================
 
@@ -93,6 +104,8 @@ const listar = async (req, res) => {
 
         if (status) {
             filtro.status = status;
+        } else {
+            filtro.status = "aberta";
         }
 
         if (q && q.trim()) {
@@ -116,6 +129,258 @@ const listar = async (req, res) => {
 
     } catch (erro) {
         console.error("Erro ao listar salas:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
+// ==============================
+// DETALHES DA SALA (LOBBY)
+// ==============================
+
+const obter = async (req, res) => {
+    try {
+        const sala = await Room.findById(req.params.id).populate(populacoes);
+
+        if (!sala) {
+            return res.status(404).json({
+                mensagem: "Sala não encontrada."
+            });
+        }
+
+        res.json(sala);
+
+    } catch (erro) {
+        console.error("Erro ao buscar sala:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
+// ==============================
+// PEDIR PARA ENTRAR NA SALA
+// ==============================
+
+const pedir = async (req, res) => {
+    try {
+        const sala = await Room.findById(req.params.id);
+
+        if (!sala) {
+            return res.status(404).json({
+                mensagem: "Sala não encontrada."
+            });
+        }
+
+        if (sala.status !== "aberta") {
+            return res.status(400).json({
+                mensagem: "Essa sala não está mais aberta."
+            });
+        }
+
+        const userId = req.usuario.id;
+
+        const jaMembro = sala.jogadores.some(
+            (id) => id.toString() === userId
+        );
+
+        if (jaMembro) {
+            return res.status(400).json({
+                mensagem: "Você já está nessa sala."
+            });
+        }
+
+        const jaPediu = sala.pedidos.some(
+            (id) => id.toString() === userId
+        );
+
+        if (jaPediu) {
+            return res.status(400).json({
+                mensagem: "Você já pediu para entrar. Aguarde o líder aprovar."
+            });
+        }
+
+        if (sala.jogadores.length >= sala.maxJogadores) {
+            return res.status(400).json({
+                mensagem: "A sala já está cheia."
+            });
+        }
+
+        if (!sala.pedidos) {
+            sala.pedidos = [];
+        }
+
+        sala.pedidos.push(userId);
+
+        await sala.save();
+
+        await sala.populate(populacoes);
+
+        res.json({
+            mensagem: "Pedido enviado! Aguarde o líder aprovar.",
+            sala
+        });
+
+    } catch (erro) {
+        console.error("Erro ao pedir entrada na sala:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
+// ==============================
+// LÍDER APROVA PEDIDO
+// ==============================
+
+const aprovar = async (req, res) => {
+    try {
+        const sala = await Room.findById(req.params.id);
+
+        if (!sala) {
+            return res.status(404).json({
+                mensagem: "Sala não encontrada."
+            });
+        }
+
+        if (sala.criador.toString() !== req.usuario.id) {
+            return res.status(403).json({
+                mensagem: "Só o líder pode aprovar pedidos."
+            });
+        }
+
+        if (!sala.pedidos) {
+            sala.pedidos = [];
+        }
+
+        const alvo = req.params.usuarioId;
+
+        if (!sala.pedidos.some((id) => id.toString() === alvo)) {
+            return res.status(400).json({
+                mensagem: "Esse pedido não existe mais."
+            });
+        }
+
+        if (sala.jogadores.length >= sala.maxJogadores) {
+            return res.status(400).json({
+                mensagem: "A sala já está cheia."
+            });
+        }
+
+        sala.pedidos = sala.pedidos.filter(
+            (id) => id.toString() !== alvo
+        );
+
+        sala.jogadores.push(alvo);
+
+        await sala.save();
+
+        await sala.populate(populacoes);
+
+        res.json({
+            mensagem: "Jogador aprovado e adicionado à sala!",
+            sala
+        });
+
+    } catch (erro) {
+        console.error("Erro ao aprovar pedido:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
+// ==============================
+// LÍDER RECUSA PEDIDO
+// ==============================
+
+const recusar = async (req, res) => {
+    try {
+        const sala = await Room.findById(req.params.id);
+
+        if (!sala) {
+            return res.status(404).json({
+                mensagem: "Sala não encontrada."
+            });
+        }
+
+        if (sala.criador.toString() !== req.usuario.id) {
+            return res.status(403).json({
+                mensagem: "Só o líder pode recusar pedidos."
+            });
+        }
+
+        if (!sala.pedidos) {
+            sala.pedidos = [];
+        }
+
+        const alvo = req.params.usuarioId;
+
+        sala.pedidos = sala.pedidos.filter(
+            (id) => id.toString() !== alvo
+        );
+
+        await sala.save();
+
+        await sala.populate(populacoes);
+
+        res.json({
+            mensagem: "Pedido recusado.",
+            sala
+        });
+
+    } catch (erro) {
+        console.error("Erro ao recusar pedido:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
+// ==============================
+// CANCELAR O PRÓPRIO PEDIDO
+// ==============================
+
+const cancelarPedido = async (req, res) => {
+    try {
+        const sala = await Room.findById(req.params.id);
+
+        if (!sala) {
+            return res.status(404).json({
+                mensagem: "Sala não encontrada."
+            });
+        }
+
+        if (!sala.pedidos) {
+            sala.pedidos = [];
+        }
+
+        sala.pedidos = sala.pedidos.filter(
+            (id) => id.toString() !== req.usuario.id
+        );
+
+        await sala.save();
+
+        await sala.populate(populacoes);
+
+        res.json({
+            mensagem: "Seu pedido foi cancelado.",
+            sala
+        });
+
+    } catch (erro) {
+        console.error("Erro ao cancelar pedido:", erro);
 
         res.status(500).json({
             mensagem: "Erro interno do servidor."
@@ -156,6 +421,12 @@ const entrar = async (req, res) => {
 
         sala.jogadores.push(req.usuario.id);
 
+        if (sala.pedidos) {
+            sala.pedidos = sala.pedidos.filter(
+                (id) => id.toString() !== req.usuario.id
+            );
+        }
+
         await sala.save();
 
         await sala.populate([
@@ -189,6 +460,16 @@ const sair = async (req, res) => {
         if (!sala) {
             return res.status(404).json({
                 mensagem: "Sala não encontrada."
+            });
+        }
+
+        // Se o líder sair, a sala é excluída
+        if (sala.criador.toString() === req.usuario.id) {
+            await sala.deleteOne();
+
+            return res.json({
+                mensagem: "Você saiu e a sala foi excluída.",
+                sala: null
             });
         }
 
@@ -339,8 +620,13 @@ const deletar = async (req, res) => {
 module.exports = {
     criar,
     listar,
+    obter,
     entrar,
     sair,
+    pedir,
+    aprovar,
+    recusar,
+    cancelarPedido,
     deletar,
     minhas,
     atualizarStatus

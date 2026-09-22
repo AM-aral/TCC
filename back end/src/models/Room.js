@@ -67,6 +67,13 @@ const roomSchema = new mongoose.Schema(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User"
             }
+        ],
+
+        pedidos: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
         ]
     },
     {

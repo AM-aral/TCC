@@ -8,7 +8,8 @@ const {
     cadastrar,
     login,
     me,
-    atualizarPerfil
+    atualizarPerfil,
+    excluirConta
 } = require("../controllers/authController");
 
 
@@ -26,6 +27,10 @@ router.get("/me", autenticar, me);
 
 // Atualizar perfil
 router.put("/perfil", autenticar, atualizarPerfil);
+
+
+// Excluir conta
+router.delete("/conta", autenticar, excluirConta);
 
 
 module.exports = router;

@@ -103,7 +103,105 @@ const listar = async (req, res) => {
 };
 
 
+// ==============================
+// EDITAR FEEDBACK (SOMENTE REMETENTE)
+// ==============================
+
+const atualizar = async (req, res) => {
+    try {
+        const feedback = await Feedback.findById(req.params.id);
+
+        if (!feedback) {
+            return res.status(404).json({
+                mensagem: "Feedback não encontrado."
+            });
+        }
+
+        if (feedback.remetente.toString() !== req.usuario.id) {
+            return res.status(403).json({
+                mensagem: "Só quem enviou o feedback pode editá-lo."
+            });
+        }
+
+        const { nota, comentario } = req.body;
+
+        if (nota !== undefined) {
+            const notaNum = Number(nota);
+
+            if (!Number.isInteger(notaNum) || notaNum < 1 || notaNum > 5) {
+                return res.status(400).json({
+                    mensagem: "A nota deve ser entre 1 e 5 estrelas."
+                });
+            }
+
+            feedback.nota = notaNum;
+        }
+
+        if (comentario !== undefined) {
+            feedback.comentario = String(comentario || "");
+        }
+
+        await feedback.save();
+
+        await feedback.populate([
+            { path: "remetente", select: "nome foto apelido email" },
+            { path: "destinatario", select: "nome foto apelido email" }
+        ]);
+
+        res.json({
+            mensagem: "Feedback atualizado!",
+            feedback
+        });
+
+    } catch (erro) {
+        console.error("Erro ao editar feedback:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
+// ==============================
+// EXCLUIR FEEDBACK (SOMENTE REMETENTE)
+// ==============================
+
+const deletar = async (req, res) => {
+    try {
+        const feedback = await Feedback.findById(req.params.id);
+
+        if (!feedback) {
+            return res.status(404).json({
+                mensagem: "Feedback não encontrado."
+            });
+        }
+
+        if (feedback.remetente.toString() !== req.usuario.id) {
+            return res.status(403).json({
+                mensagem: "Só quem enviou o feedback pode excluí-lo."
+            });
+        }
+
+        await feedback.deleteOne();
+
+        res.json({
+            mensagem: "Feedback excluído."
+        });
+
+    } catch (erro) {
+        console.error("Erro ao excluir feedback:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro interno do servidor."
+        });
+    }
+};
+
+
 module.exports = {
     criar,
-    listar
+    listar,
+    atualizar,
+    deletar
 };

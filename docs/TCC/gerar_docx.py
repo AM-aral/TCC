@@ -228,6 +228,7 @@ def extrair(capa_linhas):
                 "Integrantes": "integrantes",
                 "Professor Orientador": "orientador",
                 "Cidade": "cidade",
+                "Ano": "ano",
             }.get(rotulo.strip(), None)
             if chave:
                 dados[chave] = valor.strip()
